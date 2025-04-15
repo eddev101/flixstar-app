@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Collection - Flixstar</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#000">
+</head>
+<body>
+    <!-- Navbar (copied from index.html or linked) -->
+    <header id="main-header">
+        <!-- Paste navbar HTML from index.html here or create a separate navbar.html and link it later -->
+    </header>
+
+    <section id="iq-watch" style="background-size: cover;">
+        <div class="watch-bg">
+            <div class="watch-content">
+                <div class="container watch-empty">
+                    <div class="container watch-content-flex">
+                        <div class="watch-content-imgbox">
+                            <img id="collection-poster" src="../images/default.webp">
+                        </div>
+                        <div class="watch-content-description">
+                            <h1 class="wcd-header" id="collection-name">Loading...</h1>
+                            <p class="wcd-p" id="collection-overview"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container" style="padding: 20px !important;">
+        <h1 style="padding: 25px; font-weight: 600; text-align: center;">Movies</h1>
+        <div class="movies-grid" id="collection-movies"></div>
+    </div>
+
+    <!-- Footer (copied from index.html or linked) -->
+    <footer class="iq-bg-dark">
+        <!-- Paste footer HTML from index.html here or create a separate footer.html and link it later -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../js/collection-details.js"></script>
+    <script src="../js/sub-app.js"></script>
+    <script src="../js/load-components.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('../sw.js').catch(error => {
+            console.error('Service Worker registration failed:', error);
+        });
+    }
+</script>
+
+    <style>
+        #main-header { position: relative !important; }
+        .watch-content-imgbox { display: block; }
+        .watch-content-imgbox img { border-radius: 10px; }
+        .wcd-header { font-weight: 800; }
+        .fa-search { display: none; }
+        @media (max-width: 767px) {
+            .watch-empty { height: fit-content; }
+            .watch-content-flex { flex-direction: column; }
+            .watch-content-description { padding: 0; }
+        }
+    </style>
+</body>
+</html>
