@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch Movie - Flixstar</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#000">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar (copied from index.html or linked) -->
+    <header id="main-header">
+        <!-- Paste navbar HTML from index.html here or reuse later -->
+    </header>
+
+    <section id="iq-watch" style="background-size: cover;">
+        <div class="watch-bg">
+            <div class="watch-content">
+                <div class="container watch-empty">
+                    <div id="loading-message" style="display: none;">Please wait as your movie loads...</div>
+                    <div id="iframeContainer" class="container iframe-container">
+                        <button id="closeIframe" class="btn btn-danger">X</button>
+                        <iframe id="movieIframe" src="" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="container watch-content-flex">
+                    <div class="watch-content-imgbox">
+                        <img id="movie-poster" src="../images/default.webp" alt="">
+                    </div>
+                    <div class="watch-content-description">
+                        <div class="watch-download-buttons">
+                            <a href="#" id="playButton"><button class="watch-button"><i class="fa fa-play" style="margin-right: 5px;"></i>Watch Now</button></a>
+                            <a href="#" id="download-btn" onclick="redirectToDownload(event)"><button class="download-btn btn-outline"><i class="fa-solid fa-circle-down" style="margin-right: 5px;"></i>Download</button></a>
+                        </div>
+                        <h1 class="wcd-header" style="font-weight: bold;" id="movie-title">Loading...</h1>
+                        <p class="wcd-p" id="movie-overview"></p>
+                        <div class="trending-list mt-4" id="movie-details"></div>
+                        <div class="wcd-addons">
+                            <a href="#" onclick="addToFavorites(); return false;"><ion-icon name="heart-circle-outline"></ion-icon>Favorites</a>
+                            <a href="#" onclick="addToWatchlist(); return false;"><ion-icon name="bookmark-outline"></ion-icon>Watchlist</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="watch-content-servers">
+                    <div class="note"><p>If the current server doesn't work, please try the other servers below:</p></div>
+                    <div class="servers" id="movie-servers"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container watch-content-cast">
+        <h3>Cast</h3>
+        <div class="wcc-main" id="movie-cast"></div>
+    </div>
+
+    <div class="container" style="padding: 20px !important;">
+        <h3>Trailers</h3>
+        <div id="trailerContainer">
+            <div class="watch-content-servers trailer-container" id="movie-trailers"></div>
+        </div>
+        <h3 style="margin: 25px 0;">Recommended Movies</h3>
+        <div class="movies-grid" id="movie-recommendations"></div>
+    </div>
+
+    <div id="adblock-message" style="display:none;">
+        <button class="close-btn" onclick="closeAdblockMessage()">×</button>
+        <p>For an ad-free experience, use <a href="https://ublockorigin.com/" target="_blank">uBlock Origin</a> on PC <br>or get the <a href="https://www.mozilla.org/firefox/mobile/" target="_blank">Firefox Mobile</a> app and use the uBlock Origin extension.</p>
+    </div>
+
+    <!-- Footer (copied from index.html or linked) -->
+    <footer class="iq-bg-dark">
+        <!-- Paste footer HTML from index.html here or reuse later -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <script src="../js/sub-app.js"></script>
+    <script src="../js/movie-details.js"></script>
+    <script src="../js/load-components.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('../sw.js').catch(error => {
+            console.error('Service Worker registration failed:', error);
+        });
+    }
+</script>
+
+    <style>
+        #main-header { position: relative !important; }
+        .iframe-container { position: relative; width: 100%; height: 100%; padding: 5px; overflow: hidden; display: none; margin: 20px 5px 0 5px; }
+        .iframe-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; border-radius: 7px; }
+        #closeIframe { position: absolute; top: 10px; right: 10px; z-index: 2; border-radius: 50% !important; padding: 5px 12px; }
+        #adblock-message { position: fixed; top: 10px; right: 10px; background-color: red; color: #fff; border: 1px solid #f5c6cb; padding: 15px; border-radius: 5px; z-index: 1000; }
+        #adblock-message .close-btn { background-color: #ffee03; border: none; font-size: 16px; line-height: 1; cursor: pointer; float: right; color: #721c24; padding: 3px 7px; border-radius: 50%; margin: 4px; }
+        #adblock-message p { text-align: center; }
+        #adblock-message a { text-transform: uppercase; color: #ffef06 !important; }
+    </style>
+</body>
+</html>
