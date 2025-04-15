@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Genres - Flixstar</title>
+    <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="manifest" href="../manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#000">
+</head>
+<body>
+    <!-- Navbar (copied from index.html or linked) -->
+    <header id="main-header">
+        <!-- Paste navbar HTML from index.html here or reuse later -->
+    </header>
+
+    <div class="container">
+        <section class="live">
+            <!-- Movie Genres Section -->
+            <h2 class="text-center mt-5 mb-5">Movie Genres</h2>
+            <div class="live-grid mb-5" id="movie-genres"></div>
+
+            <hr>
+            <!-- TV Show Genres Section -->
+            <h2 class="text-center mt-5 mb-5">TV Show Genres</h2>
+            <div class="live-grid" id="tv-genres"></div>
+        </section>
+    </div>
+
+    <!-- Footer (copied from index.html or linked) -->
+    <footer class="iq-bg-dark">
+        <!-- Paste footer HTML from index.html here or reuse later -->
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="../js/genres.js"></script>
+    <script src="../js/sub-app.js"></script>
+    <script src="../js/load-components.js"></script>
+    <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('../sw.js').catch(error => {
+            console.error('Service Worker registration failed:', error);
+        });
+    }
+</script>
+
+    <style>
+        #main-header { position: relative !important; }
+    </style>
+</body>
+</html>
