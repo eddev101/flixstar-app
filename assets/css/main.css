@@ -1,0 +1,449 @@
+/*-------------------------------------*\
+  #main.css
+\*-------------------------------------*/
+
+
+
+
+/*-------------------------------------*\
+  #VARIABLES
+\*-------------------------------------*/
+
+/**
+ * import variables.css file 
+ */
+
+@import url(./variable.css);
+
+
+
+
+
+/*-------------------------------------*\
+  #RESET
+\*-------------------------------------*/
+
+/**
+ * import reset.css file 
+ */
+
+@import url(./reset.css);
+
+
+
+
+
+/*-------------------------------------*\
+  #REPEAT
+\*-------------------------------------*/
+
+/**
+ * reused style
+ */
+
+
+
+
+.movies,
+.category,
+.live {
+  padding: 10px;
+}
+
+.section-heading {
+  font-size: 1.7em;
+  font-weight: var(--fw-5);
+  margin-bottom: 30px;
+}
+
+
+
+
+
+/*-------------------------------------*\
+  #MAIN
+\*-------------------------------------*/
+
+/**
+ * main container style 
+ */
+
+.container {
+  max-width: 1440px;
+  margin: auto;
+}
+
+
+
+
+
+
+/*-------------------------------------*\
+  #MOVIES SECTION
+\*-------------------------------------*/
+
+.movies {
+    margin-bottom: 60px;
+    margin-top: 50px;
+    
+}
+
+/**
+ * filter bar style
+ */
+
+.filter-bar {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  background: #19191a;
+  padding: 20px 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+.filter-bar select {
+  color: var(--white);
+  font-size: var(--fs-sm);
+  margin-right: 15px;
+  cursor: pointer;
+}
+
+.filter-bar option { background: #19191a; }
+
+.filter-radios {
+  position: relative;
+  background: var(--rich-black-fogra-29);
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.filter-radios input { display: none; }
+
+.filter-radios label {
+  position: relative;
+  margin: 0 10px;
+  font-size: var(--fs-sm);
+  user-select: none;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.filter-radios input:checked + label,
+.filter-radios label:hover { color: var(--light-azure); }
+
+input ~ .checked-radio-bg {
+  /**
+   * variable for changing position and size
+   * besed on radio checked 
+   */
+  --width: 85px;
+  --left:   5px;
+
+  background: var(--oxford-blue);
+  position: absolute;
+  top:    5px;
+  left:   var(--left);
+  bottom: 5px;
+  width: var(--width);
+  border-radius: 10px;
+}
+
+#popular:checked ~ .checked-radio-bg {
+  --width: 73px;
+  --left:  90px;
+}
+
+#newest:checked ~ .checked-radio-bg {
+  --width:  81px;
+  --left:  163px;
+}
+
+
+/**
+ * movies grid 
+ */
+
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.movie-card {
+  /**
+   * variable for scaling overlay element on card hover 
+   */
+  --scale: 0.8;
+
+  cursor: pointer;
+}
+
+.movie-card .card-head {
+  position: relative;
+  height: 100%;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.movie-card:hover .card-img { transform: scale(1.1); }
+
+.movie-card .card-overlay {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  backdrop-filter: blur(5px);
+}
+
+.movie-card:hover .card-overlay { opacity: 1; }
+
+.movie-card .bookmark,
+.movie-card .rating {
+  position: absolute;
+  top: 15px;
+  padding: 6px;
+  border-radius: 10px;
+  color: #FFC107;
+  transform: scale(var(--scale));
+}
+
+.movie-card .bookmark {
+  background: var(--oxford-blue);
+  left: 15px;
+}
+
+.movie-card .bookmark:hover { color: var(--yellow); }
+
+.movie-card .rating {
+  display:     flex;
+  align-items: center;
+  right: 15px;
+  background: var(--oxford-blue-50);
+}
+
+.movie-card .rating span {
+  color: var(--white);
+  font-size: 13px;
+  font-weight: var(--fw-5);
+  margin-left: 5px;
+}
+
+.movie-card ion-icon {
+  font-size: 16px;
+  display: block;
+  --ionicon-stroke-width: 50px;
+}
+
+.movie-card .play {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(var(--scale));
+}
+
+.movie-card .play ion-icon {
+  font-size: 60px;
+  --ionicon-stroke-width: 20px;
+}
+
+.movie-card:hover :is(.bookmark, .rating, .play) { --scale: 1; }
+
+.movie-card .card-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-5);
+  margin-bottom: 5px;
+}
+
+.movie-card:hover .card-title { color: var(--light-azure); }
+
+.movie-card .card-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 8px !important;
+  font-weight: var(--fw-5);
+  color: var(--off-white) !important;
+}
+
+.movie-card .genre { margin-right: 8px; }
+
+
+/**
+ * load more button 
+ */
+
+.load-more {
+  background: var(--oxford-blue);
+  display: block;
+  padding: 20px 50px;
+  margin: auto;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-5);
+  border-radius: 15px;
+  color: var(--white);
+}
+
+.load-more:hover { background: var(--light-azure); }
+
+
+
+
+
+/*-------------------------------------*\
+  #CATEGORY SECTION
+\*-------------------------------------*/
+
+.category { margin-bottom: 60px; }
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.category-card {
+  position: relative;
+  height: 150px;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.category-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 20%, #000a);
+}
+
+.category-card:hover .card-img { transform: scale(1.1); }
+
+.category-card .name,
+.category-card .total {
+  position: absolute;
+  bottom: 20px;
+  color: var(--white);
+  z-index: 20;
+}
+
+.category-card .name {
+  left: 20px;
+  font-size: 20px;
+}
+
+.category-card .total {
+  right: 20px;
+  font-size: 18px;
+  background: var(--oxford-blue-50);
+  padding: 5px 8px;
+  border-radius: 8px;
+}
+
+.category-card:hover .name { color: var(--light-azure); }
+
+
+
+
+
+/*-------------------------------------*\
+  #LIVE SECTION
+\*-------------------------------------*/
+
+.live { margin-bottom: 60px; }
+
+.live-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.live-card { cursor: pointer; }
+
+.live-card .card-head {
+  position: relative;
+  height: 100%;
+  border-radius: 7px;
+  margin-bottom: 15px;
+  overflow: hidden;
+}
+
+.live-card .card-head::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 20%, #000a);
+}
+
+.live-card:hover .card-img { transform: scale(1.1); }
+
+.live-card .live-badge,
+.live-card .total-viewers {
+  position: absolute;
+  left: 15px;
+  border-radius: 10px;
+  padding: 5px 10px;
+  z-index: 0;
+}
+
+.live-card .live-badge {
+  top: 15px;
+  font-size: var(--fs-x-sm);
+  font-weight: var(--fw-5);
+  background: var(--live-indicator);
+}
+
+.live-card .total-viewers {
+  bottom: 10px;
+  font-size: 0.8em;
+  font-weight: var(--fw-6);
+  background: var(--oxford-blue-50);
+}
+
+.live-card .play {
+  position: absolute;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  opacity: 0;
+  z-index: 10;
+}
+
+.live-card .play ion-icon {
+  font-size: 60px;
+  --ionicon-stroke-width: 20px;
+}
+
+.live-card:hover .play {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1); 
+}
+
+.live-card .card-body {
+  display:         flex;
+  justify-content: flex-start;
+  align-items:     flex-start;
+}
+
+.live-card .avatar {
+  display: none;
+  width: 20px;
+  border-radius: 50%;
+  margin-right: 15px;
+  border: 1px solid #f0f0f0;
+  padding: 3px;
+  background: black;
+}
+
+
+.live-card .card-title {
+  font-size: 1.2em;
+  font-weight: var(--fw-5);
+}
+
+.live-card:hover .card-title { color: var(--light-azure); }
+
+
+
+
+

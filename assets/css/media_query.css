@@ -1,0 +1,131 @@
+/*-------------------------------------*\
+  #media_query.css
+\*-------------------------------------*/
+
+/**
+ * copyright 2021 @codewithsadee 
+ */
+
+
+
+
+
+/*-------------------------------------*\
+  #RESPONSIVE FOR 1200px
+\*-------------------------------------*/
+
+@media screen and (max-width: 1200px) {
+
+  :root {
+
+    /**
+     * Spacing 
+     */
+
+    --px: 80px; /* padding-left & padding-right */
+
+  }
+
+  
+  /**
+   * CATEGORY SECTION RESPONSIVE
+   */
+
+  .category-grid { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+
+
+
+  
+
+
+
+
+/*-------------------------------------*\
+  #RESPONSIVE FOR 1024px
+\*-------------------------------------*/
+
+@media screen and (max-width: 1024px) {
+
+  :root {
+
+    /**
+     * Spacing 
+     */
+
+    --px: 60px; /* padding-left & padding-right */
+
+  }
+.movies { margin-top: 30px; }
+  
+
+}
+
+
+
+
+
+/*-------------------------------------*\
+  #RESPONSIVE FOR 768px
+\*-------------------------------------*/
+
+@media screen and (max-width: 768px) {
+
+  :root {
+
+    /**
+     * Spacing 
+     */
+
+    --px: 40px; /* padding-left & padding-right */
+
+  }
+
+ 
+
+  /**
+   * MOVIE SECTION
+   */
+  
+  .movies { margin-top: 30px; }
+
+  /**
+   * filter bar responsive
+   */
+  .filter-bar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-bar select { margin-bottom: 20px; }
+
+  .filter-radios { width: 100%; }
+
+}
+
+
+
+
+
+/*-------------------------------------*\
+  #RESPONSIVE FOR 575px
+\*-------------------------------------*/
+
+@media screen and (max-width: 575px) {
+  :root {
+
+    /**
+     * Spacing 
+     */
+
+    --px: 20px; /* padding-left & padding-right */
+
+    /**
+     * Typography 
+     */
+    --section-heading: 32px;
+    --fs-lg:           20px;
+
+  }
+
+  
+}
