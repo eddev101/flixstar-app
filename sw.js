@@ -4,7 +4,8 @@ const urlsToCache = [
     '/index.html',
     '/assets/css/main.css',
     '/assets/css/style.css',
-    '/js/load-components.js',
+    '/js/load-home-components.js',  // Added for index.html
+    '/js/load-components.js',      // For other pages
     '/images/logo3.png'
 ];
 
