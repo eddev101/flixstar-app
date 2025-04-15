@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Watch Free Movies Online | Flixstar | Download HD Movies and Tv Shows</title>
+
+  <!-- Google Font Link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
+  
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- Local CSS files -->
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="theme-color" content="#000">
+
+  <!-- Slick CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css" />
+</head>
+<body>
+  <header id="main-header"></header>
+
+  <section id="home" class="iq-main-slider p-0">
+  <div id="home-slider" class="slider m-0 p-0">
+    <!-- Slider items will be populated dynamically by JavaScript -->
+  </div>
+</section>
+
+  <main class="container">
+    <!-- MOVIES SECTION -->
+    <section class="movies">
+      <div class="filter-bar">
+        <div class="filter-radios" id="filter-radios">
+          <input type="radio" name="grade" id="featured" checked onClick="fetchMovies('now_playing');">
+          <label for="featured">Featured</label>
+          <input type="radio" name="grade" id="popular" onClick="fetchMovies('popular');">
+          <label for="popular">Popular</label>
+          <input type="radio" name="grade" id="newest" onClick="fetchMovies('newest');">
+          <label for="newest">Top Rated</label>
+          <div class="checked-radio-bg"></div>
+        </div>
+      </div>
+
+      <div class="movies-grid" id="home-movies"></div>
+
+      <!-- Update LOAD MORE button to point to an internal page or function -->
+      <button class="load-more" onClick="loadMoreMovies();">LOAD MORE</button>
+    </section>
+
+    <!-- TRENDING TV SHOWS SECTION -->
+    <section class="live" id="live">
+      <h2 class="section-heading">Today's Top TV Shows</h2>
+      <div class="live-grid" id="home-popshows"></div>
+    </section>
+
+    <!-- POPULAR SECTION -->
+    <section class="live" id="live">
+      <h2 class="section-heading">This Week’s Top TV Shows</h2>
+      <div class="live-grid" id="home-trendingshows"></div>
+    </section>
+  </main>
+
+  <footer class="iq-bg-dark"></footer>
+  <!-- Scripts -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+
+  <!-- Move your JavaScript to a separate file -->
+  <script src="js/app.js"></script>
+  <script src="js/load-home-components.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(error => {
+            console.error('Service Worker registration failed:', error);
+        });
+    }
+</script>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Inline styles can stay or be moved to CSS -->
+  <style>
+    .media {
+      display: flex;
+    }
+    .media-body {
+      margin-left: 10px;
+    }
+    #myDiv {
+      display: block;
+      background: #020202f5;
+      position: absolute;
+      top: 50%;
+      z-index: 99;
+      height: fit-content;
+      padding: 50px 25px;
+      margin: 20px auto;
+      left: 0;
+      right: 0;
+      width: 90%;
+      border-radius: 13px;
+    }
+
+  /* Navbar styles */
+  .dropdown-menu {
+    background: #191919 !important;
+  }
+  .dropdown-menu a:hover {
+    background: #191919 !important;
+    color: #fff !important;
+  }
+  @media (max-width: 991px) {
+    .navbar {
+      background: #141414 !important;
+    }
+    .navbar-collapse {
+      background: #141414 !important;
+    }
+    .abv-mobile-form {
+      display: none;
+    }
+    .mobile-form {
+      display: block;
+    }
+    .mobile-form input {
+      border-radius: 7px !important;
+    }
+  }
+  @media (min-width: 991px) {
+    .mobile-form {
+      display: none;
+    }
+    .abv-mobile-form {
+      display: block;
+    }
+  }
+
+  /* Slider styles */
+  .sld-btn, .sld-mylist-btn {
+    display: flex !important;
+    align-items: center !important;
+    text-transform: capitalize !important;
+    padding: 8px 16px !important;
+    border-radius: 5px !important;
+    margin: 0 5px;
+  }
+  .sld-ion, .sld-mylist-ion {
+    margin-right: 10px;
+  }
+  .sld-mylist-btn {
+    background: #403e3e;
+  }
+  .slide.s-bg {
+    background-image: attr(data-backdrop url);
+  }
+  .home-extra {
+    padding: 3px 6px !important;
+    border-radius: 7px !important;
+    font-size: 0.8em;
+  }
+  @media (max-width: 499px) {
+    .slide.s-bg {
+      background-image: attr(data-poster url);
+    }
+    #home-slider .slick-bg {
+      height: 600px !important;
+      margin-top: 0px;
+    }
+    #home-slider h1.slider-text {
+      margin: 0;
+      line-height: normal !important;
+      font-size: 3em;
+      text-align: center;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    #home-slider p {
+      -webkit-line-clamp: 3 !important;
+      font-size: 1em;
+    }
+    .sld-buttons {
+      display: flex !important;
+      justify-content: center;
+    }
+    .sld-ion, .sld-mylist-ion {
+      margin-right: 0px;
+    }
+    .sld-btn, .sld-mylist-btn {
+      font-size: 0.8rem;
+    }
+    .slick-bg::before {
+      background: linear-gradient(10deg, rgba(0,0,0,1) 0%, rgba(20,20,20,1) 35%, rgba(83,100,141,0) 100%);
+    }
+    .con-tent {
+      position: absolute;
+      bottom: 0;
+    }
+    .home-extra-pops {
+      justify-content: center;
+    }
+  }
+</style>
+</body>
+</html>
