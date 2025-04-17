@@ -311,39 +311,6 @@ header .navbar ul li:last-child{
 
 }
 
-/* Navbar styles */
-  .dropdown-menu {
-    background: #191919 !important;
-  }
-  .dropdown-menu a:hover {
-    background: #191919 !important;
-    color: #fff !important;
-  }
-  @media (max-width: 991px) {
-    .navbar {
-      background: #141414 !important;
-    }
-    .navbar-collapse {
-      background: #141414 !important;
-    }
-    .abv-mobile-form {
-      display: none;
-    }
-    .mobile-form {
-      display: block;
-    }
-    .mobile-form input {
-      border-radius: 7px !important;
-    }
-  }
-  @media (min-width: 991px) {
-    .mobile-form {
-      display: none;
-    }
-    .abv-mobile-form {
-      display: block;
-    }
-  }
 .navbar-right li .iq-sub-dropdown a.iq-sub-card:last-child{
     border-bottom: 0;
 }
