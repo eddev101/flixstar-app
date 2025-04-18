@@ -3199,7 +3199,7 @@ border: 2px solid #3bed97;
 }
 
 .live-card:hover .card-title { color: var(--light-azure); }
-dropdown-menu{
+.dropdown-menu{
             background: #191919 !important;
         }
     .dropdown-menu a:hover{
