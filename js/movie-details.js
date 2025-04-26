@@ -76,6 +76,48 @@ if (!movieId || isNaN(movieId)) {
             });
             $('#movie-recommendations').html(recommendations || '<p>No recommendations available.</p>');
 
+            
+            //blocker
+            (function() {
+    const originalWindowOpen = window.open;
+    window.open = function(url, name, features) {
+        console.log('Blocked popup:', url);
+        return null;
+    };
+})();
+
+(function() {
+    const blockedUrls = [
+        'cdn4ads.com',
+        'youradexchange.com',
+        'todayswigcontagious.com',
+        'runative-syndicate.com',
+        'mv.mgdinbd.top',
+        'mgdinbd.top',
+        'b5l1voyg8t.top',
+        'web-surfing.fly.storage.tigris.dev',
+        'clk.omgt4.com',
+        'omgt4.com',
+        'bobgames-prolister.com',
+        'rdtk.io',
+        'jiuwert.online',
+        'madurird.com',
+        'movenivalcrooffer.com',
+        '19ad8.com',
+        'trck.wargaming.net'
+    ];
+
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        if (blockedUrls.some(url => args[0]?.toString().includes(url))) {
+            console.warn('Blocked fetch request to:', args[0]);
+            return new Promise(() => {}); // Never resolves
+        }
+        return originalFetch.apply(this, args);
+    };
+})();
+
+
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
                 showIframe(`https://multiembed.mov/?video_id=${movie.id}&tmdb=1`); // Default server
