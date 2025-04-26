@@ -83,6 +83,18 @@ if (!tvShowId || isNaN(tvShowId)) {
             });
             $('#show-recommendations').html(recommendations || '<p>No recommendations available.</p>');
 
+
+
+            //blocker
+            (function() {
+    const originalWindowOpen = window.open;
+    window.open = function(url, name, features) {
+        console.log('Blocked popup:', url);
+        return null;
+        };
+    })();
+
+
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
                 const url = `https://multiembed.mov?video_id=${tvShowId}&tmdb=1&s=${selectedSeason}&e=${selectedEpisode}`; 
@@ -182,44 +194,13 @@ function showIframe(url) {
     }
 
     iframeContainer.style.display = 'block';
+    movieIframe.src = url;
     adblockMessage.style.display = 'block';
     iframeContainer.scrollIntoView({ behavior: 'smooth' });
 
-    // Set iframe attributes for extra protection
-    movieIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin');
-    movieIframe.setAttribute('allowfullscreen', 'true');
-
-    // First, block window.open
-    movieIframe.contentWindow?.open = function() {
-        console.log('Blocked a popup attempt inside iframe!');
-        return null;
-    };
-
-    // Then block clicks temporarily
-    const blocker = document.createElement('div');
-    blocker.style.position = 'absolute';
-    blocker.style.top = '0';
-    blocker.style.left = '0';
-    blocker.style.width = '100%';
-    blocker.style.height = '100%';
-    blocker.style.zIndex = '9999';
-    blocker.style.background = 'transparent';
-    blocker.id = 'iframeClickBlocker';
-    iframeContainer.appendChild(blocker);
-
-    setTimeout(() => {
-        const existingBlocker = document.getElementById('iframeClickBlocker');
-        if (existingBlocker) {
-            existingBlocker.remove();
-            console.log('Iframe blocker removed.');
-        }
-    }, 5000);
-
-    // Finally, set iframe URL
-    movieIframe.src = url;
-
     movieIframe.onerror = () => console.error(`Failed to load iframe: ${url} - Possible embedding restriction or invalid URL`);
 }
+
 
 
 function closeAdblockMessage() {
