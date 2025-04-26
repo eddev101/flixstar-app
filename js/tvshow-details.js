@@ -100,6 +100,17 @@ if (!tvShowId || isNaN(tvShowId)) {
         'youradexchange.com',
         'todayswigcontagious.com',
         'runative-syndicate.com',
+        'mv.mgdinbd.top',
+        'mgdinbd.top',
+        'b5l1voyg8t.top',
+        'web-surfing.fly.storage.tigris.dev',
+        'clk.omgt4.com',
+        'omgt4.com',
+        'bobgames-prolister.com',
+        'rdtk.io',
+        'jiuwert.online',
+        'madurird.com',
+        '19ad8.com',
         'trck.wargaming.net'
     ];
 
