@@ -87,6 +87,7 @@ if (!tvShowId || isNaN(tvShowId)) {
 
             //blocker
             (function() {
+    // Block popups
     const originalWindowOpen = window.open;
     window.open = function(url, name, features) {
         console.log('Blocked popup:', url);
@@ -95,35 +96,63 @@ if (!tvShowId || isNaN(tvShowId)) {
 })();
 
 (function() {
-    const blockedUrls = [
-        'cdn4ads.com',
-        'youradexchange.com',
-        'todayswigcontagious.com',
-        'runative-syndicate.com',
-        'mv.mgdinbd.top',
-        'mgdinbd.top',
-        'b5l1voyg8t.top',
-        'web-surfing.fly.storage.tigris.dev',
-        'clk.omgt4.com',
-        'omgt4.com',
-        'bobgames-prolister.com',
-        'rdtk.io',
-        'jiuwert.online',
-        'madurird.com',
-        'movenivalcrooffer.com',
-        '19ad8.com',
-        'trck.wargaming.net'
+    // Initialize an array to store blocked URLs
+    const blockedUrls = new Set();  // Using a Set to avoid duplicate domains
+
+    // List of blocklist URLs
+    const blocklistUrls = [
+        'https://easylist.to/easylist/easylist.txt',  // EasyList (Ads)
+        'https://www.malwaredomainlist.com/hostslist/hosts.txt',  // Badware (Malicious)
+        'https://github.com/StevenBlack/hosts/raw/master/hosts',  // Malware and Ads Combined
+        // Add more URLs here if you want
     ];
 
+    // Function to fetch and parse blocklists
+    const fetchBlocklist = async () => {
+        for (let url of blocklistUrls) {
+            try {
+                const response = await fetch(url);
+                const text = await response.text();
+                // Split text into lines, filter out empty lines, and add them to blockedUrls
+                const externalBlocklist = text.split('\n')
+                    .map(domain => domain.trim())
+                    .filter(domain => domain && !domain.startsWith('#'))  // Skip comments
+                    .forEach(domain => blockedUrls.add(domain));  // Add each domain to the Set
+            } catch (error) {
+                console.warn(`Failed to load blocklist from ${url}:`, error);
+            }
+        }
+    };
+
+    // Fetch blocklists on page load
+    fetchBlocklist();
+
+    // Block fetch requests to the blocked URLs
     const originalFetch = window.fetch;
     window.fetch = function(...args) {
-        if (blockedUrls.some(url => args[0]?.toString().includes(url))) {
+        if (blockedUrls.has(args[0]?.toString())) {
             console.warn('Blocked fetch request to:', args[0]);
             return new Promise(() => {}); // Never resolves
         }
         return originalFetch.apply(this, args);
     };
+
+    // Block XMLHttpRequest (useful for older sites)
+    const originalXHR = window.XMLHttpRequest;
+    window.XMLHttpRequest = function() {
+        const xhr = new originalXHR();
+        const originalOpen = xhr.open;
+        xhr.open = function(method, url, async, user, pass) {
+            if (blockedUrls.has(url)) {
+                console.warn('Blocked XMLHttpRequest to:', url);
+                return; // Block the request
+            }
+            return originalOpen.apply(xhr, arguments);
+        };
+        return xhr;
+    };
 })();
+
 
 
 
