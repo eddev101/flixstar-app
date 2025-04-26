@@ -91,8 +91,28 @@ if (!tvShowId || isNaN(tvShowId)) {
     window.open = function(url, name, features) {
         console.log('Blocked popup:', url);
         return null;
-        };
-    })();
+    };
+})();
+
+(function() {
+    const blockedUrls = [
+        'cdn4ads.com',
+        'youradexchange.com',
+        'todayswigcontagious.com',
+        'runative-syndicate.com',
+        'trck.wargaming.net'
+    ];
+
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        if (blockedUrls.some(url => args[0]?.toString().includes(url))) {
+            console.warn('Blocked fetch request to:', args[0]);
+            return new Promise(() => {}); // Never resolves
+        }
+        return originalFetch.apply(this, args);
+    };
+})();
+
 
 
             // Add event listeners AFTER DOM updates
