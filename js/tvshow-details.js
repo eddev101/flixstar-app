@@ -110,6 +110,7 @@ if (!tvShowId || isNaN(tvShowId)) {
         'rdtk.io',
         'jiuwert.online',
         'madurird.com',
+        'movenivalcrooffer.com',
         '19ad8.com',
         'trck.wargaming.net'
     ];
