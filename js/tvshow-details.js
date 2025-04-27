@@ -221,8 +221,8 @@ if (!tvShowId || isNaN(tvShowId)) {
 }*/
 
 function loadEpisode() {
-    const defaultServer = document.querySelector('.server-button');
-    if (defaultServer) showIframe(defaultServer.dataset.url);
+    const url = `https://moviesapi.club/tv/${tvShowId}-${selectedSeason}-${selectedEpisode}`; // Same URL logic here
+    showIframe(url);
 }
 
 function showIframe(url) {
