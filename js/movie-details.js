@@ -77,14 +77,6 @@ if (!movieId || isNaN(movieId)) {
             $('#movie-recommendations').html(recommendations || '<p>No recommendations available.</p>');
 
             
-            //blocker
-            (function() {
-    const originalWindowOpen = window.open;
-    window.open = function(url, name, features) {
-        console.log('Blocked popup:', url);
-        return null;
-    };
-})();
   // Blocker Script - Updated Version
 (function() {
     const blockedUrls = [
