@@ -173,7 +173,7 @@ if (!tvShowId || isNaN(tvShowId)) {
                                 button.addEventListener('click', function (e) {
                                     e.preventDefault();
                                     selectedEpisode = this.getAttribute('data-episode');
-                                    updateServerLinks();
+                                    /*updateServerLinks();*/
                                     loadEpisode();
                                 });
                             });
@@ -205,7 +205,7 @@ if (!tvShowId || isNaN(tvShowId)) {
         });
 }
 
-function updateServerLinks() {
+/*function updateServerLinks() {
     document.querySelectorAll('.server-button').forEach(server => {
         let baseUrl = server.dataset.url;
         if (baseUrl.includes('moviesapi.club')) {
@@ -218,7 +218,7 @@ function updateServerLinks() {
             server.dataset.url = `https://vidsrc.me/embed/tv?tmdb=${tvShowId}&season=${selectedSeason}&episode=${selectedEpisode}`;
         }
     });
-}
+}*/
 
 function loadEpisode() {
     const defaultServer = document.querySelector('.server-button');
