@@ -291,64 +291,51 @@ if (!movieId || isNaN(movieId)) {
         return originalFetch.apply(this, args);
     };
 
-    // Block XMLHttpRequest (older AJAX)
+    // Block XMLHttpRequest (AJAX)
     const originalXHROpen = XMLHttpRequest.prototype.open;
     XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
         if (blockedUrls.some(blocked => url?.includes(blocked))) {
             console.warn('Blocked XHR request to:', url);
-            return; // cancel it
+            return; // cancel
         }
         return originalXHROpen.apply(this, arguments);
     };
 
-    // Block window.location redirects
-    const originalAssign = window.location.assign;
-    const originalReplace = window.location.replace;
-    const originalHref = Object.getOwnPropertyDescriptor(Location.prototype, 'href');
-
+    // Block window.location redirects via assign/replace
+    const originalAssign = window.location.assign.bind(window.location);
     window.location.assign = function(url) {
         if (blockedUrls.some(blocked => url?.includes(blocked))) {
             console.warn('Blocked assign redirect:', url);
             return;
         }
-        return originalAssign.apply(window.location, arguments);
+        return originalAssign(url);
     };
 
+    const originalReplace = window.location.replace.bind(window.location);
     window.location.replace = function(url) {
         if (blockedUrls.some(blocked => url?.includes(blocked))) {
             console.warn('Blocked replace redirect:', url);
             return;
         }
-        return originalReplace.apply(window.location, arguments);
+        return originalReplace(url);
     };
-
-    Object.defineProperty(window.location, 'href', {
-        set: function(url) {
-            if (blockedUrls.some(blocked => url?.includes(blocked))) {
-                console.warn('Blocked href redirect:', url);
-                return;
-            }
-            originalHref.set.call(window.location, url);
-        },
-        get: function() {
-            return originalHref.get.call(window.location);
-        }
-    });
 
     // Block iframe source changes
     const originalIframeSrc = Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'src');
-    Object.defineProperty(HTMLIFrameElement.prototype, 'src', {
-        set: function(url) {
-            if (blockedUrls.some(blocked => url?.includes(blocked))) {
-                console.warn('Blocked iframe src:', url);
-                return;
+    if (originalIframeSrc && originalIframeSrc.configurable) {
+        Object.defineProperty(HTMLIFrameElement.prototype, 'src', {
+            set: function(url) {
+                if (blockedUrls.some(blocked => url?.includes(blocked))) {
+                    console.warn('Blocked iframe src:', url);
+                    return;
+                }
+                originalIframeSrc.set.call(this, url);
+            },
+            get: function() {
+                return originalIframeSrc.get.call(this);
             }
-            originalIframeSrc.set.call(this, url);
-        },
-        get: function() {
-            return originalIframeSrc.get.call(this);
-        }
-    });
+        });
+    }
 
     // Block meta refresh redirects
     const observer = new MutationObserver(mutations => {
@@ -367,7 +354,7 @@ if (!movieId || isNaN(movieId)) {
 
     observer.observe(document.head || document.documentElement, { childList: true, subtree: true });
 
-    // Bonus: Stop setTimeout based sneaky redirects
+    // Bonus: Block sneaky setTimeout redirects
     const originalSetTimeout = window.setTimeout;
     window.setTimeout = function(func, delay, ...args) {
         if (typeof func === 'string' && blockedUrls.some(blocked => func.includes(blocked))) {
@@ -377,7 +364,7 @@ if (!movieId || isNaN(movieId)) {
         return originalSetTimeout(func, delay, ...args);
     };
 
-    console.log('%c[Blocker Activated] 🚫 Blocking ads and redirects...', 'color: limegreen; font-weight: bold;');
+    console.log('%c[Blocker Activated - Corrected] 🚫 Blocking ads and redirects...', 'color: limegreen; font-weight: bold;');
 })();
 
 
