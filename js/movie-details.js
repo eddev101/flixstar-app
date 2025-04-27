@@ -25,12 +25,12 @@ if (!movieId || isNaN(movieId)) {
                 <div class="text-primary-title">Producers: <span class="text-body">${movie.credits.crew.filter(c => c.job === 'Producer').map(p => p.name).join(', ') || 'N/A'}</span></div>`;
             $('#movie-details').html(details);
 
-            let servers = `
+            /*let servers = `
                 <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://www.2embed.cc/embed/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://multiembed.mov/?video_id=${movie.id}&tmdb=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://moviesapi.club/movie/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Moviesapi</h1></div></div></a>`;
-            $('#movie-servers').html(servers);
+            $('#movie-servers').html(servers);*/
 
             let cast = '';
             movie.credits.cast.slice(0, 10).forEach(c => { // Limit to 10 for performance
@@ -267,6 +267,7 @@ if (!movieId || isNaN(movieId)) {
         '123movieshub.to',
         'kissasian.sh',
         'watchcartoononline.bz',
+        'join.worldoftanks.eu',
         'trck.wargaming.net'
     ];
 
@@ -371,7 +372,7 @@ if (!movieId || isNaN(movieId)) {
 
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
-                showIframe(`https://multiembed.mov/?video_id=${movie.id}&tmdb=1`); // Default server
+                showIframe(`https://moviesapi.club/movie/${movie.id}`); // Default server
             });
 
             document.querySelectorAll('.trailer-button').forEach(button => {
