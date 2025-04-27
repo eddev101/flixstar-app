@@ -26,12 +26,12 @@ if (!tvShowId || isNaN(tvShowId)) {
                 <div class="text-primary-title">Created By: <span class="text-body">${show.created_by.length ? show.created_by.map(c => c.name).join(', ') : 'N/A'}</span></div>`;
             $('#show-details').html(details);
 
-            let servers = `
+            /*let servers = `
                 <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/tv?tmdb=${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://www.2embed.cc/embedtv/${show.id}&s=1&e=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://multiembed.mov?video_id=${show.id}&tmdb=1&s=1&e=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://moviesapi.club/tv/${show.id}-1-1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Moviesapi</h1></div></div></a>`;
-            $('#show-servers').html(servers);
+            $('#show-servers').html(servers);*/
 
             let seasonOptions = '<option value="">Select a Season</option>';
             show.seasons.forEach(s => {
@@ -95,66 +95,47 @@ if (!tvShowId || isNaN(tvShowId)) {
     };
 })();
 
+  // Blocker Script - Updated Version
 (function() {
-    // Initialize an array to store blocked URLs
-    const blockedUrls = new Set();  // Using a Set to avoid duplicate domains
+    let firstClick = true;
 
-    // List of blocklist URLs
-    const blocklistUrls = [
-        'https://easylist.to/easylist/easylist.txt',  // EasyList (Ads)
-        'https://www.malwaredomainlist.com/hostslist/hosts.txt',  // Badware (Malicious)
-        'https://github.com/StevenBlack/hosts/raw/master/hosts',  // Malware and Ads Combined
-        // Add more URLs here if you want
-    ];
-
-    // Function to fetch and parse blocklists
-    const fetchBlocklist = async () => {
-        for (let url of blocklistUrls) {
-            try {
-                const response = await fetch(url);
-                const text = await response.text();
-                // Split text into lines, filter out empty lines, and add them to blockedUrls
-                const externalBlocklist = text.split('\n')
-                    .map(domain => domain.trim())
-                    .filter(domain => domain && !domain.startsWith('#'))  // Skip comments
-                    .forEach(domain => blockedUrls.add(domain));  // Add each domain to the Set
-            } catch (error) {
-                console.warn(`Failed to load blocklist from ${url}:`, error);
-            }
+    const originalWindowOpen = window.open;
+    window.open = function(url, name, features) {
+        if (firstClick) {
+            console.warn('Blocked first click popup:', url);
+            return null;
         }
+        return originalWindowOpen.call(window, url, name, features);
     };
 
-    // Fetch blocklists on page load
-    fetchBlocklist();
+    const observer = new MutationObserver(mutations => {
+        if (!firstClick) return;
 
-    // Block fetch requests to the blocked URLs
-    const originalFetch = window.fetch;
-    window.fetch = function(...args) {
-        if (blockedUrls.has(args[0]?.toString())) {
-            console.warn('Blocked fetch request to:', args[0]);
-            return new Promise(() => {}); // Never resolves
-        }
-        return originalFetch.apply(this, args);
-    };
-
-    // Block XMLHttpRequest (useful for older sites)
-    const originalXHR = window.XMLHttpRequest;
-    window.XMLHttpRequest = function() {
-        const xhr = new originalXHR();
-        const originalOpen = xhr.open;
-        xhr.open = function(method, url, async, user, pass) {
-            if (blockedUrls.has(url)) {
-                console.warn('Blocked XMLHttpRequest to:', url);
-                return; // Block the request
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                    if (node.tagName === 'IFRAME' || node.tagName === 'SCRIPT') {
+                        console.warn('Blocked injected iframe/script on first click:', node.src || node.innerHTML);
+                        node.remove();
+                    }
+                });
             }
-            return originalOpen.apply(xhr, arguments);
-        };
-        return xhr;
-    };
+        });
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
+    });
+
+    window.addEventListener('click', () => {
+        if (firstClick) {
+            console.log('%c[First click ad blocked successfully]', 'color: green; font-weight: bold;');
+            firstClick = false;
+            observer.disconnect();
+        }
+    }, { once: true });
 })();
-
-
-
 
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
