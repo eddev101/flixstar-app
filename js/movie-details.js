@@ -79,293 +79,53 @@ if (!movieId || isNaN(movieId)) {
             
   // Blocker Script - Updated Version
 (function() {
-    const blockedUrls = [
-        'cdn4ads.com',
-        'youradexchange.com',
-        'todayswigcontagious.com',
-        'runative-syndicate.com',
-        'mv.mgdinbd.top',
-        'mgdinbd.top',
-        'b5l1voyg8t.top',
-        'web-surfing.fly.storage.tigris.dev',
-        'clk.omgt4.com',
-        'omgt4.com',
-        'bobgames-prolister.com',
-        'rdtk.io',
-        'topsolutions.rdtk.io',
-        'jiuwert.online',
-        'trk.jiuwert.online',
-        'madurird.com',
-        'movenivalcrooffer.com',
-        '19ad8.com',
-        'wps.com',
-        'sportsbet486.io',
-        'opera.com',
-        'fzyvmvomphvvws.com',
-        'vidnextcdn.xyz',
-        'vidmoly.to',
-        'vidhidepro.com',
-        'vidfast.co',
-        'vidbem.com',
-        'vidnext.net',
-        'vidstream.pro',
-        'spoutable.com',
-        'adsco.re',
-        'adtng.com',
-        'ousnsd.com',
-        'zeusadnet.com',
-        'streamcdn.to',
-        'snackly.co',
-        'mobisla.com',
-        'epom.com',
-        'popcash.net',
-        'adsterra.com',
-        'clickadu.com',
-        'propellerads.com',
-        'push.house',
-        'admaven.com',
-        'yllix.com',
-        'popads.net',
-        'trafficjunky.com',
-        'doubleclick.net',
-        'googleadservices.com',
-        'googlesyndication.com',
-        'moatads.com',
-        'outbrain.com',
-        'taboola.com',
-        'revenuehits.com',
-        'content.ad',
-        'cointraffic.io',
-        'juicyads.com',
-        'plugrush.com',
-        'media.net',
-        'adcash.com',
-        'sharethrough.com',
-        'optad360.io',
-        'adpushup.com',
-        'brightcom.com',
-        'zergnet.com',
-        'adhitz.com',
-        'skimlinks.com',
-        'pushnami.com',
-        'vibrantmedia.com',
-        'exoclick.com',
-        'bc.vc',
-        'shorte.st',
-        'adf.ly',
-        'linkvertise.com',
-        'clicksgear.com',
-        'displaytrust.com',
-        'adhaven.media',
-        'adtelligent.com',
-        'pushbrothers.com',
-        'pushworld.com',
-        'smrtpop.com',
-        'popmyads.com',
-        'vungle.com',
-        'inmobi.com',
-        'tapjoy.com',
-        'supersonicads.com',
-        'saymedia.com',
-        'matomy.com',
-        'leadbolt.com',
-        'airpush.com',
-        'startapp.com',
-        'mobvista.com',
-        'appnext.com',
-        'nend.net',
-        'chartboost.com',
-        'ironSource.mobi',
-        'youappi.com',
-        'globalhop.net',
-        'adzmndr.com',
-        'upapi.net',
-        'fraudfilter.io',
-        'bidgear.com',
-        'casalemedia.com',
-        'serving-sys.com',
-        'mopub.com',
-        'pubmatic.com',
-        'openx.net',
-        'rubiconproject.com',
-        'appnexus.com',
-        'adroll.com',
-        'criteo.com',
-        'triplelift.com',
-        'sovrn.com',
-        'gumgum.com',
-        'stackadapt.com',
-        'undertone.com',
-        'kargo.com',
-        'teads.tv',
-        'mybestmv.com',
-        'aniview.com',
-        'newspops.net',
-        'shadepush.com',
-        'popunder.net',
-        'smartadserver.com',
-        'adhese.com',
-        'epommarket.com',
-        'mgid.com',
-        'nativeads.com',
-        'adskeeper.com',
-        'monetag.com',
-        'plexop.net',
-        'surfem.com',
-        'pushprofit.net',
-        'adbuff.com',
-        'braveadblock.com',
-        'kickassads.io',
-        'headway.co',
-        'taptica.com',
-        'sprout-ad.com',
-        'adsby.bid',
-        'trafficstars.com',
-        'mgid.com',
-        'redirectvoluum.com',
-        'ntvads.com',
-        '7search.com',
-        'adsnative.com',
-        'padstm.com',
-        'casalmedia.com',
-        'vidcloud9.com',
-        'vidembed.cc',
-        'vidcloud.icu',
-        'videovard.su',
-        'cdnaws.com',
-        'upstream.to',
-        'mwatchseries.com',
-        'vidclouds.com',
-        'mplayer.net',
-        'vidnode.net',
-        'movcloud.net',
-        'vidoza.net',
-        'streamtape.com',
-        'filemoon.sx',
-        'upcloud.cc',
-        'streamwish.to',
-        'filelions.com',
-        'vidmoly.me',
-        'vidhide.io',
-        'vidsrc.me',
-        'vidnextpro.com',
-        'cinewhale.net',
-        'theaterplus.com',
-        'flixify.me',
-        'megaflix.tv',
-        'flixhq.net',
-        'flixmovies.site',
-        'cineb.net',
-        'upmovies.to',
-        'gomostream.com',
-        'prmovies.net',
-        'lookmovie.io',
-        'watchserieshd.cc',
-        'series9.to',
-        'putlocker-is.cc',
-        'solarmovie.pe',
-        '123movieshub.to',
-        'kissasian.sh',
-        'watchcartoononline.bz',
-        'join.worldoftanks.eu',
-        'trck.wargaming.net'
-    ];
+    let firstClick = true;
 
-  
-    // Block window.open popups
-    const originalWindowOpen = window.open;
+    const originalOpen = window.open;
     window.open = function(url, name, features) {
-        if (blockedUrls.some(blocked => url?.includes(blocked))) {
-            console.warn('Blocked popup:', url);
+        if (firstClick) {
+            console.warn('Blocked first click popup:', url);
             return null;
         }
-        return originalWindowOpen.apply(this, arguments);
+        return originalOpen.call(window, url, name, features);
     };
 
-    // Block fetch requests
-    const originalFetch = window.fetch;
-    window.fetch = function(...args) {
-        if (blockedUrls.some(blocked => args[0]?.toString().includes(blocked))) {
-            console.warn('Blocked fetch request to:', args[0]);
-            return new Promise(() => {}); // never resolves
-        }
-        return originalFetch.apply(this, args);
-    };
-
-    // Block XMLHttpRequest (AJAX)
-    const originalXHROpen = XMLHttpRequest.prototype.open;
-    XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
-        if (blockedUrls.some(blocked => url?.includes(blocked))) {
-            console.warn('Blocked XHR request to:', url);
-            return; // cancel
-        }
-        return originalXHROpen.apply(this, arguments);
-    };
-
-    // Block window.location redirects via assign/replace
     const originalAssign = window.location.assign.bind(window.location);
+    const originalReplace = window.location.replace.bind(window.location);
+
     window.location.assign = function(url) {
-        if (blockedUrls.some(blocked => url?.includes(blocked))) {
-            console.warn('Blocked assign redirect:', url);
+        if (firstClick) {
+            console.warn('Blocked first click assign redirect:', url);
             return;
         }
         return originalAssign(url);
     };
 
-    const originalReplace = window.location.replace.bind(window.location);
     window.location.replace = function(url) {
-        if (blockedUrls.some(blocked => url?.includes(blocked))) {
-            console.warn('Blocked replace redirect:', url);
+        if (firstClick) {
+            console.warn('Blocked first click replace redirect:', url);
             return;
         }
         return originalReplace(url);
     };
 
-    // Block iframe source changes
-    const originalIframeSrc = Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'src');
-    if (originalIframeSrc && originalIframeSrc.configurable) {
-        Object.defineProperty(HTMLIFrameElement.prototype, 'src', {
-            set: function(url) {
-                if (blockedUrls.some(blocked => url?.includes(blocked))) {
-                    console.warn('Blocked iframe src:', url);
-                    return;
-                }
-                originalIframeSrc.set.call(this, url);
-            },
-            get: function() {
-                return originalIframeSrc.get.call(this);
+    const originalSet = Object.getOwnPropertyDescriptor(window.location.__proto__, 'href').set;
+    Object.defineProperty(window.location, 'href', {
+        set(url) {
+            if (firstClick) {
+                console.warn('Blocked first click href assignment:', url);
+                return;
             }
-        });
-    }
-
-    // Block meta refresh redirects
-    const observer = new MutationObserver(mutations => {
-        for (const mutation of mutations) {
-            for (const node of mutation.addedNodes) {
-                if (node.tagName === 'META' && node.httpEquiv?.toLowerCase() === 'refresh') {
-                    const content = node.content;
-                    if (blockedUrls.some(blocked => content?.includes(blocked))) {
-                        console.warn('Blocked meta refresh to:', content);
-                        node.parentNode.removeChild(node);
-                    }
-                }
-            }
+            originalSet.call(window.location, url);
         }
     });
 
-    observer.observe(document.head || document.documentElement, { childList: true, subtree: true });
-
-    // Bonus: Block sneaky setTimeout redirects
-    const originalSetTimeout = window.setTimeout;
-    window.setTimeout = function(func, delay, ...args) {
-        if (typeof func === 'string' && blockedUrls.some(blocked => func.includes(blocked))) {
-            console.warn('Blocked setTimeout string redirect:', func);
-            return;
+    window.addEventListener('click', () => {
+        if (firstClick) {
+            console.log('%c[First click ad blocked successfully]', 'color: green; font-weight: bold;');
+            firstClick = false;
         }
-        return originalSetTimeout(func, delay, ...args);
-    };
-
-    console.log('%c[Blocker Activated - Corrected] 🚫 Blocking ads and redirects...', 'color: limegreen; font-weight: bold;');
+    }, { once: true });
 })();
 
 
