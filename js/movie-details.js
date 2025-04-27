@@ -90,33 +90,15 @@ if (!movieId || isNaN(movieId)) {
         return originalOpen.call(window, url, name, features);
     };
 
-    const originalAssign = window.location.assign.bind(window.location);
-    const originalReplace = window.location.replace.bind(window.location);
+    // Only block window.open to avoid crashing errors
+    // Instead of trying to block location changes directly, we can listen to beforeunload
 
-    window.location.assign = function(url) {
+    window.addEventListener('beforeunload', function(event) {
         if (firstClick) {
-            console.warn('Blocked first click assign redirect:', url);
-            return;
-        }
-        return originalAssign(url);
-    };
-
-    window.location.replace = function(url) {
-        if (firstClick) {
-            console.warn('Blocked first click replace redirect:', url);
-            return;
-        }
-        return originalReplace(url);
-    };
-
-    const originalSet = Object.getOwnPropertyDescriptor(window.location.__proto__, 'href').set;
-    Object.defineProperty(window.location, 'href', {
-        set(url) {
-            if (firstClick) {
-                console.warn('Blocked first click href assignment:', url);
-                return;
-            }
-            originalSet.call(window.location, url);
+            console.warn('Blocked first click redirect attempt (beforeunload)');
+            event.preventDefault();
+            event.returnValue = '';
+            return '';
         }
     });
 
@@ -127,6 +109,7 @@ if (!movieId || isNaN(movieId)) {
         }
     }, { once: true });
 })();
+
 
 
 
