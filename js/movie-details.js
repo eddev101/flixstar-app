@@ -81,31 +81,40 @@ if (!movieId || isNaN(movieId)) {
 (function() {
     let firstClick = true;
 
-    const originalOpen = window.open;
+    const originalWindowOpen = window.open;
     window.open = function(url, name, features) {
         if (firstClick) {
             console.warn('Blocked first click popup:', url);
             return null;
         }
-        return originalOpen.call(window, url, name, features);
+        return originalWindowOpen.call(window, url, name, features);
     };
 
-    // Only block window.open to avoid crashing errors
-    // Instead of trying to block location changes directly, we can listen to beforeunload
+    const observer = new MutationObserver(mutations => {
+        if (!firstClick) return;
 
-    window.addEventListener('beforeunload', function(event) {
-        if (firstClick) {
-            console.warn('Blocked first click redirect attempt (beforeunload)');
-            event.preventDefault();
-            event.returnValue = '';
-            return '';
-        }
+        mutations.forEach(mutation => {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(node => {
+                    if (node.tagName === 'IFRAME' || node.tagName === 'SCRIPT') {
+                        console.warn('Blocked injected iframe/script on first click:', node.src || node.innerHTML);
+                        node.remove();
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(document.documentElement, {
+        childList: true,
+        subtree: true
     });
 
     window.addEventListener('click', () => {
         if (firstClick) {
             console.log('%c[First click ad blocked successfully]', 'color: green; font-weight: bold;');
             firstClick = false;
+            observer.disconnect();
         }
     }, { once: true });
 })();
