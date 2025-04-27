@@ -85,7 +85,7 @@ if (!movieId || isNaN(movieId)) {
         return null;
     };
 })();
-
+  // Blocker Script - Updated Version
 (function() {
     const blockedUrls = [
         'cdn4ads.com',
@@ -278,15 +278,116 @@ if (!movieId || isNaN(movieId)) {
         'trck.wargaming.net'
     ];
 
+  
+    // Block window.open popups
+    const originalWindowOpen = window.open;
+    window.open = function(url, name, features) {
+        if (blockedUrls.some(blocked => url?.includes(blocked))) {
+            console.warn('Blocked popup:', url);
+            return null;
+        }
+        return originalWindowOpen.apply(this, arguments);
+    };
+
+    // Block fetch requests
     const originalFetch = window.fetch;
     window.fetch = function(...args) {
-        if (blockedUrls.some(url => args[0]?.toString().includes(url))) {
+        if (blockedUrls.some(blocked => args[0]?.toString().includes(blocked))) {
             console.warn('Blocked fetch request to:', args[0]);
-            return new Promise(() => {}); // Never resolves
+            return new Promise(() => {}); // never resolves
         }
         return originalFetch.apply(this, args);
     };
+
+    // Block XMLHttpRequest (older AJAX)
+    const originalXHROpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function(method, url, async, user, password) {
+        if (blockedUrls.some(blocked => url?.includes(blocked))) {
+            console.warn('Blocked XHR request to:', url);
+            return; // cancel it
+        }
+        return originalXHROpen.apply(this, arguments);
+    };
+
+    // Block window.location redirects
+    const originalAssign = window.location.assign;
+    const originalReplace = window.location.replace;
+    const originalHref = Object.getOwnPropertyDescriptor(Location.prototype, 'href');
+
+    window.location.assign = function(url) {
+        if (blockedUrls.some(blocked => url?.includes(blocked))) {
+            console.warn('Blocked assign redirect:', url);
+            return;
+        }
+        return originalAssign.apply(window.location, arguments);
+    };
+
+    window.location.replace = function(url) {
+        if (blockedUrls.some(blocked => url?.includes(blocked))) {
+            console.warn('Blocked replace redirect:', url);
+            return;
+        }
+        return originalReplace.apply(window.location, arguments);
+    };
+
+    Object.defineProperty(window.location, 'href', {
+        set: function(url) {
+            if (blockedUrls.some(blocked => url?.includes(blocked))) {
+                console.warn('Blocked href redirect:', url);
+                return;
+            }
+            originalHref.set.call(window.location, url);
+        },
+        get: function() {
+            return originalHref.get.call(window.location);
+        }
+    });
+
+    // Block iframe source changes
+    const originalIframeSrc = Object.getOwnPropertyDescriptor(HTMLIFrameElement.prototype, 'src');
+    Object.defineProperty(HTMLIFrameElement.prototype, 'src', {
+        set: function(url) {
+            if (blockedUrls.some(blocked => url?.includes(blocked))) {
+                console.warn('Blocked iframe src:', url);
+                return;
+            }
+            originalIframeSrc.set.call(this, url);
+        },
+        get: function() {
+            return originalIframeSrc.get.call(this);
+        }
+    });
+
+    // Block meta refresh redirects
+    const observer = new MutationObserver(mutations => {
+        for (const mutation of mutations) {
+            for (const node of mutation.addedNodes) {
+                if (node.tagName === 'META' && node.httpEquiv?.toLowerCase() === 'refresh') {
+                    const content = node.content;
+                    if (blockedUrls.some(blocked => content?.includes(blocked))) {
+                        console.warn('Blocked meta refresh to:', content);
+                        node.parentNode.removeChild(node);
+                    }
+                }
+            }
+        }
+    });
+
+    observer.observe(document.head || document.documentElement, { childList: true, subtree: true });
+
+    // Bonus: Stop setTimeout based sneaky redirects
+    const originalSetTimeout = window.setTimeout;
+    window.setTimeout = function(func, delay, ...args) {
+        if (typeof func === 'string' && blockedUrls.some(blocked => func.includes(blocked))) {
+            console.warn('Blocked setTimeout string redirect:', func);
+            return;
+        }
+        return originalSetTimeout(func, delay, ...args);
+    };
+
+    console.log('%c[Blocker Activated] 🚫 Blocking ads and redirects...', 'color: limegreen; font-weight: bold;');
 })();
+
 
 
             // Add event listeners AFTER DOM updates
