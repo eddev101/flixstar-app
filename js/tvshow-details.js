@@ -139,7 +139,7 @@ if (!tvShowId || isNaN(tvShowId)) {
 
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
-                const url = `https://multiembed.mov?video_id=${tvShowId}&tmdb=1&s=${selectedSeason}&e=${selectedEpisode}`; 
+                const url = `https://moviesapi.club/tv/${show.id}-${selectedSeason}-${selectedEpisode}`; 
                 console.log('Attempting to load:', url);
                 showIframe(url);
             });
