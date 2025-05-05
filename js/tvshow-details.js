@@ -266,18 +266,12 @@ function redirectToDownload(event) {
     }
 }
 
-function addToFavorites() {
-    const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
-    if (!user) {
-        alert('Please log in to add to favorites.');
-        window.location.href = '../user/login.html';
-        return;
-    }
-
-    let favorites = JSON.parse(localStorage.getItem(`favorites_${user.id}`)) || [];
-    if (!favorites.some(item => item.id === tvShowId && item.type === 'tv')) {
-        favorites.push({ id: tvShowId, type: 'tv' });
-        localStorage.setItem(`favorites_${user.id}`, JSON.stringify(favorites));
+function addToFavorites(id = tvShowId, type = 'tv') {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const item = { id: id.toString(), type }; // Ensure ID is a string
+    if (!favorites.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        favorites.push(item);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
         alert('Added to favorites!');
     } else {
         alert('Already in favorites.');
