@@ -260,8 +260,7 @@ function redirectToDownload(event) {
     const seriesTitle = document.getElementById('show-name').textContent.trim();
     if (seriesTitle) {
         const searchQuery = encodeURIComponent(seriesTitle);
-        window.location.href = `https://tvshows.ac/search/${searchQuery}`; // Redirect in same window
-        // OR: window.open(`https://tvshows.ac/search/${searchQuery}`, '_system'); // Open in device browser
+        window.open(`https://tvshows.ac/search/${searchQuery}`, '_system');
     } else {
         alert("Series title not found!");
     }
