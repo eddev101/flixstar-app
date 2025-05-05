@@ -106,6 +106,6 @@ function removeFromWatchlist(id, type) {
 
 function viewDetails(id, type) {
     window.location.href = type === 'movie'
-        ? `/movie/movie-details.html?id=${id}`
-        : `/tvshow/tvshow-details.html?id=${id}`;
+        ? `../movie/movie-details.html?id=${id}`
+        : `../tvshow/tvshow-details.html?id=${id}`;
 }
