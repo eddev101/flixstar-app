@@ -182,8 +182,7 @@ function redirectToDownload(event) {
     const movieTitle = document.getElementById('movie-title').textContent.trim();
     if (movieTitle) {
         const searchQuery = encodeURIComponent(movieTitle);
-        window.location.href = `https://m.vegamovies.ms/?s=${searchQuery}`; // Redirect in same window
-        // OR use: window.open(`https://m.vegamovies.ms/?s=${searchQuery}`, '_system'); // Open in device browser
+        window.open(`https://m.vegamovies.ms/?s=${searchQuery}`, '_system');
     } else {
         alert("Movie title not found!");
     }
