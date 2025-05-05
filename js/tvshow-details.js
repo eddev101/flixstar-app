@@ -285,22 +285,17 @@ function addToFavorites() {
 }
 
 function addToWatchlist(id = tvShowId, type = 'tv') {
-    const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
-    if (!user) {
-        alert('Please log in to add to watchlist.');
-        window.location.href = '../user/login.html';
-        return;
-    }
-
-    let watchlist = JSON.parse(localStorage.getItem(`watchlist_${user.id}`)) || [];
-    if (!watchlist.some(item => item.id === id && item.type === type)) {
-        watchlist.push({ id, type });
-        localStorage.setItem(`watchlist_${user.id}`, JSON.stringify(watchlist));
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type }; // Ensure ID is a string
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
         alert('Added to watchlist!');
     } else {
         alert('Already in watchlist.');
     }
 }
+
 function viewDetails(id, type) {
     if (type === 'movie') {
         window.location.href = `../movie/movie-details.html?id=${id}`;
