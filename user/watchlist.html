@@ -6,9 +6,9 @@
     <title>Your Watchlist - Flixstar</title>
     <link href="https://fonts.googleapis.com/css?family=Inter:100,200,300,regular,500,600,700,800,900" rel="stylesheet" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="../assets/css/main.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="manifest" href="../manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="theme-color" content="#000">
@@ -34,11 +34,11 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="/js/watchlist.js"></script>
-    <script src="/js/load-components.js"></script>
+    <script src="../js/watchlist.js"></script>
+    <script src="../js/load-components.js"></script>
     <script>
     if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(error => {
+        navigator.serviceWorker.register('../sw.js').catch(error => {
             console.error('Service Worker registration failed:', error);
         });
     }
