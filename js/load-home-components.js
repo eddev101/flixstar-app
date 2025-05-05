@@ -1,9 +1,9 @@
 function loadComponents() {
-    const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
+    /*const user = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
     const loginLink = user 
         ? `<a class="dropdown-item" href="user/logout.html">Logout</a>` 
         : `<a class="dropdown-item" href="user/login.html">Login</a>`;
-    const signupLink = user ? '' : `<a class="dropdown-item" href="user/register.html">Sign Up</a>`;
+    const signupLink = user ? '' : `<a class="dropdown-item" href="user/register.html">Sign Up</a>`;*/
 
     const navbarHTML = `
         <div class="main-header">
@@ -49,13 +49,11 @@ function loadComponents() {
             <ul class="navbar-nav ml-auto">
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    ${user ? 'User' : 'Guest'}
+                   User
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                  ${loginLink}
-                  ${signupLink}
-                  ${user ? '<a class="dropdown-item" href="user/favorites.html">Favorites</a>' : ''}
-                  ${user ? '<a class="dropdown-item" href="user/watchlist.html">Watchlist</a>' : ''}
+                 <a class="dropdown-item" href="user/favorites.html">Favorites</a>
+                 <a class="dropdown-item" href="user/watchlist.html">Watchlist</a>
                 </div>
               </li>
             </ul>
