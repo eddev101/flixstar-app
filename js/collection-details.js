@@ -52,7 +52,7 @@ if (!collectionId || isNaN(collectionId) || collectionId <= 0) {
 }
 
 // Reuse functions from app.js (or redefine if needed)
-function addToWatchlist(id, type = 'tv') {
+function addToWatchlist(id, type = 'movie') {
     let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
     const item = { id: id.toString(), type };
     if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
@@ -63,6 +63,7 @@ function addToWatchlist(id, type = 'tv') {
         alert('Already in watchlist.');
     }
 }
+
 
 
 
