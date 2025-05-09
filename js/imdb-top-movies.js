@@ -29,7 +29,6 @@ async function loadImdbTopMovies() {
                             <div class="bookmark" onclick="addToWatchlist(${movie.id}, 'movie'); event.stopPropagation();"><ion-icon name="bookmark-outline"></ion-icon></div>
                             <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${movie.vote_average.toFixed(1)}</span></div>
                             <div class="play" onclick="viewDetails(${movie.id}, 'movie'); event.stopPropagation();"><ion-icon name="play-circle-outline"></ion-icon></div>
-                            <div class="favorites" onclick="addToFavorites(${movie.id}, 'movie'); event.stopPropagation();"><ion-icon name="heart-circle-outline"></ion-icon></div>
                         </div>
                     </div>
                     <div class="card-body">
