@@ -63,17 +63,7 @@ function addToWatchlist(id, type = 'movie') {
     }
 }
 
-function addToFavorites(id, type = 'movie') {
-    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-    const item = { id: id.toString(), type };
-    if (!favorites.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
-        favorites.push(item);
-        localStorage.setItem('favorites', JSON.stringify(favorites));
-        alert('Added to favorites!');
-    } else {
-        alert('Already in favorites.');
-    }
-}
+
 
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
