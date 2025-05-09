@@ -36,8 +36,8 @@ function loadComponents() {
                             <a class="dropdown-item" href="../person/people-list.html">People</a>
                             <a class="dropdown-item" href="../videos/videos.html">Videos</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="../movie/top-movie-list.html">Top Movies</a>
-                            <a class="dropdown-item" href="../tvshow/top-tvshow-list.html">Top Series</a>
+                            <a class="dropdown-item" href="../movie/imdb-top-movie-list.html">Top Movies</a>
+                            <a class="dropdown-item" href="../tvshow/imdb-top-tvshow-list.html">Top Series</a>
                         </div>
                     </li>
                 </ul>
