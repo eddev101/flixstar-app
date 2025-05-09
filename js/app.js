@@ -47,10 +47,18 @@ function fetchMovies(filter) {
 }
 
 // Placeholder functions for watchlist and details (implement later)
-function addToWatchlist(movieId) {
-    // Implement watchlist functionality (e.g., save to localStorage)
-    console.log(`Add movie ${movieId} to watchlist`);
+function addToWatchlist(id, type = 'movie') {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type };
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert('Added to watchlist!');
+    } else {
+        alert('Already in watchlist.');
+    }
 }
+
 
 function viewMovieDetails(movieId) {
     // Implement navigation to movie details (e.g., redirect or load dynamically)
@@ -255,6 +263,32 @@ $(document).ready(function() {
   indexpopshows();
   fetchSliderItems(); // Add this line
 });
+
+function addToWatchlist(id, type = 'tv') {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type };
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert('Added to watchlist!');
+    } else {
+        alert('Already in watchlist.');
+    }
+}
+
+//watchlist for tvshows
+function addToWatchlist(id, type = 'tv') {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type };
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert('Added to watchlist!');
+    } else {
+        alert('Already in watchlist.');
+    }
+}
+
 
 // Placeholder for viewDetails (to be implemented later)
 function viewDetails(id, type) {
