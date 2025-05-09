@@ -111,7 +111,15 @@ function toggleBiography() {
 }
 
 function addToWatchlist(id, type) {
-    console.log(`Add ${type} ${id} to watchlist`);
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type }; // Ensure ID is a string
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert(`Added ${type === 'movie' ? 'movie' : 'TV show'} to watchlist!`);
+    } else {
+        alert(`This ${type === 'movie' ? 'movie' : 'TV show'} is already in your watchlist.`);
+    }
 }
 
 function viewDetails(id, type) {
