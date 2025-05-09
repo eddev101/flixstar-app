@@ -264,7 +264,7 @@ $(document).ready(function() {
   fetchSliderItems(); // Add this line
 });
 
-function addToWatchlist(id, type = 'tv') {
+function addToWatchlist(id, type = 'movie') {
     let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
     const item = { id: id.toString(), type };
     if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
@@ -276,18 +276,7 @@ function addToWatchlist(id, type = 'tv') {
     }
 }
 
-//watchlist for tvshows
-function addToWatchlist(id, type = 'tv') {
-    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
-    const item = { id: id.toString(), type };
-    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
-        watchlist.push(item);
-        localStorage.setItem('watchlist', JSON.stringify(watchlist));
-        alert('Added to watchlist!');
-    } else {
-        alert('Already in watchlist.');
-    }
-}
+
 
 
 // Placeholder for viewDetails (to be implemented later)
