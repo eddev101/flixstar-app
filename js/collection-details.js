@@ -52,9 +52,19 @@ if (!collectionId || isNaN(collectionId) || collectionId <= 0) {
 }
 
 // Reuse functions from app.js (or redefine if needed)
-function addToWatchlist(id, type) {
-    console.log(`Add ${type} ${id} to watchlist`);
+function addToWatchlist(id, type = 'tv') {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type };
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert('Added to watchlist!');
+    } else {
+        alert('Already in watchlist.');
+    }
 }
+
+
 
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
