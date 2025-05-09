@@ -55,8 +55,28 @@ $(document).ready(() => {
     $('#loadMoreButton').click(() => loadTopRatedMovies());
 });
 
-function addToWatchlist(id, type) {
-    console.log(`Add ${type} ${id} to watchlist`);
+function addToWatchlist(id, type = 'movie') {
+    let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
+    const item = { id: id.toString(), type };
+    if (!watchlist.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        watchlist.push(item);
+        localStorage.setItem('watchlist', JSON.stringify(watchlist));
+        alert('Added to watchlist!');
+    } else {
+        alert('Already in watchlist.');
+    }
+}
+
+function addToFavorites(id, type = 'movie') {
+    let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const item = { id: id.toString(), type };
+    if (!favorites.some(existingItem => existingItem.id === item.id && existingItem.type === item.type)) {
+        favorites.push(item);
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        alert('Added to favorites!');
+    } else {
+        alert('Already in favorites.');
+    }
 }
 
 function viewDetails(id, type) {
