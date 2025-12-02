@@ -13,7 +13,7 @@ if (!tvShowId || isNaN(tvShowId)) {
 
             document.title = `Watch ${show.name} - Flixstar`;
             document.getElementById('iq-watch').style.backgroundImage = `url(${show.backdrop_path ? 'https://image.tmdb.org/t/p/original' + show.backdrop_path : '../images/default.webp'})`;
-            document.getElementById('show-poster').src = show.poster_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${show.poster_path}` : '../images/default.webp';
+            document.getElementById('show-poster').src = show.poster_path ? `https://image.tmdb.org/t/p/w342${show.poster_path}` : '../images/default.webp';
             document.getElementById('show-poster').alt = show.name;
             document.getElementById('show-name').textContent = show.name;
             document.getElementById('show-overview').textContent = show.overview;
@@ -44,7 +44,7 @@ if (!tvShowId || isNaN(tvShowId)) {
                 cast += `
                     <div class="cast-item">
                         <div class="cast-info">
-                            <img src="${c.profile_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + c.profile_path : '../images/default-user1.png'}" alt="${c.name}">
+                            <img src="${c.profile_path ? 'https://image.tmdb.org/t/p/w342' + c.profile_path : '../images/default-user1.png'}" alt="${c.name}">
                             <p class="actor-name">${c.name}</p>
                             <p class="character-name">as ${c.character}</p>
                         </div>
@@ -298,3 +298,4 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
