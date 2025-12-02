@@ -110,3 +110,4 @@ function viewDetails(id, type) {
         : `../tvshow/tvshow-details.html?id=${id}`;
 }
 
+
