@@ -25,7 +25,7 @@ async function loadImdbTopShows() {
             card.innerHTML = `
                 <div class="movie-card">
                     <div class="card-head">
-                        <img src="${show.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + show.poster_path : '/images/default.webp'}" class="card-img" alt="${show.name}">
+                        <img src="${show.poster_path ? 'https://image.tmdb.org/t/p/w342' + show.poster_path : '/images/default.webp'}" class="card-img" alt="${show.name}">
                         <div class="card-overlay">
                             <div class="bookmark" onclick="addToWatchlist(${show.id}, 'tv'); event.stopPropagation();"><ion-icon name="bookmark-outline"></ion-icon></div>
                             <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${show.vote_average.toFixed(1)}</span></div>
