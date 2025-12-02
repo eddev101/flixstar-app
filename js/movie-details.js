@@ -182,7 +182,7 @@ function redirectToDownload(event) {
     const movieTitle = document.getElementById('movie-title').textContent.trim();
     if (movieTitle) {
         const searchQuery = encodeURIComponent(movieTitle);
-        window.open(`https://m.vegamovies.ms/?s=${searchQuery}`, '_system');
+        window.open(`https://1337x.to/search/${searchQuery}/1/`, '_system');
     } else {
         alert("Movie title not found!");
     }
@@ -215,4 +215,5 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
 
