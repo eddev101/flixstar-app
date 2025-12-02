@@ -65,7 +65,7 @@ if (!tvShowId || isNaN(tvShowId)) {
                     <a href="#" onclick="return false;">
                         <div class="movie-card">
                             <div class="card-head">
-                                <img src="${r.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + r.poster_path : '../images/default.webp'}" class="card-img">
+                                <img src="${r.poster_path ? 'https://image.tmdb.org/t/p/w342' + r.poster_path : '../images/default.webp'}" class="card-img">
                                 <div class="card-overlay">
                                     <div class="bookmark" onclick="addToWatchlist(${r.id}, 'tv');"><ion-icon name="bookmark-outline"></ion-icon></div>
                                     <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${r.vote_average.toString().substring(0, 3)}</span></div>
@@ -298,4 +298,5 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
 
