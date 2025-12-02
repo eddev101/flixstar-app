@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.innerHTML = `
                     <div class="movie-card">
                         <div class="card-head">
-                            <img src="${details.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + details.poster_path : '/images/default.webp'}" class="card-img">
+                            <img src="${details.poster_path ? 'https://image.tmdb.org/t/p/w342' + details.poster_path : '/images/default.webp'}" class="card-img">
                             <div class="card-overlay">
                                 <div class="bookmark" onclick="removeFromFavorites(${item.id}, '${item.type}'); event.stopPropagation();"><ion-icon name="close-outline"></ion-icon></div>
                                 <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${details.vote_average.toString().substring(0, 3)}</span></div>
@@ -75,7 +75,7 @@ function removeFromFavorites(id, type) {
                 card.innerHTML = `
                     <div class="movie-card">
                         <div class="card-head">
-                            <img src="${details.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + details.poster_path : '/images/default.webp'}" class="card-img">
+                            <img src="${details.poster_path ? 'https://image.tmdb.org/t/p/w342' + details.poster_path : '/images/default.webp'}" class="card-img">
                             <div class="card-overlay">
                                 <div class="bookmark" onclick="removeFromFavorites(${item.id}, '${item.type}'); event.stopPropagation();"><ion-icon name="close-outline"></ion-icon></div>
                                 <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${details.vote_average.toString().substring(0, 3)}</span></div>
@@ -151,3 +151,4 @@ function viewDetails(id, type) {
         ? `../movie/movie-details.html?id=${id}`
         : `../tvshow/tvshow-details.html?id=${id}`;
 }
+
