@@ -11,7 +11,7 @@ if (!movieId || isNaN(movieId)) {
 
             document.title = `Watch ${movie.title} - Flixstar`;
             document.getElementById('iq-watch').style.backgroundImage = `url(${movie.backdrop_path ? 'https://image.tmdb.org/t/p/original' + movie.backdrop_path : '../images/default.webp'})`;
-            document.getElementById('movie-poster').src = movie.poster_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}` : '../images/default.webp';
+            document.getElementById('movie-poster').src = movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '../images/default.webp';
             document.getElementById('movie-poster').alt = movie.title;
             document.getElementById('movie-title').textContent = movie.title;
             document.getElementById('movie-overview').textContent = movie.overview;
@@ -37,7 +37,7 @@ if (!movieId || isNaN(movieId)) {
                 cast += `
                     <div class="cast-item">
                         <div class="cast-info">
-                            <img src="${c.profile_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + c.profile_path : '../images/default-user1.png'}" alt="${c.name}">
+                            <img src="${c.profile_path ? 'https://image.tmdb.org/t/p/w342' + c.profile_path : '../images/default-user1.png'}" alt="${c.name}">
                             <p class="actor-name">${c.name}</p>
                             <p class="character-name">as ${c.character}</p>
                         </div>
@@ -58,7 +58,7 @@ if (!movieId || isNaN(movieId)) {
                     <a href="#" onclick="return false;">
                         <div class="movie-card">
                             <div class="card-head">
-                                <img src="${r.poster_path ? 'https://image.tmdb.org/t/p/w185_and_h278_bestv2' + r.poster_path : '../images/default.webp'}" class="card-img">
+                                <img src="${r.poster_path ? 'https://image.tmdb.org/t/p/w342' + r.poster_path : '../images/default.webp'}" class="card-img">
                                 <div class="card-overlay">
                                     <div class="bookmark" onclick="addToWatchlist(${r.id}, 'movie');"><ion-icon name="bookmark-outline"></ion-icon></div>
                                     <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${r.vote_average.toString().substring(0, 3)}</span></div>
@@ -215,3 +215,4 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
