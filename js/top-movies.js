@@ -8,7 +8,7 @@ function loadTopRatedMovies() {
             let output = '';
 
             movies.forEach(movie => {
-                let poster = movie.poster_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${movie.poster_path}` : '../images/default.webp';
+                let poster = movie.poster_path ? `https://image.tmdb.org/t/p/w342${movie.poster_path}` : '../images/default.webp';
                 let year = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
 
                 output += `
@@ -71,3 +71,4 @@ function addToWatchlist(id, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
