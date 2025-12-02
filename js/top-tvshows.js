@@ -8,7 +8,7 @@ function loadTopRatedShows() {
             let output = '';
 
             shows.forEach(show => {
-                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w185_and_h278_bestv2${show.poster_path}` : '../images/default.webp';
+                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w342${show.poster_path}` : '../images/default.webp';
                 let year = show.first_air_date ? show.first_air_date.slice(0, 4) : 'N/A';
 
                 output += `
@@ -71,3 +71,4 @@ function addToWatchlist(id, type = 'tv') {
 function viewDetails(id, type) {
     window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
 }
+
