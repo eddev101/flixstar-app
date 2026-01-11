@@ -173,7 +173,7 @@ if (!tvShowId || isNaN(tvShowId)) {
                                 button.addEventListener('click', function (e) {
                                     e.preventDefault();
                                     selectedEpisode = this.getAttribute('data-episode');
-                                    /*updateServerLinks();*/
+                                    updateServerLinks();
                                     loadEpisode();
                                 });
                             });
@@ -298,6 +298,7 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
 
 
 
