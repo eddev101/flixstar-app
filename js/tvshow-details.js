@@ -139,7 +139,7 @@ if (!tvShowId || isNaN(tvShowId)) {
 
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
-                const url = `https://hnembed.cc/embed/tv/${show.id}/${selectedSeason}/${selectedEpisode}`; 
+                const url = `https://hnembed.cc/embed/tv/${show.id}`; 
                 console.log('Attempting to load:', url);
                 showIframe(url);
             });
@@ -298,6 +298,7 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
 
 
 
