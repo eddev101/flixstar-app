@@ -26,12 +26,12 @@ if (!tvShowId || isNaN(tvShowId)) {
                 <div class="text-primary-title">Created By: <span class="text-body">${show.created_by.length ? show.created_by.map(c => c.name).join(', ') : 'N/A'}</span></div>`;
             $('#show-details').html(details);
 
-            /*let servers = `
+            let servers = `
                 <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/tv?tmdb=${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://www.2embed.cc/embedtv/${show.id}&s=1&e=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
+                <a href="#" class="server-button btn" data-url="https://hnembed.cc/embed/tv/${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://multiembed.mov?video_id=${show.id}&tmdb=1&s=1&e=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://moviesapi.club/tv/${show.id}-1-1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Moviesapi</h1></div></div></a>`;
-            $('#show-servers').html(servers);*/
+            $('#show-servers').html(servers);
 
             let seasonOptions = '<option value="">Select a Season</option>';
             show.seasons.forEach(s => {
@@ -139,7 +139,7 @@ if (!tvShowId || isNaN(tvShowId)) {
 
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
-                const url = `https://moviesapi.club/tv/${show.id}-${selectedSeason}-${selectedEpisode}`; 
+                const url = `https://hnembed.cc/embed/tv/${show.id}/${selectedSeason}/${selectedEpisode}`; 
                 console.log('Attempting to load:', url);
                 showIframe(url);
             });
@@ -205,23 +205,23 @@ if (!tvShowId || isNaN(tvShowId)) {
         });
 }
 
-/*function updateServerLinks() {
+function updateServerLinks() {
     document.querySelectorAll('.server-button').forEach(server => {
         let baseUrl = server.dataset.url;
         if (baseUrl.includes('moviesapi.club')) {
             server.dataset.url = `https://moviesapi.club/tv/${tvShowId}-${selectedSeason}-${selectedEpisode}`;
         } else if (baseUrl.includes('2embed.cc')) {
-            server.dataset.url = `https://www.2embed.cc/embedtv/${tvShowId}&s=${selectedSeason}&e=${selectedEpisode}`;
+            server.dataset.url = `https://hnembed.cc/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
         } else if (baseUrl.includes('multiembed.mov')) {
             server.dataset.url = `https://multiembed.mov?video_id=${tvShowId}&tmdb=1&s=${selectedSeason}&e=${selectedEpisode}`;
         } else if (baseUrl.includes('vidsrc.me')) {
             server.dataset.url = `https://vidsrc.me/embed/tv?tmdb=${tvShowId}&season=${selectedSeason}&episode=${selectedEpisode}`;
         }
     });
-}*/
+}
 
 function loadEpisode() {
-    const url = `https://moviesapi.club/tv/${tvShowId}-${selectedSeason}-${selectedEpisode}`; // Same URL logic here
+    const url = `https://hnembed.cc/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`; // Same URL logic here
     showIframe(url);
 }
 
@@ -298,5 +298,6 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
 
 
