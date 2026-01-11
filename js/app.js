@@ -287,3 +287,52 @@ function viewDetails(id, type) {
         window.location.href = `tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
+
+// utils/continue-watching.js
+
+const CONTINUE_KEY = "flixstar_continue_watching";
+
+function getContinueWatching() {
+    try {
+        const json = localStorage.getItem(CONTINUE_KEY);
+        return json ? JSON.parse(json) : {};
+    } catch {
+        return {};
+    }
+}
+
+function saveContinueWatching(entry) {
+    const data = getContinueWatching();
+    
+    // Use tmdb id + type as key
+    const key = `${entry.type}_${entry.id}`;
+    
+    data[key] = {
+        ...entry,
+        lastWatched: new Date().toISOString()
+    };
+    
+    // Keep only last 20 items, sorted by last watched
+    const sorted = Object.values(data)
+        .sort((a,b) => new Date(b.lastWatched) - new Date(a.lastWatched))
+        .slice(0, 20);
+        
+    const limited = {};
+    sorted.forEach(item => {
+        limited[`${item.type}_${item.id}`] = item;
+    });
+    
+    localStorage.setItem(CONTINUE_KEY, JSON.stringify(limited));
+}
+
+function removeContinueItem(type, id) {
+    const data = getContinueWatching();
+    delete data[`${type}_${id}`];
+    localStorage.setItem(CONTINUE_KEY, JSON.stringify(data));
+}
+
+// Very useful helper for UI
+function getItemKey(type, id) {
+    return `${type}_${id}`;
+}
