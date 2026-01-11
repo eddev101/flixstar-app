@@ -336,3 +336,52 @@ function removeContinueItem(type, id) {
 function getItemKey(type, id) {
     return `${type}_${id}`;
 }
+
+function renderContinueWatching() {
+    const container = document.getElementById('continue-grid');
+    const section = document.getElementById('continue-section');
+    if (!container || !section) return;
+
+    const data = getContinueWatching();
+    const items = Object.values(data)
+        .sort((a,b) => new Date(b.lastWatched) - new Date(a.lastWatched));
+
+    if (items.length === 0) {
+        section.style.display = 'none';
+        return;
+    }
+
+    section.style.display = 'block';
+    let html = '';
+
+    items.forEach(item => {
+        const isTv = item.type === 'tv';
+        const label = isTv 
+            ? `S${String(item.season).padStart(2,'0')} E${String(item.episode).padStart(2,'0')}`
+            : '';
+
+        const image = isTv && item.episodeStill ? item.episodeStill : item.poster;
+
+        html += `
+        <a href="#" onclick="viewDetails('${item.id}', '${item.type}'); return false;">
+            <div class="movie-card position-relative">
+                <div class="card-head">
+                    <img src="${image}" class="card-img" alt="${item.title}">
+                    ${label ? `<span class="episode-label">${label}</span>` : ''}
+                </div>
+                <div class="card-body p-2">
+                    <h3 class="card-title mb-1">${item.title}</h3>
+                    ${item.year ? `<small>${item.year}</small>` : ''}
+                </div>
+            </div>
+        </a>`;
+    });
+
+    container.innerHTML = html;
+}
+
+// Call it when page loads
+$(document).ready(function() {
+    // ... your existing calls ...
+    renderContinueWatching();
+});
