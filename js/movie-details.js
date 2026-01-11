@@ -138,16 +138,6 @@ if (!movieId || isNaN(movieId)) {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     showIframe(button.getAttribute('data-url'));
-
-                    // Save continue watching
-        saveContinueWatching({
-            type: "movie",
-            id: movieId,
-            title: document.getElementById('movie-title').textContent.trim(),
-            poster: document.getElementById('movie-poster').src,
-            backdrop: document.getElementById('iq-watch').style.backgroundImage.slice(5,-2), // dirty but works
-            year: document.querySelector('.text-primary-title .text-body').textContent.trim()
-        });
                 });
             });
         })
@@ -225,7 +215,6 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
-
 
 
 
