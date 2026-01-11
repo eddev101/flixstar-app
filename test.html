@@ -1,289 +1,302 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Flixstar - Watch Movies & TV Shows</title>
-
+  <title>Continue Watching Test Page</title>
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Netflix+Sans:wght@400;500;700&display=swap" rel="stylesheet"> <!-- Netflix Sans approximation -->
-
-  <!-- Keep your existing Bootstrap & Slick if you want, but we can remove Bootstrap for cleaner look -->
-  <link rel="stylesheet" href="assets/css/main.css"> <!-- ← you'll update this -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" type="module"></script>
+  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 
   <style>
     :root {
-      --netflix-red: #E50914;
-      --bg-primary: #000000;
-      --bg-secondary: #141414;
-      --text-primary: #ffffff;
-      --text-secondary: #b3b3b3;
-      --card-radius: 4px;
+      --bg: #0f0f0f;
+      --text: #e5e5e5;
+      --accent: #e50914;
+      --card-radius: 6px;
     }
 
-    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      background: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: 'Netflix Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      overflow-x: hidden;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, sans-serif;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.5;
     }
 
-    /* Top Navigation - Netflix style */
-    .top-nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 1000;
-      padding: 1rem 4%;
-      display: flex;
-      align-items: center;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
-      transition: background 0.4s;
+    h2.section-heading {
+      margin: 1.2em 0 0.6em;
+      font-size: 1.5rem;
+      font-weight: 600;
     }
-    .top-nav.scrolled { background: var(--bg-primary); }
-    .logo { font-size: 2.5rem; font-weight: bold; color: var(--netflix-red); margin-right: 2rem; }
-    .nav-links a { color: white; margin-right: 1.5rem; text-decoration: none; font-weight: 500; }
-    .nav-links a:hover { color: #e5e5e5; }
 
-    /* Hero */
-    .hero {
-      height: 90vh;
-      min-height: 600px;
-      position: relative;
-      background-size: cover;
-      background-position: center;
-      display: flex;
-      align-items: flex-end;
+    .movies-grid,
+    .continue-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      margin-bottom: 2.5rem;
     }
-    .hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, var(--bg-primary) 0%, transparent 50%);
-    }
-    .hero-content {
-      position: relative;
-      z-index: 2;
-      padding: 0 4% 8% 4%;
-      max-width: 50%;
-    }
-    .hero-title { font-size: clamp(3rem, 8vw, 5rem); font-weight: bold; margin-bottom: 1rem; }
-    .hero-info { font-size: 1.4rem; margin: 1rem 0; color: var(--text-secondary); }
-    .hero-buttons button {
-      padding: 0.8rem 2rem;
-      font-size: 1.2rem;
-      border: none;
-      border-radius: 4px;
-      margin-right: 1rem;
-      cursor: pointer;
-    }
-    .btn-play { background: white; color: black; }
-    .btn-info { background: rgba(109,109,110,0.7); color: white; }
 
-    /* Row */
-    .row {
-      padding: 2rem 4%;
+    .movie-card {
       position: relative;
-    }
-    .row-title {
-      font-size: 1.6rem;
-      font-weight: 700;
-      margin-bottom: 1rem;
-    }
-    .row-posters {
-      display: flex;
-      overflow-x: auto;
-      gap: 0.8rem;
-      padding: 1rem 0;
-      scroll-behavior: smooth;
-      scrollbar-width: none;
-    }
-    .row-posters::-webkit-scrollbar { display: none; }
-
-    .poster {
-      position: relative;
-      flex: 0 0 auto;
-      width: 220px;
-      transition: transform 0.3s ease;
-      cursor: pointer;
       border-radius: var(--card-radius);
       overflow: hidden;
+      background: #1a1a1a;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+      aspect-ratio: 2 / 3;
     }
-    .poster:hover {
-      transform: scale(1.35);
-      z-index: 10;
+
+    .movie-card:hover {
+      transform: scale(1.06);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+      z-index: 2;
     }
-    .poster img { width: 100%; height: auto; display: block; }
-    .poster-overlay {
+
+    .movie-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .card-overlay {
       position: absolute;
       inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent 50%);
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%);
       opacity: 0;
-      transition: opacity 0.3s;
+      transition: opacity 0.2s ease;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1rem;
+      align-items: flex-end;
+      justify-content: center;
+      padding-bottom: 1rem;
     }
-    .poster:hover .poster-overlay { opacity: 1; }
+
+    .movie-card:hover .card-overlay {
+      opacity: 1;
+    }
+
+    .play-btn {
+      font-size: 3.2rem;
+      color: white;
+      text-shadow: 0 0 12px rgba(0,0,0,0.8);
+    }
+
+    .card-title {
+      padding: 0.7rem 0.9rem;
+      font-size: 0.92rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Fake progress bar style */
     .progress-bar {
-      height: 4px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
       background: #333;
-      margin: 0.8rem 0;
-      border-radius: 2px;
     }
+
     .progress-fill {
       height: 100%;
-      background: var(--netflix-red);
-      border-radius: 2px;
+      background: var(--accent);
+      transition: width 0.4s ease;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.5em 1.2em;
+      background: #333;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 0.4em;
+      font-size: 0.9rem;
+    }
+
+    .btn-danger {
+      background: #c53030;
     }
   </style>
 </head>
 <body>
 
-  <!-- Top Navigation -->
-  <nav class="top-nav">
-    <div class="logo">FLIXSTAR</div>
-    <div class="nav-links">
-      <a href="#">Home</a>
-      <a href="#">TV Shows</a>
-      <a href="#">Movies</a>
-      <a href="#">New & Popular</a>
-      <a href="#">My List</a>
-    </div>
-    <!-- You can add search, profile etc later -->
-  </nav>
+  <h1 style="margin-bottom: 1.5rem;">Continue Watching Test</h1>
 
-  <!-- Hero (we'll make it dynamic later) -->
-  <section class="hero" id="hero" style="background-image: url('https://image.tmdb.org/t/p/original/some-backdrop.jpg');">
-    <div class="hero-content">
-      <h1 class="hero-title">STRANGER THINGS</h1>
-      <div class="hero-info">Season 5 • Coming Soon • Sci-Fi • Thrilling</div>
-      <div class="hero-buttons">
-        <button class="btn-play"><i class="fas fa-play"></i> Play</button>
-        <button class="btn-info">More Info</button>
-      </div>
+  <!-- CONTINUE WATCHING SECTION -->
+  <section class="continue-section" id="continueSection" style="display:none;">
+    <h2 class="section-heading">Continue Watching</h2>
+    <div class="continue-grid" id="continueGrid"></div>
+  </section>
+
+  <!-- Controls for testing -->
+  <div style="margin: 2rem 0; padding: 1.5rem; background: #1a1a1a; border-radius: 8px;">
+    <h3>Test Controls</h3>
+    <button class="btn" onclick="addFakeMovie()">Add Random Movie</button>
+    <button class="btn" onclick="addFakeTv()">Add Random TV Episode</button>
+    <button class="btn btn-danger" onclick="clearWatching()">Clear Continue Watching</button>
+  </div>
+
+  <!-- Your original filter/movies section (minimal version) -->
+  <section class="movies">
+    <h2 class="section-heading">Movies (example grid)</h2>
+    <div class="movies-grid">
+      <!-- Just placeholders for layout demo -->
+      <div class="movie-card"><div class="card-title">Movie 1</div></div>
+      <div class="movie-card"><div class="card-title">Movie 2</div></div>
+      <div class="movie-card"><div class="card-title">Movie 3</div></div>
+      <div class="movie-card"><div class="card-title">Movie 4</div></div>
     </div>
   </section>
 
-  <!-- Example Netflix-style rows -->
-  <section class="row">
-    <h2 class="row-title">Continue Watching</h2>
-    <div class="row-posters" id="continue-watching">
-      <!-- Will be populated with JS - fake progress bars -->
-    </div>
-  </section>
-
-  <section class="row">
-    <h2 class="row-title">Trending Now</h2>
-    <div class="row-posters" id="trending-movies">
-      <!-- Cards here -->
-    </div>
-  </section>
-
-  <section class="row">
-    <h2 class="row-title">Popular TV Shows</h2>
-    <div class="row-posters" id="popular-shows">
-      <!-- Cards here -->
-    </div>
-  </section>
-
-  <!-- Your JS files + new one -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js" type="module"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-
-  <!-- Your existing scripts + new logic below -->
   <script>
-    const API_KEY = '5ec279387e9aa9488ef4d00b22acc451';
+    // ====================
+    //   CONTINUE WATCHING
+    // ====================
 
-    // Simple scroll effect for nav
-    window.addEventListener('scroll', () => {
-      document.querySelector('.top-nav').classList.toggle('scrolled', window.scrollY > 100);
-    });
+    const watchingKey = 'watching_progress';
 
-    // Function to create Netflix-style poster card
-    function createPoster(item, isContinue = false) {
-      const title = item.title || item.name;
-      const poster = `https://image.tmdb.org/t/p/w500${item.poster_path}`;
-      const rating = item.vote_average?.toFixed(1) || 'N/A';
-      const year = (item.release_date || item.first_air_date || '').slice(0,4) || 'N/A';
+    function getWatching() {
+      try {
+        return JSON.parse(localStorage.getItem(watchingKey) || '[]');
+      } catch {
+        return [];
+      }
+    }
 
-      let html = `
-        <div class="poster" onclick="viewDetails(${item.id}, '${item.media_type || 'movie'}')">
-          <img src="${poster}" alt="${title}" loading="lazy">
-          <div class="poster-overlay">
-            <h4>${title}</h4>
-            <div style="margin:0.5rem 0;">
-              <span style="color:#aaa; font-size:0.9rem;">${year} • ${rating}</span>
-            </div>
-      `;
+    function saveWatching(items) {
+      localStorage.setItem(watchingKey, JSON.stringify(items));
+      renderContinueWatching();
+    }
 
-      if (isContinue) {
-        const progress = Math.floor(Math.random() * 80) + 20; // fake progress
+    function addOrUpdateWatching(item) {
+      let list = getWatching();
+      
+      // Remove previous entry for same content
+      list = list.filter(i => 
+        !(i.id === item.id && i.type === item.type && 
+         (!item.season || i.season === item.season) &&
+         (!item.episode || i.episode === item.episode))
+      );
+
+      list.unshift(item);
+      
+      // Keep last 20 items
+      if (list.length > 20) list.length = 20;
+
+      saveWatching(list);
+    }
+
+    function renderContinueWatching() {
+      const items = getWatching();
+      const container = document.getElementById('continueGrid');
+      const section = document.getElementById('continueSection');
+
+      if (items.length === 0) {
+        section.style.display = 'none';
+        return;
+      }
+
+      section.style.display = 'block';
+
+      let html = '';
+
+      for (const item of items) {
+        const isTv = item.type === 'tv';
+        let url = isTv 
+          ? `tvshow/tvshow-details.html?id=${item.id}`
+          : `movie/movie-details.html?id=${item.id}`;
+
+        if (isTv && item.season && item.episode) {
+          url += `&s=${item.season}&e=${item.episode}`;
+        }
+        url += '&continue=1';
+
+        const progress = item.progress || Math.floor(Math.random() * 70) + 20;
+
         html += `
-          <div class="progress-bar">
-            <div class="progress-fill" style="width:${progress}%"></div>
-          </div>
+          <a href="${url}" class="movie-card-link">
+            <div class="movie-card">
+              <img src="${item.poster}" alt="${item.title}" loading="lazy">
+              <div class="progress-bar">
+                <div class="progress-fill" style="width: ${progress}%"></div>
+              </div>
+              <div class="card-overlay">
+                <ion-icon name="play-circle-outline" class="play-btn"></ion-icon>
+              </div>
+              <div class="card-title">${item.title}</div>
+            </div>
+          </a>
         `;
       }
 
-      html += `</div></div>`;
-      return html;
+      container.innerHTML = html;
     }
 
-    // Populate continue watching (fake for now)
-    function loadContinueWatching() {
-      // Later you can read from localStorage last watched items
-      axios.get(`https://api.themoviedb.org/3/trending/all/week?api_key=${API_KEY}`)
-        .then(res => {
-          const items = res.data.results.slice(0,10);
-          $('#continue-watching').html(items.map(item => createPoster(item, true)).join(''));
-        });
+    // ====================
+    //   Test helpers
+    // ====================
+
+    const posters = [
+      "https://image.tmdb.org/t/p/w500/9GBhzXMFjgcZ3FdR9w3bUMMTps5.jpg",
+      "https://image.tmdb.org/t/p/w500/1XDDXPXGiJnIDhgT2qyYjzP4vH.jpg",
+      "https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+      "https://image.tmdb.org/t/p/w500/8cdWjvZQUExUUTzyp4t6EDMUBHN.jpg",
+      "https://image.tmdb.org/t/p/w500/fCayJrkfRaCRCTh8GqN30f8oyQF.jpg"
+    ];
+
+    function randomPoster() {
+      return posters[Math.floor(Math.random() * posters.length)];
     }
 
-    // Update your existing functions to use new card style
-    function fetchMovies(filter) {
-      let url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`;
-      // you can keep your filters...
-
-      axios.get(url).then(res => {
-        const items = res.data.results.slice(0,12);
-        $('#trending-movies').html(items.map(item => createPoster(item)).join(''));
+    function addFakeMovie() {
+      const id = Math.floor(Math.random() * 900000) + 10000;
+      addOrUpdateWatching({
+        id: String(id),
+        type: 'movie',
+        title: `Test Movie ${id}`,
+        poster: randomPoster(),
+        progress: Math.floor(Math.random() * 85) + 10,
+        lastUpdated: new Date().toISOString()
       });
     }
 
-    // Similar changes for TV shows...
-    function indexpopshows() {
-      axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}`)
-        .then(res => {
-          const items = res.data.results.slice(0,12);
-          $('#popular-shows').html(items.map(item => createPoster(item)).join(''));
-        });
+    function addFakeTv() {
+      const id = Math.floor(Math.random() * 90000) + 10000;
+      const season = Math.floor(Math.random() * 6) + 1;
+      const episode = Math.floor(Math.random() * 12) + 1;
+      
+      addOrUpdateWatching({
+        id: String(id),
+        type: 'tv',
+        title: `Test Series ${id} S${season}E${episode}`,
+        poster: randomPoster(),
+        season,
+        episode,
+        progress: Math.floor(Math.random() * 85) + 10,
+        lastUpdated: new Date().toISOString()
+      });
     }
 
-    // Hero - pick random trending item for hero
-    function updateHero() {
-      axios.get(`https://api.themoviedb.org/3/trending/all/day?api_key=${API_KEY}`)
-        .then(res => {
-          const item = res.data.results[0];
-          const backdrop = `https://image.tmdb.org/t/p/original${item.backdrop_path}`;
-          $('#hero').css('background-image', `url(${backdrop})`);
-          $('.hero-title').text(item.title || item.name);
-          // You can add more info...
-        });
+    function clearWatching() {
+      if (confirm("Clear all continue watching items?")) {
+        localStorage.removeItem(watchingKey);
+        renderContinueWatching();
+      }
     }
 
-    $(document).ready(function() {
-      updateHero();
-      loadContinueWatching();
-      fetchMovies('trending');
-      indexpopshows(); // update similarly
-      indextrendingshows(); // same
+    // Initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      renderContinueWatching();
     });
-
-    // Keep your viewDetails, addToWatchlist functions
   </script>
 </body>
 </html>
