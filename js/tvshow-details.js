@@ -175,23 +175,6 @@ if (!tvShowId || isNaN(tvShowId)) {
                                     selectedEpisode = this.getAttribute('data-episode');
                                     updateServerLinks();
                                     loadEpisode();
-
-                                    // ── Save continue watching ────────────────────────
-        const still = this.closest('.episode-box')
-            ?.querySelector('img')?.src || '';
-            
-        saveContinueWatching({
-            type: "tv",
-            id: tvShowId,
-            title: document.getElementById('show-name').textContent.trim(),
-            poster: document.getElementById('show-poster').src,
-            backdrop: document.getElementById('iq-watch').style.backgroundImage.slice(5,-2),
-            season: Number(selectedSeason),
-            episode: Number(selectedEpisode),
-            episodeTitle: this.closest('.episode-details')?.querySelector('h4').textContent.trim(),
-            episodeStill: still
-        });
-                                    
                                 });
                             });
                         })
@@ -315,8 +298,6 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
-
-
 
 
 
