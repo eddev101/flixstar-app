@@ -28,7 +28,7 @@ let details = `
     </div>
 
      <div class="text-primary-title">Director:
-        <span class="text-body">
+        <span class="text-body dir-st">
             ${
                 movie.credits.crew.find(c => c.job === 'Director')
                     ? `<a href="../person/person-details.html?id=${movie.credits.crew.find(c => c.job === 'Director').id}" class="person-link">
@@ -242,6 +242,7 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
 
 
 
