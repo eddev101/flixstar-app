@@ -15,7 +15,6 @@ if (!movieId || isNaN(movieId)) {
             document.getElementById('movie-poster').alt = movie.title;
             document.getElementById('movie-title').textContent = movie.title;
             document.getElementById('movie-overview').textContent = movie.overview;
-            const director = movie.credits.crew.find(c => c.job === 'Director');
 
 let details = `
     <div class="text-primary-title">Released: <span class="text-body">${movie.release_date || 'N/A'}</span></div>
@@ -28,12 +27,15 @@ let details = `
         </span>
     </div>
 
-    <div class="text-primary-title">
-        Director:
+     <div class="text-primary-title">Director:
         <span class="text-body">
-            ${director
-                ? `<a href="../person/person-details.html?id=${director.id}" class="person-link">${director.name}</a>`
-                : 'N/A'}
+            ${
+                movie.credits.crew.find(c => c.job === 'Director')
+                    ? `<a href="../person/person-details.html?id=${movie.credits.crew.find(c => c.job === 'Director').id}" class="person-link">
+                        ${movie.credits.crew.find(c => c.job === 'Director').name}
+                       </a>`
+                    : 'N/A'
+            }
         </span>
     </div>
 
