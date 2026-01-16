@@ -21,7 +21,17 @@ if (!movieId || isNaN(movieId)) {
                 <div class="text-primary-title">Duration: <span class="text-body">${movie.runtime ? movie.runtime + ' min' : 'N/A'}</span></div>
                 <div class="text-primary-title">Genres: <span class="text-body">${movie.genres.slice(0, 3).map(g => g.name).join(', ') || 'N/A'}</span></div>
                 <div class="text-primary-title">Rating: <span class="text-body"><ion-icon name="star" style="color: #f5c518 !important;"></ion-icon> ${movie.vote_average.toString().substring(0, 3)}</span></div>
-                <div class="text-primary-title">Director: <span class="text-body">${movie.credits.crew.find(c => c.job === 'Director')?.name || 'N/A'}</span></div>
+                <div class="text-primary-title">
+  Director:
+  <span class="text-body">
+    ${
+      director
+        ? `<a href="../person/person-details.html?id=${director.id}" class="person-link">${director.name}</a>`
+        : 'N/A'
+    }
+  </span>
+</div>
+
                 <div class="text-primary-title">Producers: <span class="text-body">${movie.credits.crew.filter(c => c.job === 'Producer').map(p => p.name).join(', ') || 'N/A'}</span></div>`;
             $('#movie-details').html(details);
 
