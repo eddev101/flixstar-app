@@ -152,7 +152,7 @@ let details = `
 
             // Add event listeners AFTER DOM updates
             document.getElementById('playButton').addEventListener('click', () => {
-                showIframe(`https://player.vidplus.to/embed/movie/${movie.id}`); // Default server
+                showIframe(`https://player.videasy.net/movie/${movie.id}`); // Default server
             });
 
             document.querySelectorAll('.trailer-button').forEach(button => {
@@ -243,6 +243,7 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
 
 
 
