@@ -53,6 +53,7 @@ let details = `
             $('#movie-details').html(details);
 
             let servers = `
+                <a href="#" class="server-button btn" data-url="https://player.videasy.net/movie/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Videasy</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://hnembed.cc/embed/movie/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
                 <a href="#" class="server-button btn" data-url="https://multiembed.mov/?video_id=${movie.id}&tmdb=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div></a>
@@ -242,6 +243,7 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
 
 
 
