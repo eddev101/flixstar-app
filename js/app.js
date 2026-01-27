@@ -287,3 +287,52 @@ function viewDetails(id, type) {
         window.location.href = `tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
+
+//continue watching
+function loadContinueWatching() {
+    const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
+    if (!list.length) return;
+
+    let output = '';
+
+    list.forEach(item => {
+        const url = item.type === 'movie'
+            ? `https://api.themoviedb.org/3/movie/${item.id}?api_key=${API_KEY}`
+            : `https://api.themoviedb.org/3/tv/${item.id}?api_key=${API_KEY}`;
+
+        axios.get(url).then(res => {
+            const data = res.data;
+            const poster = data.poster_path
+                ? `https://image.tmdb.org/t/p/w342${data.poster_path}`
+                : 'images/default.webp';
+
+            const title = data.title || data.name;
+            const sub = item.type === 'tv'
+                ? `S${item.season} • E${item.episode}`
+                : 'Continue Watching';
+
+            output += `
+                <div class="movie-card">
+                    <div class="card-head">
+                        <img src="${poster}" class="card-img">
+                        <div class="card-overlay">
+                            <div class="play" onclick="viewDetails(${item.id}, '${item.type}')">
+                                <ion-icon name="play-circle-outline"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${title}</h3>
+                        <div class="card-info">
+                            <span class="genre">${sub}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            $('#continue-watching-grid').html(output);
+        });
+    });
+}
+
