@@ -228,6 +228,8 @@
 
     .continue-card {
     position: relative;
+    flex: 0 0 auto;
+    width: 180px; /* adjust to your card size */
 }
 
 .remove-continue {
@@ -252,9 +254,20 @@
     background: #e50914;
 }
 
+.continue-grid{
+   display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    padding-bottom: 10px;
+}
+
+
 </style>
 </body>
 </html>
+
 
 
 
