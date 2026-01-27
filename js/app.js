@@ -292,8 +292,17 @@ function viewDetails(id, type) {
 
 //continue watching
 function loadContinueWatching() {
-    const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
-    if (!list.length) return;
+   const section = document.getElementById('continue-watching-section');
+const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
+
+if (!list.length) {
+    section.style.display = 'none';
+    $('#continue-watching-grid').html('');
+    return;
+}
+
+section.style.display = 'block';
+
 
     let output = '';
 
@@ -338,3 +347,10 @@ function loadContinueWatching() {
 }
 
 
+
+function removeContinueWatching(id, type) {
+    let list = JSON.parse(localStorage.getItem('continueWatching')) || [];
+    list = list.filter(item => !(item.id === id && item.type === type));
+    localStorage.setItem('continueWatching', JSON.stringify(list));
+    loadContinueWatching();
+}
