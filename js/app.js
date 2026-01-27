@@ -354,10 +354,12 @@ section.style.display = 'block';
 
 window.removeContinueWatching = function (id, type) {
     let list = JSON.parse(localStorage.getItem('continueWatching')) || [];
-    list = list.filter(item => !(item.id === id && item.type === type));
+    list = list.filter(item => !(String(item.id) === String(id) && item.type === type));
     localStorage.setItem('continueWatching', JSON.stringify(list));
     loadContinueWatching();
 };
+
+
 
 
 
