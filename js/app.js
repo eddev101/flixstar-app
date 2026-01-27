@@ -328,7 +328,7 @@ section.style.display = 'block';
                         onclick="removeContinueWatching(${item.id}, '${item.type}')">
                         ✕
                     </button>
-                    <div class="card-head">
+                    <div class="card-head" style="height: fit-content;">
                         <img src="${poster}" class="card-img">
                         <div class="card-overlay">
                             <div class="play" onclick="viewDetails(${item.id}, '${item.type}')">
@@ -358,6 +358,7 @@ window.removeContinueWatching = function (id, type) {
     localStorage.setItem('continueWatching', JSON.stringify(list));
     loadContinueWatching();
 };
+
 
 
 
