@@ -175,7 +175,26 @@ let details = `
         });
 }
 
+function saveContinueWatchingMovie(movieId) {
+    let list = JSON.parse(localStorage.getItem('continueWatching')) || [];
+
+    // remove existing entry
+    list = list.filter(i => !(i.id === movieId && i.type === 'movie'));
+
+    list.unshift({
+        id: movieId,
+        type: 'movie',
+        updatedAt: Date.now()
+    });
+
+    // keep max 10
+    localStorage.setItem('continueWatching', JSON.stringify(list.slice(0, 10)));
+}
+
+
 function showIframe(url) {
+    saveContinueWatchingMovie(movieId); // 👈 ADD THIS
+    
     const iframeContainer = document.getElementById('iframeContainer');
     const movieIframe = document.getElementById('movieIframe');
     const adblockMessage = document.getElementById('adblock-message');
@@ -243,6 +262,7 @@ function addToWatchlist(id = movieId, type = 'movie') {
 function viewDetails(id, type) {
     window.location.href = `../movie/movie-details.html?id=${id}`;
 }
+
 
 
 
