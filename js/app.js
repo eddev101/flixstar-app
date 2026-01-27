@@ -323,7 +323,11 @@ section.style.display = 'block';
                 : 'Continue Watching';
 
             output += `
-                <div class="movie-card">
+               <div class="movie-card continue-card">
+                    <button class="remove-continue"
+                        onclick="removeContinueWatching(${item.id}, '${item.type}')">
+                        ✕
+                    </button>
                     <div class="card-head">
                         <img src="${poster}" class="card-img">
                         <div class="card-overlay">
@@ -354,3 +358,4 @@ function removeContinueWatching(id, type) {
     localStorage.setItem('continueWatching', JSON.stringify(list));
     loadContinueWatching();
 }
+
