@@ -262,6 +262,7 @@ $(document).ready(function() {
   indextrendingshows();
   indexpopshows();
   fetchSliderItems(); // Add this line
+  loadContinueWatching(); // 👈 ADD
 });
 
 function addToWatchlist(id, type = 'movie') {
@@ -335,4 +336,5 @@ function loadContinueWatching() {
         });
     });
 }
+
 
