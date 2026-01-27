@@ -228,7 +228,26 @@ function loadEpisode() {
     showIframe(url);
 }
 
+function saveContinueWatchingTV() {
+    let list = JSON.parse(localStorage.getItem('continueWatching')) || [];
+
+    list = list.filter(i => !(i.id === tvShowId && i.type === 'tv'));
+
+    list.unshift({
+        id: tvShowId,
+        type: 'tv',
+        season: selectedSeason,
+        episode: selectedEpisode,
+        updatedAt: Date.now()
+    });
+
+    localStorage.setItem('continueWatching', JSON.stringify(list.slice(0, 10)));
+}
+
+
 function showIframe(url) {
+    saveContinueWatchingTV(); // 👈 ADD THIS
+    
     const iframeContainer = document.getElementById('iframeContainer');
     const movieIframe = document.getElementById('movieIframe');
     const adblockMessage = document.getElementById('adblock-message');
@@ -301,6 +320,7 @@ function viewDetails(id, type) {
         window.location.href = `../tvshow/tvshow-details.html?id=${id}`;
     }
 }
+
 
 
 
