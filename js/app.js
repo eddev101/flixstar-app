@@ -291,63 +291,100 @@ function viewDetails(id, type) {
 
 
 //continue watching
+// CONTINUE WATCHING (WITH NETFLIX HOVER EXPAND)
 function loadContinueWatching() {
-   const section = document.getElementById('continue-watching-section');
-const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
 
-if (!list.length) {
-    section.style.display = 'none';
-    $('#continue-watching-grid').html('');
-    return;
-}
+    const section = document.getElementById('continue-watching-section');
+    const grid = document.getElementById('continue-watching-grid');
+    const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
 
-section.style.display = 'block';
+    if (!list.length) {
+        section.style.display = 'none';
+        grid.innerHTML = '';
+        return;
+    }
 
-
-    let output = '';
+    section.style.display = 'block';
+    grid.innerHTML = '';
 
     list.forEach(item => {
+
         const url = item.type === 'movie'
             ? `https://api.themoviedb.org/3/movie/${item.id}?api_key=${API_KEY}`
             : `https://api.themoviedb.org/3/tv/${item.id}?api_key=${API_KEY}`;
 
         axios.get(url).then(res => {
+
             const data = res.data;
+
             const poster = data.poster_path
                 ? `https://image.tmdb.org/t/p/w342${data.poster_path}`
                 : 'images/default.webp';
 
             const title = data.title || data.name;
+
+            const year = data.release_date
+                ? data.release_date.split('-')[0]
+                : (data.first_air_date ? data.first_air_date.split('-')[0] : '');
+
+            const rating = data.vote_average
+                ? data.vote_average.toFixed(1)
+                : 'N/A';
+
+            const overview = data.overview
+                ? data.overview.slice(0, 120) + '...'
+                : 'No description available.';
+
             const sub = item.type === 'tv'
                 ? `S${item.season} • E${item.episode}`
                 : 'Continue Watching';
 
-            output += `
-               <div class="movie-card continue-card">
-                    <button class="remove-continue"
-                        onclick="removeContinueWatching(${item.id}, '${item.type}')">
-                        ✕
-                    </button>
-                    <div class="card-head" style="height: fit-content;">
-                        <img src="${poster}" class="card-img">
-                        <div class="card-overlay">
-                            <div class="play" onclick="viewDetails(${item.id}, '${item.type}')">
-                                <ion-icon name="play-circle-outline"></ion-icon>
-                            </div>
+
+            const card = `
+            <div class="movie-card continue-card">
+
+                <div class="hover-expand">
+
+                    <img src="${poster}" class="card-img">
+
+                    <div class="hover-content">
+
+                        <div class="hover-top">
+                            <span class="rating">⭐ ${rating}</span>
+                            <span class="year">${year}</span>
                         </div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="card-title">${title}</h3>
-                        <div class="card-info">
-                            <span class="genre">${sub}</span>
+
+                        <h3 class="hover-title">${title}</h3>
+
+                        <div class="hover-sub">${sub}</div>
+
+                        <p class="hover-description">${overview}</p>
+
+                        <div class="hover-buttons">
+                            <button class="watch-btn"
+                                onclick="viewDetails(${item.id}, '${item.type}')">
+                                ▶ Watch Now
+                            </button>
+
+                            <button class="remove-btn"
+                                onclick="removeContinueWatching(${item.id}, '${item.type}')">
+                                ✕
+                            </button>
                         </div>
+
                     </div>
+
                 </div>
+
+            </div>
             `;
 
-            $('#continue-watching-grid').html(output);
+            grid.innerHTML += card;
+
         });
+
     });
+
 }
 
 
@@ -371,6 +408,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
