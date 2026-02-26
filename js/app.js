@@ -360,6 +360,19 @@ window.removeContinueWatching = function (id, type) {
 };
 
 
+//newly added
+function scrollContinue(direction) {
+    const container = document.getElementById('continue-watching-grid');
+
+    const scrollAmount = 400; // how much to scroll each click
+
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+
+
 
 
 
