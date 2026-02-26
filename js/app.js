@@ -341,43 +341,29 @@ function loadContinueWatching() {
 
 
             const card = `
-            <div class="movie-card continue-card">
+<div class="movie-card continue-card"
+     onmouseenter="showPreview(this)"
+     onmouseleave="hidePreview()"
+     data-title="${title}"
+     data-year="${year}"
+     data-rating="${rating}"
+     data-overview="${overview}"
+     data-poster="${poster}"
+     data-id="${item.id}"
+     data-type="${item.type}"
+>
 
-                <div class="hover-expand">
+    <div class="poster-wrapper">
+        <img src="${poster}" class="card-img">
 
-                    <img src="${poster}" class="card-img">
+        <div class="poster-overlay">
+            <h4>${title}</h4>
+            <span>${year}</span>
+        </div>
+    </div>
 
-                    <div class="hover-content">
-
-                        <div class="hover-top">
-                            <span class="rating">⭐ ${rating}</span>
-                            <span class="year">${year}</span>
-                        </div>
-
-                        <h3 class="hover-title">${title}</h3>
-
-                        <div class="hover-sub">${sub}</div>
-
-                        <p class="hover-description">${overview}</p>
-
-                        <div class="hover-buttons">
-                            <button class="watch-btn"
-                                onclick="viewDetails(${item.id}, '${item.type}')">
-                                ▶ Watch Now
-                            </button>
-
-                            <button class="remove-btn"
-                                onclick="removeContinueWatching(${item.id}, '${item.type}')">
-                                ✕
-                            </button>
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-            `;
+</div>
+`;
 
             grid.innerHTML += card;
 
@@ -407,6 +393,48 @@ function scrollContinue(direction) {
         left: direction * scrollAmount,
         behavior: 'smooth'
     });
+}
+
+
+//continue hover new
+function showPreview(card) {
+
+    const preview = document.getElementById('floating-preview');
+
+    const title = card.dataset.title;
+    const year = card.dataset.year;
+    const rating = card.dataset.rating;
+    const overview = card.dataset.overview;
+    const poster = card.dataset.poster;
+    const id = card.dataset.id;
+    const type = card.dataset.type;
+
+    preview.innerHTML = `
+        <div class="preview-content">
+            <img src="${poster}" class="preview-bg">
+
+            <div class="preview-info">
+                <h2>${title}</h2>
+                <div class="meta">⭐ ${rating} • ${year}</div>
+                <p>${overview}</p>
+
+                <button onclick="viewDetails(${id}, '${type}')">
+                    ▶ Watch Now
+                </button>
+            </div>
+        </div>
+    `;
+
+    const rect = card.getBoundingClientRect();
+
+    preview.style.top = (rect.top - 20) + "px";
+    preview.style.left = rect.left + "px";
+    preview.style.display = "block";
+}
+
+function hidePreview() {
+    const preview = document.getElementById('floating-preview');
+    preview.style.display = "none";
 }
 
 
