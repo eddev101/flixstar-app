@@ -38,7 +38,17 @@
     <!-- CONTINUE WATCHING SECTION -->
     <section class="movies" id="continue-watching-section" style="display:none;">
   <h2 class="section-heading">Continue Watching</h2>
-  <div class="movies-grid continue-grid" id="continue-watching-grid"></div>
+      <div class="continue-wrapper">
+    <button class="slider-btn left" onclick="scrollContinue(-1)">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+
+    <div class="movies-grid continue-grid" id="continue-watching-grid"></div>
+
+    <button class="slider-btn right" onclick="scrollContinue(1)">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+</div>
   </section>
     
 
@@ -254,19 +264,60 @@
     background: #e50914;
 }
 
-.continue-grid{
-   display: flex;
+.continue-grid {
+    display: flex;
     gap: 16px;
     overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
     padding-bottom: 10px;
+
+    scrollbar-width: none;        /* Firefox */
+}
+
+.continue-grid::-webkit-scrollbar {
+    display: none;                /* Chrome */
+}
+
+.continue-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.slider-btn {
+    position: absolute;
+    top: 40%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    background: rgba(0,0,0,0.7);
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.slider-btn:hover {
+    background: rgba(0,0,0,0.9);
+}
+
+.slider-btn.left {
+    left: -10px;
+}
+
+.slider-btn.right {
+    right: -10px;
 }
 
 
 </style>
 </body>
 </html>
+
 
 
 
