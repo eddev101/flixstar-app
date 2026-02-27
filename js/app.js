@@ -93,7 +93,7 @@ function loadTopRatedMovies() {
 
 // ────────────────────────────────────────────────
 // Load all sections when the page is ready
-
+/*
 $(document).ready(function() {
     // Optional: show loading placeholders
     $('#trending-movies, #now-playing, #top-rated').html('<div class="loading">Loading...</div>');
@@ -114,9 +114,9 @@ $(document).ready(function() {
         renderMovies(now.data.results.slice(0,18), '#now-playing');
         renderMovies(top.data.results.slice(0,18), '#top-rated');
     }).catch(err => console.error(err));
-    */
+    *
 });
-
+*/
 // Placeholder functions for watchlist and details (implement later)
 function addToWatchlist(id, type = 'movie') {
     let watchlist = JSON.parse(localStorage.getItem('watchlist')) || [];
@@ -442,6 +442,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
