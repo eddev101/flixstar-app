@@ -72,6 +72,7 @@
     <div class="preview-backdrop"></div>
     <div class="preview-content">
         <h3 class="preview-title"></h3>
+        <div class="preview-type"></div>   <!-- ← new: will show "Movie" or "TV Show" -->
         <div class="preview-meta">
             <span class="preview-year"></span>
             <span class="preview-rating"><ion-icon name="star"></ion-icon> <span></span></span>
@@ -522,10 +523,18 @@
     background: rgba(0,0,0,0.8);
 }
 
+.preview-type {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin: -0.4rem 0 0.8rem;
+    font-weight: 500;
+}
+
 
 </style>
 </body>
 </html>
+
 
 
 
