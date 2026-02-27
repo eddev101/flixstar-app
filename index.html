@@ -90,13 +90,40 @@
     <!-- TRENDING TV SHOWS SECTION -->
     <section class="live" id="live">
       <h2 class="section-heading">Today's Top TV Shows</h2>
-      <div class="live-grid" id="home-popshows"></div>
+      <!--<div class="live-grid" id="home-popshows"></div>-->
+      
+       <div class="continue-wrapper">
+    <button class="slider-btn left" onclick="scrollContinue(-1)">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+
+    <div class="live-grid continue-grid" id="home-popshows"></div>
+
+
+    <button class="slider-btn right" onclick="scrollContinue(1)">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+</div>
     </section>
 
     <!-- POPULAR SECTION -->
     <section class="live" id="live">
       <h2 class="section-heading">This Week’s Top TV Shows</h2>
-      <div class="live-grid" id="home-trendingshows"></div>
+      <!--<div class="live-grid" id="home-trendingshows"></div>-->
+
+      <div class="continue-wrapper">
+    <button class="slider-btn left" onclick="scrollContinue(-1)">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+
+    <div class="live-grid continue-grid" id="home-trendingshows"></div>
+
+
+    <button class="slider-btn right" onclick="scrollContinue(1)">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+</div>
+      
     </section>
   </main>
 
@@ -331,6 +358,7 @@
 </style>
 </body>
 </html>
+
 
 
 
