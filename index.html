@@ -39,14 +39,14 @@
     <section class="movies" id="continue-watching-section" style="display:none;">
   <h2 class="section-heading">Continue Watching</h2>
       <div class="continue-wrapper">
-    <button class="slider-btn left" onclick="scrollContinue(-1)">
+    <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
     <div class="movies-grid continue-grid" id="continue-watching-grid"></div>
 
 
-    <button class="slider-btn right" onclick="scrollContinue(1)">
+    <button class="slider-btn right">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
 </div>
@@ -93,14 +93,14 @@
       <!--now playing-->
       <h2 class="section-heading">Now Playing</h2>
        <div class="continue-wrapper">
-    <button class="slider-btn left" onclick="scrollContinue(-1)">
+    <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
     <div class="movies-grid continue-grid" id="now-playing"></div>
 
 
-    <button class="slider-btn right" onclick="scrollContinue(1)">
+    <button class="slider-btn right">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
 </div>
@@ -109,14 +109,14 @@
   <!--trending-->    
       <h2 class="section-heading">Trending Movies</h2>
  <div class="continue-wrapper">
-    <button class="slider-btn left" onclick="scrollContinue(-1)">
+    <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
     <div class="movies-grid continue-grid" id="trending-movies"></div>
 
 
-    <button class="slider-btn right" onclick="scrollContinue(1)">
+    <button class="slider-btn right">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
 </div>
@@ -124,14 +124,14 @@
 <!--top rated-->
       <h2 class="section-heading">Top Rated Movies</h2>
        <div class="continue-wrapper">
-    <button class="slider-btn left" onclick="scrollContinue(-1)">
+    <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
     <div class="movies-grid continue-grid" id="top-rated"></div>
 
 
-    <button class="slider-btn right" onclick="scrollContinue(1)">
+    <button class="slider-btn right">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
 </div>
@@ -147,14 +147,14 @@
       <!--<div class="live-grid" id="home-popshows"></div>-->
       
        <div class="continue-wrapper">
-    <button class="slider-btn left" onclick="scrollContinue(-1)">
+    <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
     <div class="live-grid continue-grid" id="home-popshows"></div>
 
 
-    <button class="slider-btn right" onclick="scrollContinue(1)">
+    <button class="slider-btn right">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
 </div>
@@ -166,14 +166,14 @@
       <!--<div class="live-grid" id="home-trendingshows"></div>-->
 
       <div class="continue-wrapper">
-    <button class="slider-btn left" onclick="scrollContinue(-1)">
+    <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
     <div class="live-grid continue-grid" id="home-trendingshows"></div>
 
 
-    <button class="slider-btn right" onclick="scrollContinue(1)">
+    <button class="slider-btn right">
         <ion-icon name="chevron-forward-outline"></ion-icon>
     </button>
 </div>
@@ -381,33 +381,29 @@
     align-items: center;
 }
 
+.continue-wrapper {
+    position: relative;
+}
+
 .slider-btn {
     position: absolute;
-    top: 40%;
+    top: 50%;
     transform: translateY(-50%);
-    z-index: 10;
-
-    background: rgba(0,0,0,0.7);
-    border: none;
+    background: rgba(0,0,0,0.5);
     color: white;
-    font-size: 28px;
-    cursor: pointer;
-    padding: 8px;
+    border: none;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    transition: 0.3s;
+    display: none;           /* hidden by default */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
 }
 
-.slider-btn:hover {
-    background: rgba(0,0,0,0.9);
-}
-
-.slider-btn.left {
-    left: -10px;
-}
-
-.slider-btn.right {
-    right: -10px;
-}
+.slider-btn.left  { left: 10px; }
+.slider-btn.right { right: 10px; }
 
 
 .movie-preview-popup {
@@ -534,6 +530,7 @@
 </style>
 </body>
 </html>
+
 
 
 
