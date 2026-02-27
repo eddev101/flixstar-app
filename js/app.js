@@ -396,56 +396,6 @@ function scrollContinue(direction) {
 }
 
 
-//continue hover new
-function showPreview(card) {
-
-    const grid = document.getElementById('continue-watching-grid');
-    const preview = document.getElementById('floating-preview');
-
-    const title = card.dataset.title;
-    const year = card.dataset.year;
-    const rating = card.dataset.rating;
-    const overview = card.dataset.overview;
-    const poster = card.dataset.poster;
-    const id = card.dataset.id;
-    const type = card.dataset.type;
-
-    preview.innerHTML = `
-        <div class="preview-content">
-            <img src="${poster}" class="preview-bg">
-
-            <div class="preview-info">
-                <h2>${title}</h2>
-                <div class="meta">⭐ ${rating} • ${year}</div>
-                <p>${overview}</p>
-
-                <button onclick="viewDetails(${id}, '${type}')">
-                    ▶ Watch Now
-                </button>
-            </div>
-        </div>
-    `;
-
-    const rect = card.getBoundingClientRect();
-
-    const previewWidth = 360; // match your CSS width
-const offset = 20;
-
-preview.style.top = rect.top + "px";
-preview.style.left = (rect.left - previewWidth - offset) + "px";
-    //preview.style.display = "block";
-
-    grid.addEventListener('mouseleave', () => {
-    preview.style.display = "none";
-});
-    
-}
-
-function hidePreview() {
-    const preview = document.getElementById('floating-preview');
-    preview.style.display = "none";
-}
-
 
 
 
