@@ -81,8 +81,8 @@ function indextrendingshows() {
                 let year = series.first_air_date.slice(0, 4);
                 output += `
                     <a href="#" onclick="return false;">
-                    <div class="live-card">
-                        <div class="card-head">
+                    <div class="live-card continue-card">
+                        <div class="card-head" style="height: fit-content;">
                             <img src="${poster}" alt="" class="card-img">
                             <div class="live-badge">${series.vote_average.toString().substring(0, 3)}</div>
                             <div class="total-viewers">${year}</div>
@@ -114,8 +114,8 @@ function indexpopshows() {
                 let year = series.first_air_date.slice(0, 4);
                 output += `
                     <a href="#" onclick="return false;">
-                    <div class="live-card">
-                        <div class="card-head">
+                    <div class="live-card continue-card">
+                        <div class="card-head" style="height: fit-content;">
                             <img src="${poster}" alt="" class="card-img">
                             <div class="live-badge">${series.vote_average.toString().substring(0, 3)}</div>
                             <div class="total-viewers">${year}</div>
@@ -371,6 +371,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
