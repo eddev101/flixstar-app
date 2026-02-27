@@ -68,13 +68,46 @@
       </div>
 
       <!--<div class="movies-grid" id="home-movies"></div>-->
+
+      <!--now playing-->
+      <h2 class="section-heading">Now Playing</h2>
+       <div class="continue-wrapper">
+    <button class="slider-btn left" onclick="scrollContinue(-1)">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+
+    <div class="movies-grid continue-grid" id="now-playing"></div>
+
+
+    <button class="slider-btn right" onclick="scrollContinue(1)">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+</div>
+
       
+  <!--trending-->    
+      <h2 class="section-heading">Trending Movies</h2>
  <div class="continue-wrapper">
     <button class="slider-btn left" onclick="scrollContinue(-1)">
         <ion-icon name="chevron-back-outline"></ion-icon>
     </button>
 
-    <div class="movies-grid continue-grid" id="home-movies"></div>
+    <div class="movies-grid continue-grid" id="trending-movies"></div>
+
+
+    <button class="slider-btn right" onclick="scrollContinue(1)">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+</div>
+
+<!--top rated-->
+      <h2 class="section-heading">Top Rated Movies</h2>
+       <div class="continue-wrapper">
+    <button class="slider-btn left" onclick="scrollContinue(-1)">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
+
+    <div class="movies-grid continue-grid" id="top-rated"></div>
 
 
     <button class="slider-btn right" onclick="scrollContinue(1)">
@@ -358,6 +391,7 @@
 </style>
 </body>
 </html>
+
 
 
 
