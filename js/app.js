@@ -22,8 +22,8 @@ function fetchMovies(filter) {
                 let year = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
                 output += `
                     <a href="#" onclick="return false;">
-                    <div class="movie-card">
-                        <div class="card-head">
+                    <div class="movie-card continue-card">
+                        <div class="card-head" style="height: fit-content;">
                             <img src="${poster}" class="card-img">
                             <div class="card-overlay">
                                 <div class="bookmark" onclick="addToWatchlist(${movie.id});"><ion-icon name="bookmark-outline"></ion-icon></div>
@@ -371,6 +371,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
