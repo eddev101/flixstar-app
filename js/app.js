@@ -34,7 +34,7 @@ function fetchMovies(filter) {
                         <div class="card-body">
                             <h3 class="card-title">${movie.title}</h3>
                             <div class="card-info">
-                                <span class="genre">Latest</span><span class="year">${year}</span>
+                                <span class="genre">Movie</span><span class="year">${year}</span>
                             </div>
                         </div>
                     </div></a>`;
@@ -394,6 +394,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
