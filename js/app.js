@@ -468,39 +468,25 @@ const btnWatchlist = popup.querySelector('.btn-add-watchlist');
 const btnClose = popup.querySelector('.preview-close');
 
 function showPreview(cardWrapper) {
-    clearTimeout(previewTimeout);
-
     const rect = cardWrapper.getBoundingClientRect();
-    const cardCenterX = rect.left + rect.width / 2;
-    const viewportWidth = window.innerWidth;
-
-    // Decide side: right if enough space, else left
-    let leftPos;
-    if (cardCenterX < viewportWidth / 2) {
-        // card on left → popup on right
-        leftPos = rect.right + 16; // 16px gap
-    } else {
-        // card on right → popup on left
-        leftPos = rect.left - popup.offsetWidth - 16;
+    
+    // Always try right side first, fallback to left if no space
+    let left = rect.right + 20;          // 20px gap from card
+    if (left + 380 > window.innerWidth) {   // 380 = popup width
+        left = rect.left - 380 - 20;     // put on left side
     }
-
-    // Vertical position: try to align top with card, but clamp
-    let topPos = rect.top + window.scrollY - 40; // a bit higher
-    topPos = Math.max(20, Math.min(topPos, window.innerHeight + window.scrollY - popup.offsetHeight - 20));
-
-    popup.style.left = leftPos + 'px';
-    popup.style.top  = topPos + 'px';
-
-    // Fill content
-    popupBackdrop.style.backgroundImage = `url(${cardWrapper.dataset.backdrop})`;
-    popupTitle.textContent = cardWrapper.dataset.title;
-    popupYear.textContent = cardWrapper.dataset.year;
-    popupRating.textContent = cardWrapper.dataset.rating;
-    popupOverview.textContent = cardWrapper.dataset.overview;
-
-    btnWatch.onclick = () => viewMovieDetails(cardWrapper.dataset.id);
-    btnWatchlist.onclick = () => addToWatchlist(cardWrapper.dataset.id);
-
+    
+    // Vertical: center-ish on the card
+    const top = rect.top + window.scrollY + (rect.height / 2) - (520 / 2);  // 520 = popup height
+    
+    popup.style.left = left + 'px';
+    popup.style.top  = Math.max(20, top) + 'px';   // don't go above top of screen
+    
+    // fill content (keep your existing lines)
+    popupBackdrop.style.backgroundImage = `url(${cardWrapper.dataset.backdrop || ''})`;
+    popupTitle.textContent = cardWrapper.dataset.title || 'No title';
+    // ... rest of filling code ...
+    
     popup.classList.add('active');
 }
 
@@ -538,6 +524,7 @@ popup.addEventListener('mouseleave', () => {
 btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
 });
+
 
 
 
