@@ -67,8 +67,22 @@
         </div>
       </div>
 
-      <div class="movies-grid" id="home-movies"></div>
+      <!--<div class="movies-grid" id="home-movies"></div>-->
+      
+ <div class="continue-wrapper">
+    <button class="slider-btn left" onclick="scrollContinue(-1)">
+        <ion-icon name="chevron-back-outline"></ion-icon>
+    </button>
 
+    <div class="movies-grid continue-grid" id="home-movies"></div>
+
+
+    <button class="slider-btn right" onclick="scrollContinue(1)">
+        <ion-icon name="chevron-forward-outline"></ion-icon>
+    </button>
+</div>
+
+      
       <!-- Update LOAD MORE button to point to an internal page or function -->
       <button class="load-more" onClick="loadMoreMovies();">LOAD MORE</button>
     </section>
@@ -317,6 +331,7 @@
 </style>
 </body>
 </html>
+
 
 
 
