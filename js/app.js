@@ -399,6 +399,7 @@ function scrollContinue(direction) {
 //continue hover new
 function showPreview(card) {
 
+    const grid = document.getElementById('continue-watching-grid');
     const preview = document.getElementById('floating-preview');
 
     const title = card.dataset.title;
@@ -427,15 +428,24 @@ function showPreview(card) {
 
     const rect = card.getBoundingClientRect();
 
-    preview.style.top = (rect.top - 20) + "px";
-    preview.style.left = rect.left + "px";
-    preview.style.display = "block";
+    const previewWidth = 360; // match your CSS width
+const offset = 20;
+
+preview.style.top = rect.top + "px";
+preview.style.left = (rect.left - previewWidth - offset) + "px";
+    //preview.style.display = "block";
+
+    grid.addEventListener('mouseleave', () => {
+    preview.style.display = "none";
+});
+    
 }
 
 function hidePreview() {
     const preview = document.getElementById('floating-preview');
     preview.style.display = "none";
 }
+
 
 
 
