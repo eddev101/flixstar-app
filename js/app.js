@@ -455,80 +455,97 @@ function scrollContinue(direction) {
 
 
 
-//floating preview
-let previewTimeout;
+// Floating preview
 const popup = document.getElementById('movie-preview-popup');
 const popupBackdrop = popup.querySelector('.preview-backdrop');
-const popupTitle = popup.querySelector('.preview-title');
-const popupYear = popup.querySelector('.preview-year');
-const popupRating = popup.querySelector('.preview-rating span');
+const popupTitle   = popup.querySelector('.preview-title');
+const popupYear    = popup.querySelector('.preview-year');
+const popupRating  = popup.querySelector('.preview-rating span');
 const popupOverview = popup.querySelector('.preview-overview');
-const btnWatch = popup.querySelector('.btn-watch-now');
+const btnWatch     = popup.querySelector('.btn-watch-now');
 const btnWatchlist = popup.querySelector('.btn-add-watchlist');
-const btnClose = popup.querySelector('.preview-close');
+const btnClose     = popup.querySelector('.preview-close');
 
-function showPreview(cardWrapper) {
-    const rect = cardWrapper.getBoundingClientRect();
+let hideTimer = null;
+const HIDE_DELAY = 180; // ms - small grace period
+
+function showPreview(card) {
+    if (hideTimer) clearTimeout(hideTimer);
+
+    const rect = card.getBoundingClientRect();
 
     let left = rect.right + 20;
     if (left + 380 > window.innerWidth) {
         left = rect.left - 380 - 20;
     }
 
-    // Use viewport top + small offset — no scrollY needed for fixed position
-    let top = rect.top + 40;                     // 40px below card top
-    top = Math.max(20, Math.min(top, window.innerHeight - 540));  // keep inside viewport
+    let top = rect.top + 40;
+    top = Math.max(20, Math.min(top, window.innerHeight - 540));
 
-    popup.style.position = 'fixed';              // make sure it's fixed (not absolute)
-    popup.style.left   = left + 'px';
-    popup.style.top    = top + 'px';
-    
-    // fill content (keep your existing lines)
-    popupBackdrop.style.backgroundImage = `url(${cardWrapper.dataset.backdrop || ''})`;
-    popupTitle.textContent = cardWrapper.dataset.title || 'No title';
-    popupYear.textContent = cardWrapper.dataset.year;
-    popupRating.textContent = cardWrapper.dataset.rating;
-    popupOverview.textContent = cardWrapper.dataset.overview;
+    popup.style.position = 'fixed';
+    popup.style.left = left + 'px';
+    popup.style.top  = top + 'px';
 
-    btnWatch.onclick = () => viewMovieDetails(cardWrapper.dataset.id);
-    btnWatchlist.onclick = () => addToWatchlist(cardWrapper.dataset.id);
+    // Fill content
+    popupBackdrop.style.backgroundImage = `url(${card.dataset.backdrop || ''})`;
+    popupTitle.textContent    = card.dataset.title   || 'No title';
+    popupYear.textContent     = card.dataset.year    || '';
+    popupRating.textContent   = card.dataset.rating  || '';
+    popupOverview.textContent = card.dataset.overview || 'No description available.';
+
+    btnWatch.onclick     = () => viewMovieDetails(card.dataset.id);
+    btnWatchlist.onclick = () => addToWatchlist(card.dataset.id);
 
     popup.classList.add('active');
 }
 
-function hidePreview() {
-    previewTimeout = setTimeout(() => {
+function scheduleHide() {
+    if (hideTimer) clearTimeout(hideTimer);
+    hideTimer = setTimeout(() => {
         popup.classList.remove('active');
-    }, 150); // small delay so popup → card transition is smooth
+    }, HIDE_DELAY);
 }
 
+function cancelHide() {
+    if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+    }
+}
+
+// ────────────────────────────────────────────────
+
 document.addEventListener('mouseover', e => {
-    const wrapper = e.target.closest('.movie-card-wrapper');
-    if (wrapper) {
-        showPreview(wrapper);
+    let card = e.target.closest('.movie-card-wrapper');
+    // Also try inner card if wrapper class missing
+    if (!card) card = e.target.closest('.continue-card')?.closest('a');
+
+    if (card || popup.contains(e.target)) {
+        if (card) showPreview(card);
+        cancelHide();
     }
 });
 
 document.addEventListener('mouseout', e => {
-    const wrapper = e.target.closest('.movie-card-wrapper');
     const related = e.relatedTarget;
 
-    if (wrapper && (!related || !popup.contains(related))) {
-        hidePreview();
+    const wasOverCard   = e.target.closest('.movie-card-wrapper, .continue-card');
+    const nowOverPopup  = related && popup.contains(related);
+    const nowOverCard   = related && related.closest('.movie-card-wrapper, .continue-card');
+
+    if (popup.classList.contains('active') && !nowOverPopup && !nowOverCard) {
+        scheduleHide();
     }
 });
 
-// Keep popup open when hovering it
-popup.addEventListener('mouseenter', () => {
-    clearTimeout(previewTimeout);
-});
+// Popup itself keeps it alive
+popup.addEventListener('mouseenter', cancelHide);
+popup.addEventListener('mouseleave', scheduleHide);
 
-popup.addEventListener('mouseleave', () => {
-    hidePreview();
-});
-
+// Close button
 btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
+    cancelHide();
 });
 
 
