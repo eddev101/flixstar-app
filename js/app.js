@@ -291,86 +291,63 @@ function viewDetails(id, type) {
 
 
 //continue watching
-// CONTINUE WATCHING (WITH NETFLIX HOVER EXPAND)
 function loadContinueWatching() {
+   const section = document.getElementById('continue-watching-section');
+const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
 
-    const section = document.getElementById('continue-watching-section');
-    const grid = document.getElementById('continue-watching-grid');
-    const list = JSON.parse(localStorage.getItem('continueWatching')) || [];
+if (!list.length) {
+    section.style.display = 'none';
+    $('#continue-watching-grid').html('');
+    return;
+}
 
-    if (!list.length) {
-        section.style.display = 'none';
-        grid.innerHTML = '';
-        return;
-    }
+section.style.display = 'block';
 
-    section.style.display = 'block';
-    grid.innerHTML = '';
+
+    let output = '';
 
     list.forEach(item => {
-
         const url = item.type === 'movie'
             ? `https://api.themoviedb.org/3/movie/${item.id}?api_key=${API_KEY}`
             : `https://api.themoviedb.org/3/tv/${item.id}?api_key=${API_KEY}`;
 
         axios.get(url).then(res => {
-
             const data = res.data;
-
             const poster = data.poster_path
                 ? `https://image.tmdb.org/t/p/w342${data.poster_path}`
                 : 'images/default.webp';
 
             const title = data.title || data.name;
-
-            const year = data.release_date
-                ? data.release_date.split('-')[0]
-                : (data.first_air_date ? data.first_air_date.split('-')[0] : '');
-
-            const rating = data.vote_average
-                ? data.vote_average.toFixed(1)
-                : 'N/A';
-
-            const overview = data.overview
-                ? data.overview.slice(0, 120) + '...'
-                : 'No description available.';
-
             const sub = item.type === 'tv'
                 ? `S${item.season} • E${item.episode}`
                 : 'Continue Watching';
 
+            output += `
+               <div class="movie-card continue-card">
+                    <button class="remove-continue"
+                        onclick="removeContinueWatching(${item.id}, '${item.type}')">
+                        ✕
+                    </button>
+                    <div class="card-head" style="height: fit-content;">
+                        <img src="${poster}" class="card-img">
+                        <div class="card-overlay">
+                            <div class="play" onclick="viewDetails(${item.id}, '${item.type}')">
+                                <ion-icon name="play-circle-outline"></ion-icon>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${title}</h3>
+                        <div class="card-info">
+                            <span class="genre">${sub}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
 
-            const card = `
-<div class="movie-card continue-card"
-     onmouseenter="showPreview(this)"
-     onmouseleave="hidePreview()"
-     data-title="${title}"
-     data-year="${year}"
-     data-rating="${rating}"
-     data-overview="${overview}"
-     data-poster="${poster}"
-     data-id="${item.id}"
-     data-type="${item.type}"
->
-
-    <div class="poster-wrapper">
-        <img src="${poster}" class="card-img">
-
-        <div class="poster-overlay">
-            <h4>${title}</h4>
-            <span>${year}</span>
-        </div>
-    </div>
-
-</div>
-`;
-
-            grid.innerHTML += card;
-
+            $('#continue-watching-grid').html(output);
         });
-
     });
-
 }
 
 
@@ -394,6 +371,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
