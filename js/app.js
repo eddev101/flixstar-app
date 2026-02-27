@@ -469,18 +469,19 @@ const btnClose = popup.querySelector('.preview-close');
 
 function showPreview(cardWrapper) {
     const rect = cardWrapper.getBoundingClientRect();
-    
-    // Always try right side first, fallback to left if no space
-    let left = rect.right + 20;          // 20px gap from card
-    if (left + 380 > window.innerWidth) {   // 380 = popup width
-        left = rect.left - 380 - 20;     // put on left side
+
+    let left = rect.right + 20;
+    if (left + 380 > window.innerWidth) {
+        left = rect.left - 380 - 20;
     }
-    
-    // Vertical: center-ish on the card
-    const top = rect.top + window.scrollY + (rect.height / 2) - (520 / 2);  // 520 = popup height
-    
-    popup.style.left = left + 'px';
-    popup.style.top  = Math.max(20, top) + 'px';   // don't go above top of screen
+
+    // Use viewport top + small offset — no scrollY needed for fixed position
+    let top = rect.top + 40;                     // 40px below card top
+    top = Math.max(20, Math.min(top, window.innerHeight - 540));  // keep inside viewport
+
+    popup.style.position = 'fixed';              // make sure it's fixed (not absolute)
+    popup.style.left   = left + 'px';
+    popup.style.top    = top + 'px';
     
     // fill content (keep your existing lines)
     popupBackdrop.style.backgroundImage = `url(${cardWrapper.dataset.backdrop || ''})`;
@@ -529,6 +530,7 @@ popup.addEventListener('mouseleave', () => {
 btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
 });
+
 
 
 
