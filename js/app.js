@@ -77,7 +77,7 @@ function indextrendingshows() {
             let series = response.data.results.slice(0, 12);
             let output = '';
             $.each(series, (index, series) => {
-                let poster = series.backdrop_path ? `https://image.tmdb.org/t/p/w780${series.backdrop_path}` : "images/default-bg.png";
+                let poster = series.poster_path ? `https://image.tmdb.org/t/p/w780${series.poster_path}` : "images/default-bg.png";
                 let year = series.first_air_date.slice(0, 4);
                 output += `
                     <a href="#" onclick="return false;">
@@ -110,7 +110,7 @@ function indexpopshows() {
             let series = response.data.results.slice(0, 12);
             let output = '';
             $.each(series, (index, series) => {
-                let poster = series.backdrop_path ? `https://image.tmdb.org/t/p/w780${series.backdrop_path}` : "images/default-bg.png";
+                let poster = series.poster_path ? `https://image.tmdb.org/t/p/w780${series.poster_path}` : "images/default-bg.png";
                 let year = series.first_air_date.slice(0, 4);
                 output += `
                     <a href="#" onclick="return false;">
@@ -371,6 +371,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
