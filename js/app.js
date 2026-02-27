@@ -485,8 +485,13 @@ function showPreview(cardWrapper) {
     // fill content (keep your existing lines)
     popupBackdrop.style.backgroundImage = `url(${cardWrapper.dataset.backdrop || ''})`;
     popupTitle.textContent = cardWrapper.dataset.title || 'No title';
-    // ... rest of filling code ...
-    
+    popupYear.textContent = cardWrapper.dataset.year;
+    popupRating.textContent = cardWrapper.dataset.rating;
+    popupOverview.textContent = cardWrapper.dataset.overview;
+
+    btnWatch.onclick = () => viewMovieDetails(cardWrapper.dataset.id);
+    btnWatchlist.onclick = () => addToWatchlist(cardWrapper.dataset.id);
+
     popup.classList.add('active');
 }
 
