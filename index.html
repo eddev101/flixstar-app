@@ -44,7 +44,7 @@
     </button>
 
     <div class="movies-grid continue-grid" id="continue-watching-grid"></div>
-        <div id="floating-preview" class="floating-preview"></div>
+
 
     <button class="slider-btn right" onclick="scrollContinue(1)">
         <ion-icon name="chevron-forward-outline"></ion-icon>
@@ -314,75 +314,10 @@
     right: -10px;
 }
 
-/* Poster stays same */
-.poster-wrapper {
-    position: relative;
-    overflow: hidden;
-    border-radius: 10px;
-}
-
-.card-img {
-    width: 100%;
-    display: block;
-    transition: 0.3s ease;
-}
-
-/* Blur effect */
-.movie-card:hover .card-img {
-    filter: blur(3px) brightness(0.6);
-}
-
-/* Text over poster */
-.poster-overlay {
-    position: absolute;
-    bottom: 10px;
-    left: 10px;
-    color: white;
-    opacity: 0;
-    transition: 0.3s ease;
-}
-
-.movie-card:hover .poster-overlay {
-    opacity: 1;
-}
-
-/* Floating preview */
-.floating-preview {
-    position: fixed;
-    width: 350px;
-    background: #111;
-    border-radius: 12px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-    display: none;
-    z-index: 9999;
-    overflow: hidden;
-    pointer-events: auto;
-}
-
-.preview-bg {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    filter: brightness(0.7);
-}
-
-.preview-info {
-    padding: 15px;
-    color: white;
-}
-
-.preview-info button {
-    background: white;
-    color: black;
-    border: none;
-    padding: 8px 14px;
-    border-radius: 6px;
-    cursor: pointer;
-}
-
 </style>
 </body>
 </html>
+
 
 
 
