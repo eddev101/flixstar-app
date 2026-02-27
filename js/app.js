@@ -2,49 +2,120 @@
 // Define your TMDB API key here
 const API_KEY = '5ec279387e9aa9488ef4d00b22acc451'; // Updated with your TMDB API key
 
-function fetchMovies(filter) {
-    let apiUrl;
+// Reusable render function (same as before, just takes different container)
+function renderMovies(movies, containerSelector) {
+    let output = '';
 
-    if (filter === 'now_playing') {
-        apiUrl = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}&language=en-US&page=1`;
-    } else if (filter === 'popular') {
-        apiUrl = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
-    } else if (filter === 'newest') {
-        apiUrl = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US`;
-    }
+    movies.forEach(movie => {
+        const poster = movie.poster_path 
+            ? `https://image.tmdb.org/t/p/w780${movie.poster_path}` 
+            : "images/default.webp";
+        
+        const year = movie.release_date 
+            ? movie.release_date.slice(0, 4) 
+            : 'N/A';
 
-    axios.get(apiUrl)
-        .then(response => {
-            let movies = response.data.results.slice(0, 18);
-            let output = '';
-            movies.forEach(movie => {
-                let poster = movie.poster_path ? `https://image.tmdb.org/t/p/w780${movie.poster_path}` : "images/default.webp";
-                let year = movie.release_date ? movie.release_date.slice(0, 4) : 'N/A';
-                output += `
-                    <a href="#" onclick="return false;">
-                    <div class="movie-card continue-card">
-                        <div class="card-head" style="height: fit-content;">
-                            <img src="${poster}" class="card-img">
-                            <div class="card-overlay">
-                                <div class="bookmark" onclick="addToWatchlist(${movie.id});"><ion-icon name="bookmark-outline"></ion-icon></div>
-                                <div class="rating"><ion-icon name="star-outline"></ion-icon><span>${movie.vote_average.toString().substring(0, 3)}</span></div>
-                                <div class="play" onclick="viewMovieDetails(${movie.id});"><ion-icon name="play-circle-outline"></ion-icon></div>
-                            </div>
+        output += `
+            <a href="#" onclick="return false;">
+            <div class="movie-card continue-card">
+                <div class="card-head" style="height: fit-content;">
+                    <img src="${poster}" class="card-img" alt="${movie.title}">
+                    <div class="card-overlay">
+                        <div class="bookmark" onclick="addToWatchlist(${movie.id}); event.stopPropagation();">
+                            <ion-icon name="bookmark-outline"></ion-icon>
                         </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${movie.title}</h3>
-                            <div class="card-info">
-                                <span class="genre">Movie</span><span class="year">${year}</span>
-                            </div>
+                        <div class="rating">
+                            <ion-icon name="star-outline"></ion-icon>
+                            <span>${movie.vote_average.toFixed(1)}</span>
                         </div>
-                    </div></a>`;
-            });
-            $('#home-movies').html(output);
+                        <div class="play" onclick="viewMovieDetails(${movie.id}); event.stopPropagation();">
+                            <ion-icon name="play-circle-outline"></ion-icon>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h3 class="card-title">${movie.title}</h3>
+                    <div class="card-info">
+                        <span class="genre">Movie</span>
+                        <span class="year">${year}</span>
+                    </div>
+                </div>
+            </div>
+            </a>`;
+    });
+
+    $(containerSelector).html(output || '<p class="no-results">No movies found</p>');
+}
+
+// ────────────────────────────────────────────────
+
+function loadTrendingMovies() {
+    const url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${API_KEY}&language=en-US&page=1`;
+    
+    axios.get(url)
+        .then(res => {
+            const movies = res.data.results.slice(0, 18);
+            renderMovies(movies, '#trending-movies');
         })
-        .catch(error => {
-            console.log(error);
+        .catch(err => {
+            console.error('Trending fetch failed:', err);
+            $('#trending-movies').html('<p class="error">Failed to load trending movies</p>');
         });
 }
+
+function loadNowPlayingMovies() {
+    const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`;
+    
+    axios.get(url)
+        .then(res => {
+            const movies = res.data.results.slice(0, 18);
+            renderMovies(movies, '#now-playing');
+        })
+        .catch(err => {
+            console.error('Now playing fetch failed:', err);
+            $('#now-playing').html('<p class="error">Failed to load now playing movies</p>');
+        });
+}
+
+function loadTopRatedMovies() {
+    const url = `https://api.themoviedb.org/3/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
+    
+    axios.get(url)
+        .then(res => {
+            const movies = res.data.results.slice(0, 18);
+            renderMovies(movies, '#top-rated');
+        })
+        .catch(err => {
+            console.error('Top rated fetch failed:', err);
+            $('#top-rated').html('<p class="error">Failed to load top rated movies</p>');
+        });
+}
+
+// ────────────────────────────────────────────────
+// Load all sections when the page is ready
+
+$(document).ready(function() {
+    // Optional: show loading placeholders
+    $('#trending-movies, #now-playing, #top-rated').html('<div class="loading">Loading...</div>');
+
+    // Load everything (you can also use Promise.all if you want to wait for all)
+    loadTrendingMovies();
+    loadNowPlayingMovies();
+    loadTopRatedMovies();
+
+    // OR: parallel loading with Promise.all
+    /*
+    Promise.all([
+        axios.get(`https://api.themoviedb.org/3/trending/movie/day?...`),
+        axios.get(`https://api.themoviedb.org/3/movie/now_playing?...`),
+        axios.get(`https://api.themoviedb.org/3/movie/top_rated?...`)
+    ]).then(([trend, now, top]) => {
+        renderMovies(trend.data.results.slice(0,18), '#trending-movies');
+        renderMovies(now.data.results.slice(0,18), '#now-playing');
+        renderMovies(top.data.results.slice(0,18), '#top-rated');
+    }).catch(err => console.error(err));
+    */
+});
 
 // Placeholder functions for watchlist and details (implement later)
 function addToWatchlist(id, type = 'movie') {
