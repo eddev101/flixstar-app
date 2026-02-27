@@ -329,11 +329,14 @@ function fetchSliderItems() {
 
 // Add to $(document).ready in app.js
 $(document).ready(function() {
-  fetchMovies('now_playing');
+  //fetchMovies('now_playing');
   indextrendingshows();
   indexpopshows();
   fetchSliderItems(); // Add this line
   loadContinueWatching(); // 👈 ADD
+  loadTrendingMovies();
+  loadNowPlayingMovies();
+  loadTopRatedMovies();
 });
 
 function addToWatchlist(id, type = 'movie') {
@@ -442,6 +445,7 @@ function scrollContinue(direction) {
         behavior: 'smooth'
     });
 }
+
 
 
 
