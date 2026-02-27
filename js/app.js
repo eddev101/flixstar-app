@@ -17,6 +17,7 @@ function renderMovies(movies, containerSelector) {
 
         output += `
     <a href="#" class="movie-card-wrapper" 
+       data-type="movie"
        data-id="${movie.id}"
        data-backdrop="${movie.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + movie.backdrop_path : ''}"
        data-title="${movie.title.replace(/"/g, '&quot;')}"
@@ -158,21 +159,29 @@ function indextrendingshows() {
                 let poster = series.poster_path ? `https://image.tmdb.org/t/p/w780${series.poster_path}` : "images/default-bg.png";
                 let year = series.first_air_date.slice(0, 4);
                 output += `
-                    <a href="#" onclick="return false;">
-                    <div class="live-card continue-card">
-                        <div class="card-head" style="height: fit-content;">
-                            <img src="${poster}" alt="" class="card-img">
-                            <div class="live-badge">${series.vote_average.toString().substring(0, 3)}</div>
-                            <div class="total-viewers">${year}</div>
-                            <div class="play" onclick="viewTvShowDetails(${series.id});">
-                                <ion-icon name="play-circle-outline"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${series.name}</h3>
-                        </div>
-                    </div>
-                    </a>`;
+    <a href="#" class="movie-card-wrapper"   // ← add this class for popup to detect
+       data-type="tv"
+       data-id="${series.id}"
+       data-backdrop="${series.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + series.backdrop_path : ''}"
+       data-title="${series.name.replace(/"/g, '&quot;')}"   // ← name instead of title
+       data-year="${series.first_air_date ? series.first_air_date.slice(0,4) : 'N/A'}"
+       data-rating="${series.vote_average.toFixed(1)}"
+       data-overview="${series.overview ? series.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${series.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${series.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${series.name}</h3>
+            </div>
+        </div>
+    </a>`;
             });
             $('#home-trendingshows').html(output);
         })
@@ -191,21 +200,29 @@ function indexpopshows() {
                 let poster = series.poster_path ? `https://image.tmdb.org/t/p/w780${series.poster_path}` : "images/default-bg.png";
                 let year = series.first_air_date.slice(0, 4);
                 output += `
-                    <a href="#" onclick="return false;">
-                    <div class="live-card continue-card">
-                        <div class="card-head" style="height: fit-content;">
-                            <img src="${poster}" alt="" class="card-img">
-                            <div class="live-badge">${series.vote_average.toString().substring(0, 3)}</div>
-                            <div class="total-viewers">${year}</div>
-                            <div class="play" onclick="viewTvShowDetails(${series.id});">
-                                <ion-icon name="play-circle-outline"></ion-icon>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="card-title">${series.name}</h3>
-                        </div>
-                    </div>
-                    </a>`;
+    <a href="#" class="movie-card-wrapper"   // ← add this class for popup to detect
+       data-type="tv"
+       data-id="${series.id}"
+       data-backdrop="${series.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + series.backdrop_path : ''}"
+       data-title="${series.name.replace(/"/g, '&quot;')}"   // ← name instead of title
+       data-year="${series.first_air_date ? series.first_air_date.slice(0,4) : 'N/A'}"
+       data-rating="${series.vote_average.toFixed(1)}"
+       data-overview="${series.overview ? series.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${series.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${series.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${series.name}</h3>
+            </div>
+        </div>
+    </a>`;
             });
             $('#home-popshows').html(output);
         })
@@ -486,15 +503,26 @@ function showPreview(card) {
     popup.style.left = left + 'px';
     popup.style.top  = top + 'px';
 
-    // Fill content
-    popupBackdrop.style.backgroundImage = `url(${card.dataset.backdrop || ''})`;
-    popupTitle.textContent    = card.dataset.title   || 'No title';
-    popupYear.textContent     = card.dataset.year    || '';
-    popupRating.textContent   = card.dataset.rating  || '';
-    popupOverview.textContent = card.dataset.overview || 'No description available.';
+    const type = card.dataset.type || 'movie';  // default to movie if missing
 
-    btnWatch.onclick     = () => viewMovieDetails(card.dataset.id);
-    btnWatchlist.onclick = () => addToWatchlist(card.dataset.id);
+// Fill content
+popupBackdrop.style.backgroundImage = `url(${card.dataset.backdrop || ''})`;
+popupTitle.textContent    = card.dataset.title   || 'No title';
+popupYear.textContent     = card.dataset.year    || 'N/A';
+popupRating.textContent   = card.dataset.rating  || '—';
+popupOverview.textContent = card.dataset.overview || 'No description available.';
+
+// New: show type
+popup.querySelector('.preview-type').textContent = type === 'tv' ? 'TV Show' : 'Movie';
+
+// Correct click handler based on type
+if (type === 'tv') {
+    btnWatch.onclick = () => viewTvShowDetails(card.dataset.id);
+} else {
+    btnWatch.onclick = () => viewMovieDetails(card.dataset.id);
+}
+
+btnWatchlist.onclick = () => addToWatchlist(card.dataset.id);  // assuming same for both
 
     popup.classList.add('active');
 }
@@ -547,6 +575,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
