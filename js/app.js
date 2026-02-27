@@ -16,8 +16,15 @@ function renderMovies(movies, containerSelector) {
             : 'N/A';
 
         output += `
-            <a href="#" onclick="return false;">
-            <div class="movie-card continue-card">
+    <a href="#" class="movie-card-wrapper" 
+       data-id="${movie.id}"
+       data-backdrop="${movie.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + movie.backdrop_path : ''}"
+       data-title="${movie.title.replace(/"/g, '&quot;')}"
+       data-year="${year}"
+       data-rating="${movie.vote_average.toFixed(1)}"
+       data-overview="${movie.overview ? movie.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="movie-card continue-card">
                 <div class="card-head" style="height: fit-content;">
                     <img src="${poster}" class="card-img" alt="${movie.title}">
                     <div class="card-overlay">
@@ -447,6 +454,90 @@ function scrollContinue(direction) {
 }
 
 
+
+//floating preview
+let previewTimeout;
+const popup = document.getElementById('movie-preview-popup');
+const popupBackdrop = popup.querySelector('.preview-backdrop');
+const popupTitle = popup.querySelector('.preview-title');
+const popupYear = popup.querySelector('.preview-year');
+const popupRating = popup.querySelector('.preview-rating span');
+const popupOverview = popup.querySelector('.preview-overview');
+const btnWatch = popup.querySelector('.btn-watch-now');
+const btnWatchlist = popup.querySelector('.btn-add-watchlist');
+const btnClose = popup.querySelector('.preview-close');
+
+function showPreview(cardWrapper) {
+    clearTimeout(previewTimeout);
+
+    const rect = cardWrapper.getBoundingClientRect();
+    const cardCenterX = rect.left + rect.width / 2;
+    const viewportWidth = window.innerWidth;
+
+    // Decide side: right if enough space, else left
+    let leftPos;
+    if (cardCenterX < viewportWidth / 2) {
+        // card on left → popup on right
+        leftPos = rect.right + 16; // 16px gap
+    } else {
+        // card on right → popup on left
+        leftPos = rect.left - popup.offsetWidth - 16;
+    }
+
+    // Vertical position: try to align top with card, but clamp
+    let topPos = rect.top + window.scrollY - 40; // a bit higher
+    topPos = Math.max(20, Math.min(topPos, window.innerHeight + window.scrollY - popup.offsetHeight - 20));
+
+    popup.style.left = leftPos + 'px';
+    popup.style.top  = topPos + 'px';
+
+    // Fill content
+    popupBackdrop.style.backgroundImage = `url(${cardWrapper.dataset.backdrop})`;
+    popupTitle.textContent = cardWrapper.dataset.title;
+    popupYear.textContent = cardWrapper.dataset.year;
+    popupRating.textContent = cardWrapper.dataset.rating;
+    popupOverview.textContent = cardWrapper.dataset.overview;
+
+    btnWatch.onclick = () => viewMovieDetails(cardWrapper.dataset.id);
+    btnWatchlist.onclick = () => addToWatchlist(cardWrapper.dataset.id);
+
+    popup.classList.add('active');
+}
+
+function hidePreview() {
+    previewTimeout = setTimeout(() => {
+        popup.classList.remove('active');
+    }, 150); // small delay so popup → card transition is smooth
+}
+
+document.addEventListener('mouseover', e => {
+    const wrapper = e.target.closest('.movie-card-wrapper');
+    if (wrapper) {
+        showPreview(wrapper);
+    }
+});
+
+document.addEventListener('mouseout', e => {
+    const wrapper = e.target.closest('.movie-card-wrapper');
+    const related = e.relatedTarget;
+
+    if (wrapper && (!related || !popup.contains(related))) {
+        hidePreview();
+    }
+});
+
+// Keep popup open when hovering it
+popup.addEventListener('mouseenter', () => {
+    clearTimeout(previewTimeout);
+});
+
+popup.addEventListener('mouseleave', () => {
+    hidePreview();
+});
+
+btnClose.addEventListener('click', () => {
+    popup.classList.remove('active');
+});
 
 
 
