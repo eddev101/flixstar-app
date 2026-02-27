@@ -64,6 +64,7 @@ function loadTrendingMovies() {
         .then(res => {
             const movies = res.data.results.slice(0, 18);
             renderMovies(movies, '#trending-movies');
+            afterMoviesLoaded();
         })
         .catch(err => {
             console.error('Trending fetch failed:', err);
@@ -78,6 +79,7 @@ function loadNowPlayingMovies() {
         .then(res => {
             const movies = res.data.results.slice(0, 18);
             renderMovies(movies, '#now-playing');
+            afterMoviesLoaded();
         })
         .catch(err => {
             console.error('Now playing fetch failed:', err);
@@ -92,6 +94,7 @@ function loadTopRatedMovies() {
         .then(res => {
             const movies = res.data.results.slice(0, 18);
             renderMovies(movies, '#top-rated');
+            afterMoviesLoaded();
         })
         .catch(err => {
             console.error('Top rated fetch failed:', err);
@@ -184,6 +187,7 @@ function indextrendingshows() {
     </a>`;
             });
             $('#home-trendingshows').html(output);
+            afterMoviesLoaded();
         })
         .catch(error => {
             console.log(error);
@@ -225,6 +229,7 @@ function indexpopshows() {
     </a>`;
             });
             $('#home-popshows').html(output);
+            afterMoviesLoaded();
         })
         .catch(error => {
             console.log(error);
@@ -444,6 +449,7 @@ section.style.display = 'block';
             `;
 
             $('#continue-watching-grid').html(output);
+            afterMoviesLoaded();
         });
     });
 }
@@ -458,17 +464,62 @@ window.removeContinueWatching = function (id, type) {
 };
 
 
-//newly added
-function scrollContinue(direction) {
-    const container = document.getElementById('continue-watching-grid');
+//newly added scroll
+function scrollContinue(direction, button) {
+    // Find the closest .movies-grid / .continue-grid sibling to the clicked button
+    const container = button.closest('.continue-wrapper')
+                           ?.querySelector('.movies-grid, .continue-grid');
+    
+    if (!container) return;
 
-    const scrollAmount = 400; // how much to scroll each click
+    const scrollAmount = 400; // pixels to scroll each click - adjust if needed
 
     container.scrollBy({
         left: direction * scrollAmount,
         behavior: 'smooth'
     });
 }
+
+// Call this function after rendering each section (or on window resize/load)
+function updateSliderArrows() {
+    document.querySelectorAll('.continue-wrapper').forEach(wrapper => {
+        const container = wrapper.querySelector('.movies-grid, .continue-grid');
+        const leftBtn  = wrapper.querySelector('.slider-btn.left');
+        const rightBtn = wrapper.querySelector('.slider-btn.right');
+
+        if (!container || !leftBtn || !rightBtn) return;
+
+        const canScrollLeft  = container.scrollLeft > 0;
+        const canScrollRight = Math.ceil(container.scrollLeft + container.clientWidth) < container.scrollWidth;
+
+        leftBtn.style.display  = canScrollLeft  ? 'flex' : 'none';
+        rightBtn.style.display = canScrollRight ? 'flex' : 'none';
+    });
+}
+
+// Attach the scroll function to all buttons (delegation - efficient)
+document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.slider-btn');
+    if (!btn) return;
+
+    const direction = btn.classList.contains('left') ? -1 : 1;
+    scrollContinue(direction, btn);
+});
+
+// Update arrows when:
+window.addEventListener('load', updateSliderArrows);
+window.addEventListener('resize', updateSliderArrows);
+
+// Also update after content is loaded (call this after each axios .then)
+function afterMoviesLoaded() {
+    setTimeout(updateSliderArrows, 300); // small delay for layout to settle
+}
+
+// Example: call it in your fetch/render functions
+// e.g. in fetchTrendingMovies() .then(...)
+afterMoviesLoaded();
+
+// Same for now-playing, popular shows, etc.
 
 
 
@@ -575,6 +626,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
