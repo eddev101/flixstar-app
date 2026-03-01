@@ -240,7 +240,7 @@ function indexpopshows() {
 // Streaming Platform TV Shows Sections
 // ────────────────────────────────────────────────
 
-const REGION = 'US';  // Change to 'US' if you want US catalog
+//const REGION = 'US';  // Change to 'US' if you want US catalog
 
 const PROVIDERS = {
     netflix:     '8',
@@ -252,11 +252,13 @@ const PROVIDERS = {
 
 function loadTvByProvider(providerKey, containerId) {
     const providerId = PROVIDERS[providerKey];
-    console.log('Providers script loaded - REGION:', REGION);
-    if (!providerId) {
-        console.error(`Unknown provider: ${providerKey}`);
-        return;
-    }
+    if (!providerId) return;
+
+    const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
+                `&language=en-US` +
+                `&sort_by=popularity.desc` +
+                `&page=1` +
+                `&with_watch_providers=${providerId}`;  // no watch_region
 
    /* const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
                 `&language=en-US` +
@@ -264,7 +266,7 @@ function loadTvByProvider(providerKey, containerId) {
                 `&page=1` +
                 `&watch_region=${REGION}` +
                 `&with_watch_providers=${providerId}`;*/
-    const url = `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}&language=en-US&page=1`;
+    
 
     axios.get(url)
         .then(response => {
@@ -716,6 +718,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
