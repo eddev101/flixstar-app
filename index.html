@@ -526,10 +526,53 @@
     font-weight: 500;
 }
 
+/* Mobile / tablet - centered popup */
+@media (max-width: 768px) {
+    .movie-preview-popup {
+        width: 90%;                     /* almost full width with margin */
+        max-width: 380px;               /* don't get too wide on bigger phones */
+        height: 420px;                  /* taller on mobile to show more text */
+        left: 50% !important;
+        top: 50% !important;
+        transform: translate(-50%, -50%) scale(0.95) !important;   /* center it */
+        border-radius: 16px;            /* optional: nicer look on mobile */
+        box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    }
 
+    .movie-preview-popup.active {
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    /* Optional: make content more mobile-friendly */
+    .preview-content {
+        padding: 2rem 1.5rem;          /* less side padding */
+    }
+
+    .preview-title {
+        font-size: 1.6rem;
+    }
+
+    .preview-overview {
+        font-size: 0.95rem;
+        -webkit-line-clamp: 5;         /* show more lines on mobile */
+    }
+  .card-body,.card-title{
+    display: none;
+  }
+}
+  .section-heading {
+    font-size: 1.4em;
+    font-weight: var(--fw-5);
+    margin-bottom: 15px;
+  }
+  .movies-grid,.live{
+    margin-bottom: 20px;
+  }
+  
 </style>
 </body>
 </html>
+
 
 
 
