@@ -21,7 +21,19 @@
 
     <div class="container">
         <div class="container main-content">
-            <h1 style="margin: 25px 0; text-align: center;">Popular Tv Shows</h1>
+            <h1 style="margin: 25px 0; text-align: center;">Tv Shows</h1>
+                <div class="filter-bar" style="margin-bottom: 20px; text-align: center;">
+            <label for="providerFilter" style="font-size: 1.2rem; margin-right: 10px;">Filter by Platform:</label>
+            <select id="providerFilter" style="padding: 8px 12px; font-size: 1rem; border-radius: 6px; background: #222; color: white; border: 1px solid #444;">
+            <option value="all">All / Trending</option>
+            <option value="8">Netflix</option>
+            <option value="119">Amazon Prime</option>
+            <option value="350">Apple TV+</option>
+            <option value="531">Paramount+</option>
+            <option value="387">Peacock</option>
+            </select>
+            </div>
+
             <div class="movies-grid" id="shows"></div>
             <button id="loadMoreButton" class="btn btn-primary more-btn">Load More</button>
         </div>
@@ -55,3 +67,4 @@
     </style>
 </body>
 </html>
+
