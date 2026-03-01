@@ -91,7 +91,12 @@
       <!--<div class="movies-grid" id="home-movies"></div>-->
 
       <!--now playing-->
-      <h2 class="section-heading">Now Playing</h2>
+      <h2 class="section-heading">
+        Now Playing
+        <a href="movie/movie-list.html" class="view-all-btn" title="View All">
+            <ion-icon name="arrow-forward-circle-outline"></ion-icon>
+        </a>
+      </h2>
        <div class="continue-wrapper">
     <button class="slider-btn left">
         <ion-icon name="chevron-back-outline"></ion-icon>
@@ -587,6 +592,9 @@
 
 /* Mobile / tablet - centered popup */
 @media (max-width: 768px) {
+  .slider-btn{
+    display: none !important;
+  }
     .movie-preview-popup {
         width: 90%;                     /* almost full width with margin */
         max-width: 380px;               /* don't get too wide on bigger phones */
@@ -627,10 +635,33 @@
   .movies-grid,.live{
     margin-bottom: 20px;
   }
-  
+  .view-all-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 50%;
+    color: #ffffff;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.view-all-btn:hover {
+    background: #e50914;
+    transform: scale(1.1);
+}
+
+.section-heading {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 </style>
 </body>
 </html>
+
 
 
 
