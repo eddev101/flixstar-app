@@ -62,7 +62,7 @@ function loadTrendingMovies() {
     
     axios.get(url)
         .then(res => {
-            const movies = res.data.results.slice(0, 18);
+            const movies = res.data.results.slice(0, 20);
             renderMovies(movies, '#trending-movies');
             afterMoviesLoaded();
         })
@@ -77,7 +77,7 @@ function loadNowPlayingMovies() {
     
     axios.get(url)
         .then(res => {
-            const movies = res.data.results.slice(0, 18);
+            const movies = res.data.results.slice(0, 20);
             renderMovies(movies, '#now-playing');
             afterMoviesLoaded();
         })
@@ -92,7 +92,7 @@ function loadTopRatedMovies() {
     
     axios.get(url)
         .then(res => {
-            const movies = res.data.results.slice(0, 18);
+            const movies = res.data.results.slice(0, 20);
             renderMovies(movies, '#top-rated');
             afterMoviesLoaded();
         })
@@ -156,7 +156,7 @@ function loadMoreMovies() {
 function indextrendingshows() {
     axios.get(`https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}&language=en-US&page=1&sort_by=popularity.desc`)
         .then(response => {
-            let series = response.data.results.slice(0, 12);
+            let series = response.data.results.slice(0, 20);
             let output = '';
             $.each(series, (index, series) => {
                 let poster = series.poster_path ? `https://image.tmdb.org/t/p/w780${series.poster_path}` : "images/default-bg.png";
@@ -198,7 +198,7 @@ function indextrendingshows() {
 function indexpopshows() {
     axios.get(`https://api.themoviedb.org/3/trending/tv/day?api_key=${API_KEY}&language=en-US&page=1&sort_by=popularity.desc`)
         .then(response => {
-            let series = response.data.results.slice(0, 12);
+            let series = response.data.results.slice(0, 20);
             let output = '';
             $.each(series, (index, series) => {
                 let poster = series.poster_path ? `https://image.tmdb.org/t/p/w780${series.poster_path}` : "images/default-bg.png";
@@ -244,7 +244,13 @@ function indexpopshows() {
 function loadNetflixShows() {
     axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=8`)
         .then(response => {
-            let shows = response.data.results.slice(0, 12);
+            let shows = response.data.results.slice(0, 20);
+            // If no shows at all → hide the whole section
+            if (shows.length === 0) {
+                $('#netflix-section').hide();   // hide the parent section
+                return;
+            }
+            
             let output = '';
             $.each(shows, (index, show) => {
                 let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
@@ -279,16 +285,24 @@ function loadNetflixShows() {
         })
         .catch(error => {
             console.log(error);
-            $('#netflix-shows').html('<p class="error">Failed to load</p>');
+            $('#netflix-section').hide();   // also hide on error
         });
 }
+
 
 
 // Amazon Prime Shows
 function loadAmazonPrimeShows() {
     axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=119`)
         .then(response => {
-            let shows = response.data.results.slice(0, 12);
+            let shows = response.data.results.slice(0, 20);
+            
+            // If no shows at all → hide the whole section
+            if (shows.length === 0) {
+                $('#amazon-prime-section').hide();   // hide the parent section
+                return;
+            }
+
             let output = '';
             $.each(shows, (index, show) => {
                 let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
@@ -318,12 +332,13 @@ function loadAmazonPrimeShows() {
         </div>
     </a>`;
             });
-            $('#amazon-prime-shows').html(output || '<p class="no-results">No Prime shows found in region</p>');
+
+            $('#amazon-prime-shows').html(output);
             afterMoviesLoaded();
         })
         .catch(error => {
             console.log(error);
-            $('#amazon-prime-shows').html('<p class="error">Failed to load</p>');
+            $('#amazon-prime-section').hide();   // also hide on error
         });
 }
 
@@ -333,7 +348,14 @@ function loadAmazonPrimeShows() {
 function loadAppleTvShows() {
     axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=350`)
         .then(response => {
-            let shows = response.data.results.slice(0, 12);
+            let shows = response.data.results.slice(0, 20);
+            
+            // If no shows at all → hide the whole section
+            if (shows.length === 0) {
+                $('#apple-tv-section').hide();   // hide the parent section
+                return;
+            }
+            
             let output = '';
             $.each(shows, (index, show) => {
                 let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
@@ -368,7 +390,7 @@ function loadAppleTvShows() {
         })
         .catch(error => {
             console.log(error);
-            $('#apple-tv-shows').html('<p class="error">Failed to load</p>');
+            $('#apple-tv-section').hide();   // also hide on error
         });
 }
 
@@ -378,7 +400,14 @@ function loadAppleTvShows() {
 function loadParamountShows() {
     axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=531`)
         .then(response => {
-            let shows = response.data.results.slice(0, 12);
+            let shows = response.data.results.slice(0, 20);
+            
+            // If no shows at all → hide the whole section
+            if (shows.length === 0) {
+                $('#paramount-section').hide();   // hide the parent section
+                return;
+            }
+            
             let output = '';
             $.each(shows, (index, show) => {
                 let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
@@ -413,7 +442,7 @@ function loadParamountShows() {
         })
         .catch(error => {
             console.log(error);
-            $('#paramount-shows').html('<p class="error">Failed to load</p>');
+            $('#paramount-section').hide();   // also hide on error
         });
 }
 
@@ -422,7 +451,13 @@ function loadParamountShows() {
 function loadPeacockShows() {
     axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=387`)
         .then(response => {
-            let shows = response.data.results.slice(0, 12);
+            let shows = response.data.results.slice(0, 20);
+            // If no shows at all → hide the whole section
+            if (shows.length === 0) {
+                $('#peacock-section').hide();   // hide the parent section
+                return;
+            }
+            
             let output = '';
             $.each(shows, (index, show) => {
                 let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
@@ -457,7 +492,7 @@ function loadPeacockShows() {
         })
         .catch(error => {
             console.log(error);
-            $('#peacock-shows').html('<p class="error">Failed to load</p>');
+            $('#peacock-section').hide();   // also hide on error
         });
 }
 
@@ -859,6 +894,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
