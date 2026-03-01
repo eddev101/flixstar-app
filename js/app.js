@@ -236,6 +236,89 @@ function indexpopshows() {
         });
 }
 
+// ────────────────────────────────────────────────
+// Streaming Platform TV Shows Sections
+// ────────────────────────────────────────────────
+
+const REGION = 'US';  // Change to 'US' if you want US catalog
+
+const PROVIDERS = {
+    netflix:     '8',
+    amazon_prime: '119',
+    apple_tv:    '350',
+    paramount:   '531',
+    peacock:     '387'
+};
+
+function loadTvByProvider(providerKey, containerId) {
+    const providerId = PROVIDERS[providerKey];
+    if (!providerId) {
+        console.error(`Unknown provider: ${providerKey}`);
+        return;
+    }
+
+    const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
+                `&language=en-US` +
+                `&sort_by=popularity.desc` +
+                `&page=1` +
+                `&watch_region=${REGION}` +
+                `&with_watch_providers=${providerId}`;
+
+    axios.get(url)
+        .then(response => {
+            let shows = response.data.results.slice(0, 12);
+            let output = '';
+
+            $.each(shows, (index, show) => {
+                let poster = show.poster_path 
+                    ? `https://image.tmdb.org/t/p/w780${show.poster_path}` 
+                    : "images/default-bg.png";
+                
+                let year = show.first_air_date 
+                    ? show.first_air_date.slice(0, 4) 
+                    : 'N/A';
+
+                output += `
+    <a href="#" class="movie-card-wrapper"
+       data-type="tv"
+       data-id="${show.id}"
+       data-backdrop="${show.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + show.backdrop_path : ''}"
+       data-title="${show.name.replace(/"/g, '&quot;')}"
+       data-year="${year}"
+       data-rating="${show.vote_average.toFixed(1)}"
+       data-overview="${show.overview ? show.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${show.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${show.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${show.name}</h3>
+            </div>
+        </div>
+    </a>`;
+            });
+
+            $(containerId).html(output || '<p class="no-results">No shows found</p>');
+            afterMoviesLoaded();  // refresh slider arrows
+        })
+        .catch(error => {
+            console.error(`Error loading ${providerKey} shows:`, error);
+            $(containerId).html('<p class="error">Failed to load</p>');
+        });
+}
+
+// ────────────────────────────────────────────────
+// Call these when page loads (e.g. in $(document).ready or your init function)
+
+
+
+
 function viewTvShowDetails(seriesId) {
     // Implement navigation to TV show details
     window.location.href = `tvshow/tvshow-details.html?id=${seriesId}`;
@@ -246,6 +329,11 @@ $(document).ready(function() {
     fetchMovies('now_playing');
     indextrendingshows();
     indexpopshows();
+    loadTvByProvider('netflix',     '#netflix-shows');
+    loadTvByProvider('amazon_prime', '#amazon-prime-shows');
+    loadTvByProvider('apple_tv',    '#apple-tv-shows');
+    loadTvByProvider('paramount',   '#paramount-shows');
+    loadTvByProvider('peacock',     '#peacock-shows');
 });
 
 
@@ -626,6 +714,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
