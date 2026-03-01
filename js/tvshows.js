@@ -1,20 +1,31 @@
 const API_KEY = '5ec279387e9aa9488ef4d00b22acc451';
 let page = 1;
-let currentProvider = 'all';  // default: no filter (trending)
-const REGION = 'US';  // change to 'TR' if preferred; 'US' usually has more results
+let currentFilters = {
+    genre: '',
+    year: '',
+    sort: 'popularity.desc',
+    provider: '',
+    country: '',
+    rating: '0'
+};
+const REGION = 'US'; // or 'TR' — US usually has better provider data
 
-function loadShows() {
-    let url = `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}&language=en-US&page=${page}`;
-
-    if (currentProvider !== 'all') {
-        // Use discover with provider filter
-        url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
-              `&language=en-US` +
-              `&sort_by=popularity.desc` +
-              `&page=${page}` +
-              `&watch_region=${REGION}` +
-              `&with_watch_providers=${currentProvider}`;
+function loadShows(reset = false) {
+    if (reset) {
+        page = 1;
+        $('#shows').empty();
+        $('#loadMoreButton').show();
     }
+
+    let url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&page=${page}`;
+
+    if (currentFilters.genre)    url += `&with_genres=${currentFilters.genre}`;
+    if (currentFilters.year)     url += `&first_air_date_year=${currentFilters.year}`;
+    if (currentFilters.provider) url += `&watch_region=${REGION}&with_watch_providers=${currentFilters.provider}`;
+    if (currentFilters.country)  url += `&with_origin_country=${currentFilters.country}`;
+    if (currentFilters.rating > 0) url += `&vote_average.gte=${currentFilters.rating}`;
+    
+    url += `&sort_by=${currentFilters.sort}`;
 
     axios.get(url)
         .then(response => {
@@ -55,11 +66,8 @@ function loadShows() {
 
             $('#shows').append(output);
 
-            // Hide load more if no more pages
-            if (page >= response.data.total_pages) {
+            if (page >= response.data.total_pages || series.length === 0) {
                 $('#loadMoreButton').hide();
-            } else {
-                $('#loadMoreButton').show();
             }
         })
         .catch(error => {
@@ -68,23 +76,55 @@ function loadShows() {
         });
 }
 
+// Fill year dropdown dynamically (1950 to current year)
+function fillYearDropdown() {
+    const select = $('#yearFilter');
+    const currentYear = new Date().getFullYear();
+    select.append('<option value="">Any</option>');
+    for (let y = currentYear; y >= 1950; y--) {
+        select.append(`<option value="${y}">${y}</option>`);
+    }
+}
+
 $(document).ready(() => {
+    fillYearDropdown();
+
     // Initial load
     loadShows();
 
-    // Load more button
+    // Load more
     $('#loadMoreButton').click(() => {
         page++;
         loadShows();
     });
 
-    // Filter dropdown change
-    $('#providerFilter').change(function() {
-        currentProvider = $(this).val();
-        page = 1;
-        $('#shows').empty();  // clear current grid
-        $('#loadMoreButton').show();
-        loadShows();
+    // Filter changes
+    $('#genreFilter, #yearFilter, #sortFilter, #providerFilter, #countryFilter, #ratingFilter').change(function() {
+        currentFilters = {
+            genre:    $('#genreFilter').val(),
+            year:     $('#yearFilter').val(),
+            sort:     $('#sortFilter').val(),
+            provider: $('#providerFilter').val(),
+            country:  $('#countryFilter').val(),
+            rating:   $('#ratingFilter').val()
+        };
+        loadShows(true); // reset = true
+    });
+
+    // Reset button
+    $('#resetFilters').click(() => {
+        $('#genreFilter').val('');
+        $('#yearFilter').val('');
+        $('#sortFilter').val('popularity.desc');
+        $('#providerFilter').val('');
+        $('#countryFilter').val('');
+        $('#ratingFilter').val('0');
+
+        currentFilters = {
+            genre: '', year: '', sort: 'popularity.desc', provider: '', country: '', rating: '0'
+        };
+
+        loadShows(true);
     });
 });
 
