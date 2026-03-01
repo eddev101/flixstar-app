@@ -474,11 +474,6 @@ $(document).ready(function() {
     fetchMovies('now_playing');
     indextrendingshows();
     indexpopshows();
-    loadNetflixShows();
-    loadAmazonPrimeShows();
-    loadAppleTvShows();
-    loadParamountShows();
-    loadPeacockShows();
 });
 
 
@@ -599,6 +594,11 @@ $(document).ready(function() {
   loadTrendingMovies();
   loadNowPlayingMovies();
   loadTopRatedMovies();
+  loadNetflixShows();
+  loadAmazonPrimeShows();
+  loadAppleTvShows();
+  loadParamountShows();
+  loadPeacockShows();
 });
 
 function addToWatchlist(id, type = 'movie') {
@@ -859,6 +859,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
