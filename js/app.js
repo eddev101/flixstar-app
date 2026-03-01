@@ -252,21 +252,23 @@ const PROVIDERS = {
 
 function loadTvByProvider(providerKey, containerId) {
     const providerId = PROVIDERS[providerKey];
+    console.log('Providers script loaded - REGION:', REGION);
     if (!providerId) {
         console.error(`Unknown provider: ${providerKey}`);
         return;
     }
 
-    const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
+   /* const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
                 `&language=en-US` +
                 `&sort_by=popularity.desc` +
                 `&page=1` +
                 `&watch_region=${REGION}` +
-                `&with_watch_providers=${providerId}`;
+                `&with_watch_providers=${providerId}`;*/
+    const url = `https://api.themoviedb.org/3/trending/tv/week?api_key=${API_KEY}&language=en-US&page=1`;
 
     axios.get(url)
         .then(response => {
-            let shows = response.data.results.slice(0, 12);
+            let shows = response.data.results.slice(0, 20);
             let output = '';
 
             $.each(shows, (index, show) => {
@@ -714,6 +716,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
