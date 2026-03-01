@@ -22,17 +22,112 @@
     <div class="container">
         <div class="container main-content">
             <h1 style="margin: 25px 0; text-align: center;">Tv Shows</h1>
-                <div class="filter-bar" style="margin-bottom: 20px; text-align: center;">
-            <label for="providerFilter" style="font-size: 1.2rem; margin-right: 10px;">Filter by Platform:</label>
-            <select id="providerFilter" style="padding: 8px 12px; font-size: 1rem; border-radius: 6px; background: #222; color: white; border: 1px solid #444;">
-            <option value="all">All / Trending</option>
-            <option value="8">Netflix</option>
-            <option value="119">Amazon Prime</option>
-            <option value="350">Apple TV+</option>
-            <option value="531">Paramount+</option>
-            <option value="387">Peacock</option>
+            <div class="filter-bar" style="margin: 20px auto; max-width: 1200px; padding: 15px; background: #1a1a1a; border-radius: 10px; text-align: center;">
+    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; align-items: center;">
+        
+        <!-- Genre -->
+        <div>
+            <label for="genreFilter">Genre:</label>
+            <select id="genreFilter">
+                <option value="">Any</option>
+                <option value="10759">Action & Adventure</option>
+                <option value="16">Animation</option>
+                <option value="35">Comedy</option>
+                <option value="80">Crime</option>
+                <option value="99">Documentary</option>
+                <option value="18">Drama</option>
+                <option value="10751">Family</option>
+                <option value="10762">Kids</option>
+                <option value="9648">Mystery</option>
+                <option value="10763">News</option>
+                <option value="10764">Reality</option>
+                <option value="10765">Sci-Fi & Fantasy</option>
+                <option value="10766">Soap</option>
+                <option value="10767">Talk</option>
+                <option value="10768">War & Politics</option>
+                <option value="37">Western</option>
             </select>
-            </div>
+        </div>
+
+        <!-- Year -->
+        <div>
+            <label for="yearFilter">Year:</label>
+            <select id="yearFilter">
+                <option value="">Any</option>
+                <!-- Will be filled dynamically in JS -->
+            </select>
+        </div>
+
+        <!-- Sort / Order -->
+        <div>
+            <label for="sortFilter">Sort by:</label>
+            <select id="sortFilter">
+                <option value="popularity.desc">Popular</option>
+                <option value="vote_average.desc">Top Rated</option>
+                <option value="first_air_date.desc">Latest → Oldest</option>
+                <option value="first_air_date.asc">Oldest → Latest</option>
+                <option value="name.asc">A-Z</option>
+                <option value="name.desc">Z-A</option>
+            </select>
+        </div>
+
+        <!-- Provider -->
+        <div>
+            <label for="providerFilter">Platform:</label>
+            <select id="providerFilter">
+                <option value="">Any</option>
+                <option value="8">Netflix</option>
+                <option value="119">Amazon Prime Video</option>
+                <option value="337">Disney+</option>
+                <option value="350">Apple TV+</option>
+                <option value="531">Paramount+</option>
+                <option value="387">Peacock</option>
+                <option value="453">Hulu</option>
+                <option value="318">HBO Max / Max</option>
+                <option value="9">Amazon Freevee</option>
+                <option value="283">Crunchyroll</option>
+                <option value="207">YouTube Premium</option>
+                <option value="6">YouTube</option>
+            </select>
+        </div>
+
+        <!-- Country / Origin -->
+        <div>
+            <label for="countryFilter">Country:</label>
+            <select id="countryFilter">
+                <option value="">Any</option>
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="KR">South Korea</option>
+                <option value="JP">Japan</option>
+                <option value="TR">Turkey</option>
+                <option value="IN">India</option>
+                <option value="FR">France</option>
+                <option value="ES">Spain</option>
+                <option value="DE">Germany</option>
+                <option value="CA">Canada</option>
+            </select>
+        </div>
+
+        <!-- Minimum Rating -->
+        <div>
+            <label for="ratingFilter">Min Rating:</label>
+            <select id="ratingFilter">
+                <option value="0">Any</option>
+                <option value="5">5+</option>
+                <option value="6">6+</option>
+                <option value="7">7+</option>
+                <option value="8">8+</option>
+                <option value="9">9+</option>
+            </select>
+        </div>
+
+        <!-- Reset -->
+        <button id="resetFilters" style="padding: 8px 16px; background: #e50914; color: white; border: none; border-radius: 6px; cursor: pointer;">
+            Reset Filters
+        </button>
+    </div>
+</div>
 
             <div class="movies-grid" id="shows"></div>
             <button id="loadMoreButton" class="btn btn-primary more-btn">Load More</button>
@@ -67,4 +162,5 @@
     </style>
 </body>
 </html>
+
 
