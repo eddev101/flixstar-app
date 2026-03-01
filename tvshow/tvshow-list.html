@@ -159,9 +159,140 @@
 
     <style>
         #main-header { position: relative !important; }
+        /* Filter Bar Container */
+.filter-bar {
+    margin: 20px auto;
+    max-width: 1400px;
+    padding: 15px 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+/* Flex container for all filters */
+.filter-bar > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Each filter group (label + select/button) */
+.filter-bar label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #cccccc;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.filter-bar select,
+.filter-bar button {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    background: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px; /* prevents too narrow on mobile */
+}
+
+/* Hover & Focus states */
+.filter-bar select:hover,
+.filter-bar select:focus,
+.filter-bar button:hover,
+.filter-bar button:focus {
+    border-color: #e50914; /* Netflix red accent */
+    background: #333333;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+}
+
+/* Reset button specific style */
+#resetFilters {
+    background: #e50914;
+    border: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    min-width: 120px;
+}
+
+#resetFilters:hover {
+    background: #f40614;
+    transform: translateY(-1px);
+}
+
+/* ────────────────────────────────────────────────
+   Responsive Adjustments
+───────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    .filter-bar > div {
+        gap: 12px 20px;
+    }
+    
+    .filter-bar select,
+    .filter-bar button {
+        min-width: 130px;
+        padding: 9px 12px;
+        font-size: 0.92rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-bar {
+        padding: 12px 15px;
+        margin: 15px auto;
+    }
+    
+    .filter-bar > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .filter-bar label {
+        text-align: left;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 4px;
+    }
+    
+    .filter-bar select,
+    .filter-bar button {
+        width: 100%;
+        min-width: unset;
+        font-size: 0.95rem;
+    }
+    
+    #resetFilters {
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-bar {
+        padding: 10px;
+    }
+    
+    .filter-bar label {
+        font-size: 0.9rem;
+    }
+    
+    .filter-bar select,
+    .filter-bar button {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+}
     </style>
 </body>
 </html>
+
 
 
 
