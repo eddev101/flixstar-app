@@ -23,7 +23,111 @@
 
     <div class="container">
         <div class="container main-content">
-            <h1 style="margin: 25px 0; text-align: center;">Popular Movies</h1>
+            <h1 style="margin: 25px 0; text-align: center;">Movies</h1>
+            <div class="filter-bar" style="margin: 20px auto; max-width: 1400px; padding: 15px; background: #1a1a1a; border-radius: 12px; text-align: center;">
+    <div style="display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; width: 100%;">
+        
+        <!-- Genre -->
+        <div>
+            <label for="genreFilter">Genre:</label>
+            <select id="genreFilter">
+                <option value="">Any</option>
+                <option value="28">Action</option>
+                <option value="12">Adventure</option>
+                <option value="16">Animation</option>
+                <option value="35">Comedy</option>
+                <option value="80">Crime</option>
+                <option value="99">Documentary</option>
+                <option value="18">Drama</option>
+                <option value="10751">Family</option>
+                <option value="14">Fantasy</option>
+                <option value="36">History</option>
+                <option value="27">Horror</option>
+                <option value="10402">Music</option>
+                <option value="9648">Mystery</option>
+                <option value="10749">Romance</option>
+                <option value="878">Science Fiction</option>
+                <option value="10770">TV Movie</option>
+                <option value="53">Thriller</option>
+                <option value="10752">War</option>
+                <option value="37">Western</option>
+            </select>
+        </div>
+
+        <!-- Year -->
+        <div>
+            <label for="yearFilter">Year:</label>
+            <select id="yearFilter">
+                <!-- Filled by JS -->
+            </select>
+        </div>
+
+        <!-- Sort -->
+        <div>
+            <label for="sortFilter">Sort by:</label>
+            <select id="sortFilter">
+                <option value="popularity.desc">Popular</option>
+                <option value="vote_count.desc">Most Voted</option>
+                <option value="vote_average.desc">Top Rated</option>
+                <option value="release_date.desc">Latest → Oldest</option>
+                <option value="release_date.asc">Oldest → Latest</option>
+                <option value="title.asc">A-Z</option>
+                <option value="title.desc">Z-A</option>
+            </select>
+        </div>
+
+        <!-- Provider -->
+        <div>
+            <label for="providerFilter">Platform:</label>
+            <select id="providerFilter">
+                <option value="">Any</option>
+                <option value="8">Netflix</option>
+                <option value="119">Amazon Prime Video</option>
+                <option value="337">Disney+</option>
+                <option value="350">Apple TV+</option>
+                <option value="531">Paramount+</option>
+                <option value="387">Peacock</option>
+                <option value="453">Hulu</option>
+                <option value="318">Max</option>
+                <option value="283">Crunchyroll</option>
+            </select>
+        </div>
+
+        <!-- Country -->
+        <div>
+            <label for="countryFilter">Country:</label>
+            <select id="countryFilter">
+                <option value="">Any</option>
+                <option value="US">United States</option>
+                <option value="GB">United Kingdom</option>
+                <option value="KR">South Korea</option>
+                <option value="JP">Japan</option>
+                <option value="TR">Turkey</option>
+                <option value="IN">India</option>
+                <option value="FR">France</option>
+            </select>
+        </div>
+
+        <!-- Rating -->
+        <div>
+            <label for="ratingFilter">Min Rating:</label>
+            <select id="ratingFilter">
+                <option value="0">Any</option>
+                <option value="5">5+</option>
+                <option value="6">6+</option>
+                <option value="7">7+</option>
+                <option value="8">8+</option>
+            </select>
+        </div>
+
+        <!-- Reset -->
+        <button id="resetFilters" style="padding: 10px 20px; background: #e50914; color: white; border: none; border-radius: 6px; cursor: pointer;">
+            Reset
+        </button>
+    </div>
+</div>
+
+<!-- Your grid and button -->
             <div class="movies-grid" id="movies"></div>
             <button id="loadMoreButton" class="btn btn-primary more-btn">Load More</button>
         </div>
@@ -54,7 +158,138 @@
 
     <style>
         #main-header { position: relative !important; }
+      /* Filter Bar Container */
+.filter-bar {
+    margin: 20px auto;
+    max-width: 1400px;
+    padding: 15px 20px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+}
+
+/* Flex container for all filters */
+.filter-bar > div {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Each filter group (label + select/button) */
+.filter-bar label {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #cccccc;
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.filter-bar select,
+.filter-bar button {
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    background: #2a2a2a;
+    color: #ffffff;
+    border: 1px solid #444444;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-width: 140px; /* prevents too narrow on mobile */
+}
+
+/* Hover & Focus states */
+.filter-bar select:hover,
+.filter-bar select:focus,
+.filter-bar button:hover,
+.filter-bar button:focus {
+    border-color: #e50914; /* Netflix red accent */
+    background: #333333;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.2);
+}
+
+/* Reset button specific style */
+#resetFilters {
+    background: #e50914;
+    border: none;
+    font-weight: 600;
+    padding: 10px 20px;
+    min-width: 120px;
+}
+
+#resetFilters:hover {
+    background: #f40614;
+    transform: translateY(-1px);
+}
+
+/* ────────────────────────────────────────────────
+   Responsive Adjustments
+───────────────────────────────────────────────── */
+
+@media (max-width: 1024px) {
+    .filter-bar > div {
+        gap: 12px 20px;
+    }
+    
+    .filter-bar select,
+    .filter-bar button {
+        min-width: 130px;
+        padding: 9px 12px;
+        font-size: 0.92rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .filter-bar {
+        padding: 12px 15px;
+        margin: 15px auto;
+    }
+    
+    .filter-bar > div {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    
+    .filter-bar label {
+        text-align: left;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 4px;
+    }
+    
+    .filter-bar select,
+    .filter-bar button {
+        width: 100%;
+        min-width: unset;
+        font-size: 0.95rem;
+    }
+    
+    #resetFilters {
+        margin-top: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .filter-bar {
+        padding: 10px;
+    }
+    
+    .filter-bar label {
+        font-size: 0.9rem;
+    }
+    
+    .filter-bar select,
+    .filter-bar button {
+        font-size: 0.9rem;
+        padding: 8px 10px;
+    }
+}
     </style>
 </body>
 </html>
+
 
