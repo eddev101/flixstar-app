@@ -240,48 +240,15 @@ function indexpopshows() {
 // Streaming Platform TV Shows Sections
 // ────────────────────────────────────────────────
 
-//const REGION = 'US';  // Change to 'US' if you want US catalog
-
-const PROVIDERS = {
-    netflix:     '8',
-    amazon_prime: '119',
-    apple_tv:    '350',
-    paramount:   '531',
-    peacock:     '387'
-};
-
-function loadTvByProvider(providerKey, containerId) {
-    const providerId = PROVIDERS[providerKey];
-    if (!providerId) return;
-
-    const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
-                `&language=en-US` +
-                `&sort_by=popularity.desc` +
-                `&page=1` +
-                `&with_watch_providers=${providerId}`;  // no watch_region
-
-   /* const url = `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}` +
-                `&language=en-US` +
-                `&sort_by=popularity.desc` +
-                `&page=1` +
-                `&watch_region=${REGION}` +
-                `&with_watch_providers=${providerId}`;*/
-    
-
-    axios.get(url)
+// Netflix Shows
+function loadNetflixShows() {
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=8`)
         .then(response => {
-            let shows = response.data.results.slice(0, 20);
+            let shows = response.data.results.slice(0, 12);
             let output = '';
-
             $.each(shows, (index, show) => {
-                let poster = show.poster_path 
-                    ? `https://image.tmdb.org/t/p/w780${show.poster_path}` 
-                    : "images/default-bg.png";
-                
-                let year = show.first_air_date 
-                    ? show.first_air_date.slice(0, 4) 
-                    : 'N/A';
-
+                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
+                let year = show.first_air_date ? show.first_air_date.slice(0, 4) : 'N/A';
                 output += `
     <a href="#" class="movie-card-wrapper"
        data-type="tv"
@@ -307,18 +274,192 @@ function loadTvByProvider(providerKey, containerId) {
         </div>
     </a>`;
             });
-
-            $(containerId).html(output || '<p class="no-results">No shows found</p>');
-            afterMoviesLoaded();  // refresh slider arrows
+            $('#netflix-shows').html(output || '<p class="no-results">No Netflix shows found in region</p>');
+            afterMoviesLoaded();
         })
         .catch(error => {
-            console.error(`Error loading ${providerKey} shows:`, error);
-            $(containerId).html('<p class="error">Failed to load</p>');
+            console.log(error);
+            $('#netflix-shows').html('<p class="error">Failed to load</p>');
         });
 }
 
-// ────────────────────────────────────────────────
-// Call these when page loads (e.g. in $(document).ready or your init function)
+
+// Amazon Prime Shows
+function loadAmazonPrimeShows() {
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=119`)
+        .then(response => {
+            let shows = response.data.results.slice(0, 12);
+            let output = '';
+            $.each(shows, (index, show) => {
+                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
+                let year = show.first_air_date ? show.first_air_date.slice(0, 4) : 'N/A';
+                output += `
+    <a href="#" class="movie-card-wrapper"
+       data-type="tv"
+       data-id="${show.id}"
+       data-backdrop="${show.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + show.backdrop_path : ''}"
+       data-title="${show.name.replace(/"/g, '&quot;')}"
+       data-year="${year}"
+       data-rating="${show.vote_average.toFixed(1)}"
+       data-overview="${show.overview ? show.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${show.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${show.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${show.name}</h3>
+            </div>
+        </div>
+    </a>`;
+            });
+            $('#amazon-prime-shows').html(output || '<p class="no-results">No Prime shows found in region</p>');
+            afterMoviesLoaded();
+        })
+        .catch(error => {
+            console.log(error);
+            $('#amazon-prime-shows').html('<p class="error">Failed to load</p>');
+        });
+}
+
+
+
+// Apple TV+ Shows
+function loadAppleTvShows() {
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=350`)
+        .then(response => {
+            let shows = response.data.results.slice(0, 12);
+            let output = '';
+            $.each(shows, (index, show) => {
+                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
+                let year = show.first_air_date ? show.first_air_date.slice(0, 4) : 'N/A';
+                output += `
+    <a href="#" class="movie-card-wrapper"
+       data-type="tv"
+       data-id="${show.id}"
+       data-backdrop="${show.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + show.backdrop_path : ''}"
+       data-title="${show.name.replace(/"/g, '&quot;')}"
+       data-year="${year}"
+       data-rating="${show.vote_average.toFixed(1)}"
+       data-overview="${show.overview ? show.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${show.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${show.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${show.name}</h3>
+            </div>
+        </div>
+    </a>`;
+            });
+            $('#apple-tv-shows').html(output || '<p class="no-results">No Apple TV+ shows found in region</p>');
+            afterMoviesLoaded();
+        })
+        .catch(error => {
+            console.log(error);
+            $('#apple-tv-shows').html('<p class="error">Failed to load</p>');
+        });
+}
+
+
+
+// Paramount+ Shows
+function loadParamountShows() {
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=531`)
+        .then(response => {
+            let shows = response.data.results.slice(0, 12);
+            let output = '';
+            $.each(shows, (index, show) => {
+                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
+                let year = show.first_air_date ? show.first_air_date.slice(0, 4) : 'N/A';
+                output += `
+    <a href="#" class="movie-card-wrapper"
+       data-type="tv"
+       data-id="${show.id}"
+       data-backdrop="${show.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + show.backdrop_path : ''}"
+       data-title="${show.name.replace(/"/g, '&quot;')}"
+       data-year="${year}"
+       data-rating="${show.vote_average.toFixed(1)}"
+       data-overview="${show.overview ? show.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${show.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${show.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${show.name}</h3>
+            </div>
+        </div>
+    </a>`;
+            });
+            $('#paramount-shows').html(output || '<p class="no-results">No Paramount+ shows found in region</p>');
+            afterMoviesLoaded();
+        })
+        .catch(error => {
+            console.log(error);
+            $('#paramount-shows').html('<p class="error">Failed to load</p>');
+        });
+}
+
+
+// Peacock Shows
+function loadPeacockShows() {
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=387`)
+        .then(response => {
+            let shows = response.data.results.slice(0, 12);
+            let output = '';
+            $.each(shows, (index, show) => {
+                let poster = show.poster_path ? `https://image.tmdb.org/t/p/w780${show.poster_path}` : "images/default-bg.png";
+                let year = show.first_air_date ? show.first_air_date.slice(0, 4) : 'N/A';
+                output += `
+    <a href="#" class="movie-card-wrapper"
+       data-type="tv"
+       data-id="${show.id}"
+       data-backdrop="${show.backdrop_path ? 'https://image.tmdb.org/t/p/w1280' + show.backdrop_path : ''}"
+       data-title="${show.name.replace(/"/g, '&quot;')}"
+       data-year="${year}"
+       data-rating="${show.vote_average.toFixed(1)}"
+       data-overview="${show.overview ? show.overview.replace(/"/g, '&quot;') : 'No description available.'}"
+       onclick="return false;">
+        <div class="live-card continue-card">
+            <div class="card-head" style="height: fit-content;">
+                <img src="${poster}" alt="" class="card-img">
+                <div class="live-badge">${show.vote_average.toString().substring(0, 3)}</div>
+                <div class="total-viewers">${year}</div>
+                <div class="play" onclick="viewTvShowDetails(${show.id});">
+                    <ion-icon name="play-circle-outline"></ion-icon>
+                </div>
+            </div>
+            <div class="card-body">
+                <h3 class="card-title">${show.name}</h3>
+            </div>
+        </div>
+    </a>`;
+            });
+            $('#peacock-shows').html(output || '<p class="no-results">No Peacock shows found in region</p>');
+            afterMoviesLoaded();
+        })
+        .catch(error => {
+            console.log(error);
+            $('#peacock-shows').html('<p class="error">Failed to load</p>');
+        });
+}
 
 
 
@@ -333,11 +474,11 @@ $(document).ready(function() {
     fetchMovies('now_playing');
     indextrendingshows();
     indexpopshows();
-    loadTvByProvider('netflix',     '#netflix-shows');
-    loadTvByProvider('amazon_prime', '#amazon-prime-shows');
-    loadTvByProvider('apple_tv',    '#apple-tv-shows');
-    loadTvByProvider('paramount',   '#paramount-shows');
-    loadTvByProvider('peacock',     '#peacock-shows');
+    loadNetflixShows();
+    loadAmazonPrimeShows();
+    loadAppleTvShows();
+    loadParamountShows();
+    loadPeacockShows();
 });
 
 
@@ -718,6 +859,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
