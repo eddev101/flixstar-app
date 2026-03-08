@@ -398,7 +398,7 @@ function loadAppleTvShows() {
 
 // Paramount+ Shows
 function loadParamountShows() {
-    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=531`)
+    axios.get(`https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=en-US&sort_by=popularity.desc&page=1&watch_region=US&with_watch_providers=337`)
         .then(response => {
             let shows = response.data.results.slice(0, 20);
             
@@ -437,7 +437,7 @@ function loadParamountShows() {
         </div>
     </a>`;
             });
-            $('#paramount-shows').html(output || '<p class="no-results">No Paramount+ shows found in region</p>');
+            $('#paramount-shows').html(output || '<p class="no-results">No Disney+ shows found in region</p>');
             afterMoviesLoaded();
         })
         .catch(error => {
@@ -894,6 +894,7 @@ btnClose.addEventListener('click', () => {
     popup.classList.remove('active');
     cancelHide();
 });
+
 
 
 
