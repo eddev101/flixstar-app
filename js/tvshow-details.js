@@ -3,6 +3,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const tvShowId = urlParams.get('id');
 let selectedSeason = 1;
 let selectedEpisode = 1;
+let imdbId = null;
 
 if (!tvShowId || isNaN(tvShowId)) {
     document.body.innerHTML = '<div class="alert alert-danger">Invalid Show ID</div>';
@@ -10,7 +11,7 @@ if (!tvShowId || isNaN(tvShowId)) {
     axios.get(`https://api.themoviedb.org/3/tv/${tvShowId}?api_key=${API_KEY}&language=en-US&append_to_response=credits,videos,recommendations,external_ids`)
         .then(response => {
             const show = response.data;
-            const imdbId = show.external_ids?.imdb_id || null;
+            imdbId = show.external_ids?.imdb_id || null;
 
             document.title = `Watch ${show.name} - Flixstar`;
             document.getElementById('iq-watch').style.backgroundImage = `url(${show.backdrop_path ? 'https://image.tmdb.org/t/p/original' + show.backdrop_path : '../images/default.webp'})`;
