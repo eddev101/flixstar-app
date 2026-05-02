@@ -7,9 +7,10 @@ let selectedEpisode = 1;
 if (!tvShowId || isNaN(tvShowId)) {
     document.body.innerHTML = '<div class="alert alert-danger">Invalid Show ID</div>';
 } else {
-    axios.get(`https://api.themoviedb.org/3/tv/${tvShowId}?api_key=${API_KEY}&language=en-US&append_to_response=credits,videos,recommendations`)
+    axios.get(`https://api.themoviedb.org/3/tv/${tvShowId}?api_key=${API_KEY}&language=en-US&append_to_response=credits,videos,recommendations,external_ids`)
         .then(response => {
             const show = response.data;
+            const imdbId = show.external_ids?.imdb_id || null;
 
             document.title = `Watch ${show.name} - Flixstar`;
             document.getElementById('iq-watch').style.backgroundImage = `url(${show.backdrop_path ? 'https://image.tmdb.org/t/p/original' + show.backdrop_path : '../images/default.webp'})`;
@@ -26,12 +27,36 @@ if (!tvShowId || isNaN(tvShowId)) {
                 <div class="text-primary-title">Created By: <span class="text-body">${show.created_by.length ? show.created_by.map(c => c.name).join(', ') : 'N/A'}</span></div>`;
             $('#show-details').html(details);
 
+            // Servers
             let servers = `
-                <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/tv?tmdb=${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://hnembed.cc/embed/tv/${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://player.videasy.net/tv/${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Videasy</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://multiembed.mov?video_id=${show.id}&tmdb=1&s=1&e=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://player.vidplus.to/embed/tv/${show.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidplus</h1></div></div></a>`;
+                <a href="#" class="server-button btn" data-url="https://player.videasy.net/tv/${show.id}">
+                    <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Videasy</h1></div></div>
+                </a>
+                <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/tv?tmdb=${show.id}">
+                    <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div>
+                </a>
+                <a href="#" class="server-button btn" data-url="https://hnembed.cc/embed/tv/${show.id}">
+                    <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div>
+                </a>
+                <a href="#" class="server-button btn" data-url="https://multiembed.mov?video_id=${show.id}&tmdb=1&s=1&e=1">
+                    <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div>
+                </a>
+                <a href="#" class="server-button btn" data-url="https://player.vidplus.to/embed/tv/${show.id}">
+                    <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidplus</h1></div></div>
+                </a>`;
+            
+            if (imdbId) {
+                servers += `
+                <a href="#" class="server-button btn" data-url="https://streamimdb.ru/embed/tv/${imdbId}">
+                    <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>StreamIMDB</h1></div></div>
+                </a>`;
+            } else {
+                servers += `
+                <a href="#" class="server-button btn disabled">
+                    <div class="server"><div class="server-div2"><h1>StreamIMDB (N/A)</h1></div></div>
+                </a>`;
+            }
+            
             $('#show-servers').html(servers);
 
             let seasonOptions = '<option value="">Select a Season</option>';
@@ -138,12 +163,16 @@ if (!tvShowId || isNaN(tvShowId)) {
     }, { once: true });
 })();
 
-            // Add event listeners AFTER DOM updates
+            //default watch server
+            let defaultUrl = `https://player.videasy.net/tv/${show.id}`; // fallback
+            if (imdbId) {
+                defaultUrl = `https://streamimdb.ru/embed/tv/${imdbId}`;
+            }
+            
             document.getElementById('playButton').addEventListener('click', () => {
-                const url = `https://player.videasy.net/tv/${show.id}`; 
-                console.log('Attempting to load:', url);
-                showIframe(url);
+                showIframe(defaultUrl);
             });
+            
 
             document.getElementById('seasonDropdown').addEventListener('change', function () {
                 selectedSeason = this.value;
@@ -209,24 +238,39 @@ if (!tvShowId || isNaN(tvShowId)) {
 function updateServerLinks() {
     document.querySelectorAll('.server-button').forEach(server => {
         let baseUrl = server.dataset.url;
-        if (baseUrl.includes('vidplus.to')) {
+
+        if (baseUrl.includes('streamimdb.ru')) {
+            server.dataset.url = `https://streamimdb.ru/embed/tv/${imdbId}?s=${selectedSeason}&e=${selectedEpisode}`;
+        }
+        else if (baseUrl.includes('vidplus.to')) {
             server.dataset.url = `https://player.vidplus.to/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
-        } else if (baseUrl.includes('hnembed.cc')) {
+        }
+        else if (baseUrl.includes('hnembed.cc')) {
             server.dataset.url = `https://hnembed.cc/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
-        } else if (baseUrl.includes('videasy.net')) {
+        }
+        else if (baseUrl.includes('videasy.net')) {
             server.dataset.url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
-        } else if (baseUrl.includes('multiembed.mov')) {
+        }
+        else if (baseUrl.includes('multiembed.mov')) {
             server.dataset.url = `https://multiembed.mov?video_id=${tvShowId}&tmdb=1&s=${selectedSeason}&e=${selectedEpisode}`;
-        } else if (baseUrl.includes('vidsrc.me')) {
+        }
+        else if (baseUrl.includes('vidsrc.me')) {
             server.dataset.url = `https://vidsrc.me/embed/tv?tmdb=${tvShowId}&season=${selectedSeason}&episode=${selectedEpisode}`;
         }
     });
 }
 
+
+
 function loadEpisode() {
-    const url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`; // Same URL logic here
+    let url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
+    if (imdbId) {
+        url = `https://streamimdb.ru/embed/tv/${imdbId}?s=${selectedSeason}&e=${selectedEpisode}`;
+    }
     showIframe(url);
 }
+
+
 
 function saveContinueWatchingTV() {
     let list = JSON.parse(localStorage.getItem('continueWatching')) || [];
