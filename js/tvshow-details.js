@@ -262,12 +262,17 @@ function updateServerLinks() {
 
 
 
-function loadEpisode() {
+/*function loadEpisode() {
     let url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
     if (imdbId) {
         url = `https://streamimdb.ru/embed/tv/${imdbId}`;
     }
     showIframe(url);
+}*/
+
+function loadEpisode() {
+    const url = `https://streamimdb.ru/embed/tv/${imdbId}`; // Same URL logic here
+    showIframe(url);
 }
 
 
