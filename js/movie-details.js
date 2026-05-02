@@ -5,9 +5,10 @@ const movieId = urlParams.get('id');
 if (!movieId || isNaN(movieId)) {
     document.body.innerHTML = '<div class="alert alert-danger">Invalid Movie ID</div>';
 } else {
-    axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=credits,videos,recommendations`)
+    axios.get(`https://api.themoviedb.org/3/movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=credits,videos,recommendations,external_ids`)
         .then(response => {
             const movie = response.data;
+            const imdbId = movie.external_ids?.imdb_id || null;
 
             document.title = `Watch ${movie.title} - Flixstar`;
             document.getElementById('iq-watch').style.backgroundImage = `url(${movie.backdrop_path ? 'https://image.tmdb.org/t/p/original' + movie.backdrop_path : '../images/default.webp'})`;
@@ -53,12 +54,40 @@ let details = `
             $('#movie-details').html(details);
 
             let servers = `
-                <a href="#" class="server-button btn" data-url="https://player.videasy.net/movie/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Videasy</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://hnembed.cc/embed/movie/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://multiembed.mov/?video_id=${movie.id}&tmdb=1"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div></a>
-                <a href="#" class="server-button btn" data-url="https://player.vidplus.to/embed/movie/${movie.id}"><div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidplus</h1></div></div></a>`;
-            $('#movie-servers').html(servers);
+    <a href="#" class="server-button btn" data-url="https://player.videasy.net/movie/${movie.id}">
+        <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Videasy</h1></div></div>
+    </a>
+    
+    <a href="#" class="server-button btn" data-url="https://vidsrc.me/embed/${movie.id}">
+        <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidsrc</h1></div></div>
+    </a>
+    
+    <a href="#" class="server-button btn" data-url="https://hnembed.cc/embed/movie/${movie.id}">
+        <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>2embed</h1></div></div>
+    </a>
+    
+    <a href="#" class="server-button btn" data-url="https://multiembed.mov/?video_id=${movie.id}&tmdb=1">
+        <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>SuperEmbed</h1></div></div>
+    </a>
+    
+    <a href="#" class="server-button btn" data-url="https://player.vidplus.to/embed/movie/${movie.id}">
+        <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>Vidplus</h1></div></div>
+    </a>`;
+
+    // Add StreamIMDB
+    if (imdbId) {
+        servers += `
+    <a href="#" class="server-button btn" data-url="https://streamimdb.ru/embed/movie/${imdbId}">
+        <div class="server"><div class="server-div1"><i class="fa fa-play"></i></div><div class="server-div2"><span>Server</span><h1>StreamIMDB</h1></div></div>
+    </a>`;
+    } else {
+        servers += `
+    <a href="#" class="server-button btn disabled">
+        <div class="server"><div class="server-div2"><h1>StreamIMDB (N/A)</h1></div></div>
+    </a>`;
+    }
+
+    $('#movie-servers').html(servers);
 
             let cast = '';
             movie.credits.cast.slice(0, 10).forEach(c => { // Limit to 10 for performance
@@ -150,9 +179,16 @@ let details = `
 
 
 
-            // Add event listeners AFTER DOM updates
+            // Set default server
+            let defaultServerUrl = `https://player.videasy.net/movie/${movie.id}`; // fallback
+            
+            if (imdbId) {
+                defaultServerUrl = `https://streamimdb.ru/embed/movie/${imdbId}`;
+            }
+            
+            // Update Play Button
             document.getElementById('playButton').addEventListener('click', () => {
-                showIframe(`https://player.videasy.net/movie/${movie.id}`); // Default server
+                showIframe(defaultServerUrl);
             });
 
             document.querySelectorAll('.trailer-button').forEach(button => {
