@@ -271,7 +271,7 @@ function updateServerLinks() {
 }*/
 
 function loadEpisode() {
-    const url = `https://streamimdb.ru/embed/tv/${imdbId}`; // Same URL logic here
+    const url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`; // Same URL logic here
     showIframe(url);
 }
 
