@@ -240,7 +240,7 @@ function updateServerLinks() {
         let baseUrl = server.dataset.url;
 
         if (baseUrl.includes('streamimdb.ru')) {
-            server.dataset.url = `https://streamimdb.ru/embed/tv/${imdbId}?s=${selectedSeason}&e=${selectedEpisode}`;
+            server.dataset.url = `https://streamimdb.ru/embed/tv/${imdbId}`;
         }
         else if (baseUrl.includes('vidplus.to')) {
             server.dataset.url = `https://player.vidplus.to/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
@@ -265,11 +265,10 @@ function updateServerLinks() {
 function loadEpisode() {
     let url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
     if (imdbId) {
-        url = `https://streamimdb.ru/embed/tv/${imdbId}?s=${selectedSeason}&e=${selectedEpisode}`;
+        url = `https://streamimdb.ru/embed/tv/${imdbId}`;
     }
     showIframe(url);
 }
-
 
 
 function saveContinueWatchingTV() {
