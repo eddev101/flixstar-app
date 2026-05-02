@@ -237,27 +237,41 @@ if (!tvShowId || isNaN(tvShowId)) {
 
 function updateServerLinks() {
     document.querySelectorAll('.server-button').forEach(server => {
-        let baseUrl = server.dataset.url;
+        const base = server.dataset.url || "";
 
-        if (baseUrl.includes('streamimdb.ru')) {
-            server.dataset.url = `https://streamimdb.ru/embed/tv/${imdbId}`;
-        }
-        else if (baseUrl.includes('vidplus.to')) {
-            server.dataset.url = `https://player.vidplus.to/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
-        }
-        else if (baseUrl.includes('hnembed.cc')) {
-            server.dataset.url = `https://hnembed.cc/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
-        }
-        else if (baseUrl.includes('videasy.net')) {
+        if (base.includes('streamimdb.ru')) {
+            server.dataset.url = `https://streamimdb.ru/embed/tv/${imdbId}?s=${selectedSeason}&e=${selectedEpisode}`;
+        } 
+        else if (base.includes('videasy.net')) {
             server.dataset.url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
-        }
-        else if (baseUrl.includes('multiembed.mov')) {
+        } 
+        else if (base.includes('vidplus.to')) {
+            server.dataset.url = `https://player.vidplus.to/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
+        } 
+        else if (base.includes('hnembed.cc')) {
+            server.dataset.url = `https://hnembed.cc/embed/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`;
+        } 
+        else if (base.includes('multiembed.mov')) {
             server.dataset.url = `https://multiembed.mov?video_id=${tvShowId}&tmdb=1&s=${selectedSeason}&e=${selectedEpisode}`;
-        }
-        else if (baseUrl.includes('vidsrc.me')) {
+        } 
+        else if (base.includes('vidsrc.me')) {
             server.dataset.url = `https://vidsrc.me/embed/tv?tmdb=${tvShowId}&season=${selectedSeason}&episode=${selectedEpisode}`;
         }
     });
+}
+
+function loadEpisode() {
+    if (!selectedSeason || !selectedEpisode) return;
+
+    let url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`; // fallback
+
+    // Prefer StreamIMDB if available
+    if (imdbId) {
+        url = `https://streamimdb.ru/embed/tv/${imdbId}?s=${selectedSeason}&e=${selectedEpisode}`;
+    }
+
+    console.log('Loading episode:', url); // for debugging
+    showIframe(url);
 }
 
 
@@ -270,10 +284,6 @@ function updateServerLinks() {
     showIframe(url);
 }*/
 
-function loadEpisode() {
-    const url = `https://player.videasy.net/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`; // Same URL logic here
-    showIframe(url);
-}
 
 
 function saveContinueWatchingTV() {
