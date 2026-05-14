@@ -8,12 +8,12 @@
     "theme_color": "#000",
     "icons": [
         {
-            "src": "/images/logo3.png",
+            "src": "https://eddev101.github.io/flixstar-app/images/logo3.png",
             "sizes": "192x192",
             "type": "image/png"
         },
         {
-            "src": "/images/logo3.png",
+            "src": "https://eddev101.github.io/flixstar-app/images/logo3.png",
             "sizes": "512x512",
             "type": "image/png"
         }
