@@ -341,7 +341,7 @@ function redirectToDownload(event) {
     const seriesTitle = document.getElementById('show-name').textContent.trim();
     if (seriesTitle) {
         const searchQuery = encodeURIComponent(seriesTitle);
-        window.location.href = `https://dl.vidsrc.vip/tv/${tvShowId}/${selectedSeason}/${selectedEpisode}`; // Redirect in same window
+        window.location.href = `https://1337x.to/category-search/${searchQuery}/TV/1/`; // Redirect in same window
         // OR: window.open(`https://tvshows.ac/search/${searchQuery}`, '_system'); // Open in device browser
     } else {
         alert("Series title not found!");
