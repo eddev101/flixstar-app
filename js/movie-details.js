@@ -265,7 +265,7 @@ function redirectToDownload(event) {
     const movieTitle = document.getElementById('movie-title').textContent.trim();
     if (movieTitle) {
         const searchQuery = encodeURIComponent(movieTitle);
-        window.open(`https://1337x.to/category-search/${query}/Movies/1/`, '_system');
+        window.open(`https://1337x.to/category-search/${searchQuery}/Movies/1/`, '_system');
     } else {
         alert("Movie title not found!");
     }
